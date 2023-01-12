@@ -5,9 +5,16 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
-	(a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
-);
+const posts = (await Astro.glob('./blog/**/*.{md,mdx}'))
+    .map(post => {
+      const [null0, null1, year, month, day] = post.url.split('/');
+      return {
+        ...post,
+        pubDate: year + '-' + month + '-' + day
+      };
+    })
+    .sort((a, b) => new Date(a.pubDate).valueOf() - new Date(b.pubDate).valueOf())
+    .reverse()
 ---
 
 <!DOCTYPE html>
@@ -40,11 +47,12 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
 					{
 						posts.map((post) => (
 							<li>
-								<time datetime={post.frontmatter.pubDate}>
-									{new Date(post.frontmatter.pubDate).toLocaleDateString('en-us', {
+								<time datetime={post.pubDate}>
+									{new Date(post.pubDate).toLocaleDateString('en-us', {
 										year: 'numeric',
 										month: 'short',
 										day: 'numeric',
+										timeZone: 'UTC'
 									})}
 								</time>
 								<a href={post.url}>{post.frontmatter.title}</a>
