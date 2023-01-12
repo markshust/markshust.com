@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "redirects", "seo"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 By default, Magento does not automatically add on trailing url's to the end of every URL. In a database-driven cms system, you will be penalized for this by having two urls' with duplicate content:
 
 http://yourinstall.com/home

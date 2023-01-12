@@ -5,6 +5,8 @@ tags: ["gatsby", "seo"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Gatsby has a simple plugin named `gatsby-plugin-canonical-urls` which sets the base URL used for canonical URLs for your website. Canonical URLs are important, as they tell search engines what the "original" URL was for a specific page or blog post. This helps prevent your website from being penalized for duplicate content.
 
 The problem with this module is that it doesn't give you the ability to override a canonical URL for a specific page on your Gatsby site. The situation applies when you'd like to take the original blog post made on an external website, and cross-post it into your personal website. Luckily, there's a really simple solution to this problem.
@@ -132,11 +134,15 @@ Finally, we have one last step. Add the value of `canonical` to your blog post f
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
  title: "Post goes here"
  date: "2019-04-27T12:00:00.000Z"
 +canonical: "https://your-original-blog.com/post-goes-here"
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
+
+import { Image } from '@astrojs/image/components';
 
 ```
 

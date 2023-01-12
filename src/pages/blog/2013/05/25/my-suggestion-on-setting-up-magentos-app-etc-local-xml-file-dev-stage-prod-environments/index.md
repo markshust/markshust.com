@@ -5,6 +5,8 @@ tags: ["deployments", "magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It seems as though everyone always wonders what to do with `app/etc/local.xml`, and how to best manage it when deploying from development to staging and production. It took me a while to figure this out, but I think I found a really good way.
 
 I have a strong feeling that all code should be on version control. I don't understand why most Magento git deployment suggestions choose to exclude/ignore `app/etc/local.xml` from their version control systems. It surely is not a security concern, as if someone is looking at php/xml code, they most likely have access to the full system anyways. Code should be instantly deployable, and not rely on someone doing something after code is deployed (as in copying in or creating a local.xml file so it can connect to the database). Note that I do not think this applies to parts of the filesystem that are likely to change by user uploads or session (ex. `media` folder, `var` folder, etc.), but it should indeed apply to parts of the site that don't change with human/web interaction (ex. `skin` folder).

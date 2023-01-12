@@ -5,7 +5,9 @@ tags: ["d3", "firebase", "javascript", "keenio"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![Real-time chart](dashboard.gif)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./dashboard.gif')} alt="Real-time chart" />
 
 Ever since I decided to integrate Firebase into a production app about a year and a half ago, I've been completely intrigued by the real-time web; I believe it can be applied to just about any industry for any purpose with great benefit.
 

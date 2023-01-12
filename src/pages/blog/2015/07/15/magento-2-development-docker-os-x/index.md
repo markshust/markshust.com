@@ -5,7 +5,9 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![Magento 2 Development on Docker with OS X](magento-2-development-docker-os-x.png)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./magento-2-development-docker-os-x.png')} alt="Magento 2 Development on Docker with OS X" />
 
 ## Why Docker?
 
@@ -23,7 +25,7 @@ Perfect. If you want to read more about Docker and it's specifics, you can <a hr
 
 ## LAMP on Docker
 
-![ElePHPant](elephpant.png)
+<Image src={import('./elephpant.png')} alt="ElePHPant" />
 
 The thing us PHP devs need is a good LAMP stack, usually with all of the services located on the same physical or virtual machine. However, Docker likes each service to run in it's own container. This is what makes Docker so great: your web server and database server (and even PHP if you run it with php-fpm) can each run isolated within their own container,  but also still all be located on the same bare metal machine or virtualized host. This isolation helps keep all of the different services neat & tidy; working on one container will not affect the settings or functionality of the other containers.
 
@@ -47,7 +49,7 @@ brew cask install vagrant
 
 At Mage Inferno we started off using <a href="http://boot2docker.io/" target="_blank">Boot2Docker</a> for Docker + Mac support, and it generally works ok, but only if you don't plan to mount files from the host system. But this is exactly what we want to do -- mount our local filesystem to the Docker container so we can develop natively on our Mac, just as if it's hosted locally. Boot2Docker uses VirtualBox, which uses the vboxsf filesystem to mount remote files. The problem is that vboxsf is horrifically slow, and the situation is greatly exaggerated when mounting many files (Magento has a few files ;).
 
-![Dinghy](dinghy.png)
+<Image src={import('./dinghy.png')} alt="Dinghy" />
 
 No worries! <a href="https://github.com/codekitchen/dinghy" target="_blank">Dinghy</a> to the rescue. This application uses a modified version of Boot2Docker that uses the far superior NFS filesystem to mount remote file shares. It also has some great additions us web developers can really use, including a DNS resolution service and HTTP proxy (which also very neatly runs within it's own container in true Docker fashion). Fairly easy Magento 2 development on Docker and OS X wouldn't be possible without something like Dinghy (at least at the time of this post), so be sure to star the package on github to give the developer some kudos. Let's install Dinghy:
 
@@ -65,7 +67,7 @@ A <a href="https://docs.docker.com/reference/builder/" target="_blank">Dockerfil
 
 If you would like to know more about each image, please click on the image names above to check out their related Dockerfile and build & setup scripts. We'll use these images to kickoff the installation and server configuration process for our containers, which will help us get Magento 2 up and running without much effort.
 
-> <a href="https://hub.docker.com/u/mageinferno/" target="_blank">![Mage Inferno - Docker Hub](/images/logo-tm-md.png)<br/>View all Mage Inferno images at Docker Hub</a>
+> <a href="https://hub.docker.com/u/mageinferno/" target="_blank"><Image src={import('.//images/logo-tm-md.png')} alt="Mage Inferno - Docker Hub" /><br/>View all Mage Inferno images at Docker Hub</a>
 
 ## Running a Docker image
 
@@ -132,7 +134,7 @@ We are getting a 404 error because there are currently no files being served up 
 
 The final piece of the puzzle is <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a>. This allows us to setup a simple YAML configuration file which instructs Docker to run one or more containers based on the images and parameters defined therein.
 
-![Docker Composer](docker-compose.jpg)
+<Image src={import('./docker-compose.jpg')} alt="Docker Composer" />
 
 First, we'll create a new directory in our `~/Sites` folder with the name of our project, and go into it:
 

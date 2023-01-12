@@ -5,6 +5,8 @@ tags: ["php", "php7"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 PHP 7 introduced the <a href="https://wiki.php.net/rfc/isset_ternary" target="_blank">null coalesce</a> operator. Basically, it's syntactical sugar and shorthand when checking for the existence of a variable and then falling back to some value.
 
 For example, this small script outputs `bar`, because `$foo` is not yet defined.

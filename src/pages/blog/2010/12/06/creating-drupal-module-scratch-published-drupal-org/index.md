@@ -5,6 +5,8 @@ tags: ["drupal"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Having developed Drupal modules for over a year now, and now finally getting one published (<a href="http://drupal.org/project/simplify" target="_blank">Simplify</a>!), I have a pretty good grasp of the steps you need to take to create a module, run it through a code review, submit an application for a drupal.org CVS account, and get your very own project page at drupal.org. I’ll try to take you through the main aspects that you need to have good understanding.
 
 Your first step is to learn how to create a custom Drupal module. I’m assuming you already know PHP (if not, Drupal probably isn’t a great place to start because it’s ‘hook’ mentality has a league of it’s own…). Some great books to pickup are <a href="http://www.amazon.com/Using-Drupal-Angela-Byron/dp/0596515804/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1291671014&amp;sr=1-1" target="_blank">Using Drupal</a> and <a href="http://www.amazon.com/gp/product/1430228385/ref=pd_lpo_k2_dp_sr_2?pf_rd_p=486539851&amp;pf_rd_s=lpo-top-stripe-1&amp;pf_rd_t=201&amp;pf_rd_i=1590597559&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=0DR4QX7G382XADHSXMRT" target="_blank">Pro Drupal Development</a>. Using Drupal will give you a basic understanding of the Drupal platform (and give you a great foundation to start from as well), and Pro Drupal Development will take you through all of the steps of creating a custom module.

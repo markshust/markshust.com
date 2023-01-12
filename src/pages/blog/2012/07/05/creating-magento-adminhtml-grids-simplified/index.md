@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 As with many coding projects with Magento, it is *very* easy to get frustrated, even with the smallest of tasks. Well, Adminhtml Grids in Magento aren't too much fun, even for the experienced programmer. Lacking quality tutorial posts on Google as well, I thought it was worthwhile to write up a constructed tutorial on how to create these Adminhtml Grids, in the most simplified manner possible.
 
 **Note:** This article isn't for the faint of heart -- this is one of the more confusing Magento topics. If you find yourself not getting anywhere, please go back through all of the comments in the XML files below and make sure they all match appropriately to your module.

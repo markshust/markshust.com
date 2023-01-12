@@ -5,6 +5,8 @@ tags: ["php", "ioncube"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It might look to be a little tricky to get ionCube Loader installed on Mac OS X, but it's actually quite easy. The ionCube Loader lets you decrypt ionCube-encoded projects so you can run software that is encrypted by the developer, or software which may be protected to specific domains and/or locations.
 
 First, you need to visit the <a href="http://www.ioncube.com/loaders.php" target="_blank">ionCube Loader download page</a>.

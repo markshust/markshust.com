@@ -5,6 +5,8 @@ tags: ["gatsby", "tailwindcss"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've had a bear of a time trying to add Tailwind CSS to my Gatsby site. Most of the blog posts I found for implementing the library were either outdated, referenced installing a lot of unnecessary npm modules, or contained a lot of opinionated boilerplate code. Instead, I decided to implement Tailwind in the simplest way possible.
 
 > If you are starting a new blog on Gatsby and would like Tailwind CSS included with it by default, check out the [gatsby-starter-blog-tailwindcss](https://github.com/andrezzoid/gatsby-starter-blog-tailwindcss) starter. The config is clean, and I actually grabbed most of the implementation info from this repo.

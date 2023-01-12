@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "performance"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 There are lots of tips, tricks and hacks on how to enhance Magento. A lot of them are good. Some are entirely wrong! And most do not have each and every update you must make to every single one of your sites in order to get it to achieve the fastest possible load times. This is a list to remedy that situation.
 
 Remember, all of these updates only apply to production environments. Feel free to post comments, updates and suggestions and I will keep this list up to date as much as I possible can. Hopefully, in time we can achieve a golden master list of performance enhancements!

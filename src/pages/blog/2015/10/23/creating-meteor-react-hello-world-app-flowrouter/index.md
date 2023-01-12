@@ -5,6 +5,8 @@ tags: ["meteor", "reactjs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I wanted to create a simple screencast demonstrating the use of React within a Meteor project. Here's a simple Hello World app, that uses FlowRouter for rending React components.
 
 You can download the app created in this screencast at <a href="https://github.com/markshust/meteor-react-helloworld" target="_blank">https://github.com/markshust/meteor-react-helloworld</a>

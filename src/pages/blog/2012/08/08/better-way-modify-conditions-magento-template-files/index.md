@@ -5,6 +5,8 @@ tags: ["magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 As it is with almost all Magento projects, you will have times when you need to modify sections of code in custom template files. There are many approaches and ways to handle these changes, but there are some that are more optimal than others.
 
 There is a special case regarding code blocks within conditional logic in which I like to take a certain approach. Let's say we need to make updates & changes to the following file:

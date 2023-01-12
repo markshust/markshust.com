@@ -5,6 +5,8 @@ tags: ["magento", "magento2", "model"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It's been a while since I've done any regular programming within Magento 2, and I was head down getting a new module to work. I was setting up the regular model & resource model for a new database entity like so:
 
 <div class="gatsby-code-title">Foo/Bar/Model/Baz.php</div>

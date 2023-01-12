@@ -5,6 +5,8 @@ tags: ["composer", "magento", "magento2", "php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Recently, I tried installing the <a href="https://marketplace.magento.com/cybersource-global-payment-management.html" target="_blank">Cybersource  module for Magento 2</a> with composer. This is typically accomplished by running one command:
 
 ```bash

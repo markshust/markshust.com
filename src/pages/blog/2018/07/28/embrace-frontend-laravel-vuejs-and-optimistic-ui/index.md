@@ -5,6 +5,8 @@ tags: ["laravel", "vuejs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I just came back from an absolutely fantastic trip and conference of LaraCon in Chicago. Even though I no longer work daily with Laravel, I thought there were so many good sessions presented, and that going would benefit anyone having an interest in web development.
 
 Caleb had a good session, <a href="https://speakerdeck.com/calebporzio/embrace-the-backend-laracon-2018" target="_blank">Embracing the Backend</a>, which used a sample twitter app to post a tweet and some tips and tricks around getting around complexity with VueJS. But I couldn't help be reminded of a past life of mine. About a decade ago I started developing a Point of Sales system for bars and nightclubs called Chanj POS. Here's our welcome video from quite a few years back, where you can see some of the user interface I created:

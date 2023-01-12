@@ -5,6 +5,8 @@ tags: ["magento", "magento2", "declarativeschema"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I was refactoring one of my Magento 2 modules and noticed that the Magento 2.3 core modules use the <a href="https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/" target="_blank">declarative schema</a> approach rather than setup upgrade scripts. This  is the new recommended approach for Magento versions 2.3 and up, as upgrade scripts will be phased out in favor of this declarative schema approach in the future.
 
 I stumbled on the <a href="https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/data-patches.html" target="_blank">data patches documentation</a>, however this doesn't really apply for creating product attributes within declarative schema scripts.

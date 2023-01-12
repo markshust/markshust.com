@@ -5,7 +5,9 @@ tags: ["layout", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![How to create a template block in Magento 2](how-create-template-block-magento-2.png)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./how-create-template-block-magento-2.png')} alt="How to create a template block in Magento 2" />
 
 Hopefully you've already read <a href="/2015/07/22/setting-your-magento-2-module-right-way-composer-packagist#overlay-context=2015/09/03/using-docker-machine-os-x-dinghy">Setting Up Your Magento 2 Module the Right Way with Composer & Packagist</a>, so we can start creating our module. We won't use Composer or Packagist in this tutorial to save some time, as we are just writing code to test out functionality. Let's get right into things.
 
@@ -113,7 +115,7 @@ If you need to flush the cache for any reason (if the block isn't showing or was
 ./bin/magento cache:flush full_page  # Flush Full Page Cache
 ```
 
-![Foo bar baz title](foo-bar-baz-title.jpg)
+<Image src={import('./foo-bar-baz-title.jpg')} alt="Foo bar baz title" />
 
 ## Conclusion
 

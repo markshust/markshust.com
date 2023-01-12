@@ -5,6 +5,8 @@ tags: ["mysql", "nodejs", "socketio"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Personally, I find Node.js to be completely fascinating. It's a direct lineage of <a href="http://www.codinghorror.com/blog/2007/07/the-principle-of-least-power.html" target="_blank">Atwood's Law</a>, that "any application that can be written in JavaScript, will eventually be written in JavaScript". Even the server. This, my friends, in a day of jQuery and JSON starting to rule the world, is a beautiful thing.
 
 A real nice Node community is forming (and for that matter, has already formed), and tutorials are starting to pop up on the internet of how to write a server/client with Node. I'd like to give you my take on that, starting with a MySQL-supported writeup for all those other LAMP guys out there wanting to start to dabble in Node, and even more specifically it's websockets implementation, Socket.IO.

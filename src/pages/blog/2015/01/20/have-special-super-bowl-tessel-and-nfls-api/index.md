@@ -5,7 +5,9 @@ tags: ["javascript", "tessel"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![Tessel lighting up on NFL touchdown](tessel-nfl.gif)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./tessel-nfl.gif')} alt="Tessel lighting up on NFL touchdown" />
 
 Ever since I watched the World Cup at a BW3, and saw a Budweiser Red Light, I was fascinated with how it worked. When a team scored a goal on TV, the Red Light instantly lit up! Having worked with Firebase and websockets for a bit, I wanted to make that happen.
 

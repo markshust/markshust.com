@@ -5,6 +5,8 @@ tags: ["bash", "svn"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Here is a neat trick to get much better colored diffs out of subversion when you are in command line. Just add the following lines anywhere in your `~/.bashrc` or `~/.bash_profile` file, and you will have nice colored diffs just like Git.
 
 ```bash

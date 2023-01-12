@@ -5,6 +5,8 @@ tags: ["layout", "magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Sometimes it is necessary to create a custom layout file. Other times, you may need to define and set custom variables for use in your template file. This article demonstrates the ability to do both, in hopes to clarify the "Magento XML Magic" that is going on behind the scenes.
 
 It is important to follow the MVC pattern, and keep data in models, logic in controllers, and use the view strictly to echo out data.

@@ -5,7 +5,9 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![Speed security permissions & docker](magento-2-speed-security-permissions-docker.png)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./magento-2-speed-security-permissions-docker.png')} alt="Speed security permissions & docker" />
 
 > Note that this blog post was originally written by myself on Mage Inferno's blog, which no longer exists. Many old user comments have been lost, but this post won't be!
 
@@ -29,7 +31,7 @@ Luckily, the ecosystem is progressing, and now there is a better way.
 
 We've recently received our beta invite to the beta for <a href="https://beta.docker.com/" target="_blank">Docker for Mac</a>, and here is our general consensus:
 
-![Oh snap](giphy.gif)
+<Image src={import('./giphy.gif')} alt="Oh snap" />
 
 You can read all of the benefits yourself on the <a href="https://beta.docker.com/docs/features-overview/" target="_blank">Features Overview</a> page, but here are some key bullet points:
 
@@ -48,7 +50,7 @@ We've updated all of our Docker images to only run with the `www-user` user/grou
 
 Mage Inferno's Docker images now have <a href="https://hub.docker.com/u/mageinferno/" target="_blank">over 10,000 pulls</a>! We thank the community for the overwhelming feedback we've received from being the number one Magento 2 Docker images available on DockerHub. We strongly believe that it is still the easiest way to get started with Magento 2 development, and will continue to be for some time.
 
-> <a href="https://hub.docker.com/u/mageinferno/" target="_blank">![Mage Inferno - Docker Hub](logo-tm-md.png)<br/>View all Mage Inferno images at Docker Hub</a>
+> <a href="https://hub.docker.com/u/mageinferno/" target="_blank"><Image src={import('./logo-tm-md.png')} alt="Mage Inferno - Docker Hub" /><br/>View all Mage Inferno images at Docker Hub</a>
 
 In honor of hitting our 10,000 pull milestone, we are releasing a new set of Docker images, which will resolve all of the security and permission problems that have occurred in the past.
 

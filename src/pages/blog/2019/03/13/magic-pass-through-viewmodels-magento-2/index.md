@@ -5,6 +5,8 @@ tags: ["blocks", "magento", "magento2", "viewmodels"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 The current best practice for Magento 2.3 is to use ViewModels rather than Block classes. Jisse of Yireo wrote a great blog post about <a href="https://www.yireo.com/blog/2017-08-12-viewmodels-in-magento-2" target="_blank">ViewModels in Magento 2</a> that you should really read if you haven't already.
 
 I recently found myself needing the ability to access a single class' method, specifically the customer session's `isLoggedIn()` method, however it seemed silly to create an abstraction of this model as a ViewModel so that I can access this method.

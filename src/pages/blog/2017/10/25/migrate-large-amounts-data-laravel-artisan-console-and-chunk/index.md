@@ -5,6 +5,8 @@ tags: ["artisan", "laravel", "php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've recently had to create a script to migrate a large amount of data post-deployment. This presented a couple issues; one being that the script needed to be performant, another being that since it took at least a few minutes to run on a couple hundred thousand rows, I needed to display the status of the script for devops so it didn't appear to be hungup or failed.
 
 I resolved on using a combination of <a href="https://laravel.com/docs/5.5/collections#method-chunk" target="_blank">`chunk`</a> and <a href="https://laravel.com/docs/5.5/collections#method-each" target="_blank">`each`</a>, and passing through the total number of iterable records by reference. This way the migration script didn't run out of memory, as queries were chunked down to 100 rows at a time. It also allows the use of a simple helper function to output the status to the console.

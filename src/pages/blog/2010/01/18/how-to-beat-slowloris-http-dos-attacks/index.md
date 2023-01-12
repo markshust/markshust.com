@@ -5,6 +5,8 @@ tags: ["apache"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I’ve recently been involved with a site that was experiencing a heavy level of <a href="http://ha.ckers.org/slowloris/" target="_blank">Slowloris</a> attacks. Slowloris is a DoS (Denial of Service) attack that was made with a very simple agenda – to shutdown websites with a very low-level attacking client. It seems to mainly affect Apache, the most popular web server in the world (newer web servers such as Lighttpd and nginx are unaffected). It has been recently talked about in a variety of magazines and publications such as <a href="http://www.linux-magazine.com/Issues/2009/106/APACHE-HTTPD/(kategorie)/0" target="_blank">Linux Magazine</a> and <a href="http://www.howtoforge.com/how-to-defend-slowloris-ddos-with-mod_qos-apache2-on-debian-lenny" target="_blank">HowToForge.com</a>.
 
 With various possible fixes given in those articles, I was unable to completely guard against the attack. While it seemed as though the Apache module <a href="http://www.zdziarski.com/projects/mod_evasive/" target="_blank">mod\_evasive</a> was the only thing partly helping the attacks, it was not a 100% fix to the problem. Migrating off Apache was not an option at this time, so I thought about it and came to the conclusion that I can have a script automatically restart Apache when the number of current open Apache processes increases past a set threshold. So, I created the following script and placed at `/etc/custom/anti_slowloris.sh`:

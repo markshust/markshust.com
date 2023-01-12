@@ -5,6 +5,8 @@ tags: ["magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Managing CMS content in Magento across environments can be difficult. Most of the time clients manage CMS pages and blocks through the admin. However, if you need to deploy an update tied to a specific code release, or released along with a certain code update, updating CMS content through the admin console after pushing out a code update is a really awful smell in your deployment process.
 
 Why is updating content through the admin after a code push a bad idea? For one, it requires manual intervention, which could lead to human error. Secondly, it requires time to implement after a code push. If your Magento site depends upon a certain CMS block to exist or be updated to a specific layout, it's possible your site will either error out or your site's layout will be borked until you update it.

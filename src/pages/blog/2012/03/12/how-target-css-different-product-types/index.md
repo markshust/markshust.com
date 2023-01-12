@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "css"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 To normally target a certain CSS specificity of a page in Magento, you would reference a class in the `<body>` tag (`.cms-index-index`, `.catalog-product-view`, etc.). However, there isn't a way to target the specificity of a certain product type.
 
 There is almost always more than one way to do something in Magento. One option would be to create a custom extension, which taps into Magento's process of creating a custom class name and outputting it onto the `<body>` html's class attribute. This option, however, would involve an experienced Magento programmer to create this extension.

@@ -5,6 +5,8 @@ tags: ["php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It's pretty common to see fully qualified names being used throughout code. A fully qualified name is a class name which begins with a separator. Let's look at an example using a PHP class:
 
 **Unqualified name:**

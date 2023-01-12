@@ -5,6 +5,8 @@ tags: ["magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 For some reason no one can explain, it appears that the event observer `checkout_cart_product_add_before` never existed in Magento (even though `checkout_cart_product_add_after` does). Say what?!??
 
 Anyways, it's fairly easy to go ahead and dispatch this event. Just add this to your module's config.xml to rewrite the checkout/cart model:

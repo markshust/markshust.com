@@ -5,6 +5,8 @@ tags: ["php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 After creating and configuring a new LAMP stack, there are times where the php mail() function will not work. This could cause a lot of headaches, but there are really only a few things to check to save yourself from a bunch of waterworks and lost time.
 
 - Make sure php-imap is installed. This is necessary for php to send mail

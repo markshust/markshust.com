@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "cli"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Magento had a great command line tool built into it's software build called 'pear' that was located in the root folder of Magento installations. Well... it's still there, it has just been renamed 'mage' and comes with different commands to update modules, the core, etc.
 
 Your first step in using 'mage' is to set the proper permissions to make it executable by the executing user. This can be done with chmod from the root of your Magento install:

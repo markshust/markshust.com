@@ -5,6 +5,8 @@ tags: ["docker"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 By default, Docker for Mac ships with the default filesystem being `aufs`. This is a fairly antiquated filesystem and is quite slow if you deal with lots of files and filesystem reads and writes. You can <a href="https://github.com/chriskuehl/docker-storage-benchmark" target="_blank">see the results of a filesystem benchmark to compare</a>.
 
 The easiest task to do to get better filesystem performance in Docker is to switch to the `overlay2` filesystem. This achieves better performance by optimizing how layers are created and managed.

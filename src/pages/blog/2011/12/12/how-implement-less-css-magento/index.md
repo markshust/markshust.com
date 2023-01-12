@@ -5,6 +5,8 @@ tags: ["css", "less", "magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 A while ago, I stumbled across <a href="http://lesscss.org/" target="_blank">LESS CSS</a>, a dynamic CSS processor which can greatly cleanse the amount of CSS in your website, and lead to generally more accessible cross-browser stylesheet conventions. LESS allows you to reuse your CSS snippets programmatically, and once you use it, you will never go back!
 
 I was recently wondering how to implement such a solution in a fresh Magento installation. The typical Magento projects that I have been involved with have a great amount of CSS in many different files, which leads to a big pile of unmanageable, unmaintainable bloat, and unfortunately this is commonplace in just about every Magento install. Implementing LESS CSS is very easy, if you keep it easy.

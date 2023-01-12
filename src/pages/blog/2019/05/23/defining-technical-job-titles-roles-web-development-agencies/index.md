@@ -5,6 +5,8 @@ tags: ["tech"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It seems every workplace defines job titles within their company differently. I wanted to discuss how these job titles relate to the world of web development agencies and how they are defined in differently sized companies.
 
 Each company has a different way of defining technical titles. I used to think titles were not in the least bit important, and there's some truth to that in small companies. However, they are definitely important when you are thinking about accepting a new position at a company as you want to be sure your new job responsibilities align with your skill set and desired salary expectations.

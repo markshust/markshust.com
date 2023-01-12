@@ -5,7 +5,9 @@ tags: ["dinghy", "docker"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-![Dinghy](using-docker-machine-os-x-dinghy.png)
+import { Image } from '@astrojs/image/components';
+
+<Image src={import('./using-docker-machine-os-x-dinghy.png')} alt="Dinghy" />
 
 > Note that this blog post was originally written by myself on Mage Inferno's blog, which no longer exists. Many old user comments have been lost, but this post won't be!
 

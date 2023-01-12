@@ -5,6 +5,8 @@ tags: ["magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 The Magento configuration layer appears to be simple: create a config variable, then assign it a value. Easy-peasy, right? Not so fast. Under the hood, it's actually fairly complex. Let's touch base on the different methods you can create, modify & manage config values. Each has it's drawbacks & benefits, and when to use each depends on your use-case.
 
 ## Create configuration with XML
@@ -54,7 +56,7 @@ You'll need to use this method to create configuration keys.
 
 After the config is set with XML, it can then be overridden with a database value. The `core_config_data` database table is used to store and retrieve config values.
 
-![core_config_data database table](core-config-data.png)
+<Image src={import('./core-config-data.png')} alt="core_config_data database table" />
 
 Within this table are "scope", "scope_id", "path" and "value" columns, which are used to set configuration values. Numerous records can exist for each configuration path for the different available scopes.
 
@@ -62,13 +64,13 @@ Within this table are "scope", "scope_id", "path" and "value" columns, which are
 
 For the above `website/base` example, we will reference the `store_website` database table and look for a row `WHERE code = 'base'`. This row references the website ID of `1`, which would be the value we can reference for our `scope_id`.
 
-![store_website database table](store-website.png)
+<Image src={import('./store-website.png')} alt="store_website database table" />
 
 This method is useful to override changes already made to the database.
 
 > Need a simple way to write code programmatically to do this? Check out the [MarkShust_SimpleData](https://github.com/markshust/magento2-module-simpledata) module, as I created it just for this scenario!
 > 
-> [![markshust/magento2-module-simpledata](markshust-simpledata.png)](https://github.com/markshust/magento2-module-simpledata)
+> [<Image src={import('./https://github.com/markshust/magento2-module-simpledata')} alt="markshust/magento2-module-simpledata](markshust-simpledata.png)" />
 
 ## Setting config values with environment variables
 
@@ -87,9 +89,9 @@ Let's use the "Unsecure Base URL" as an example, which is used by Magento to det
             ...
 ```
 
-The value for this URL is typically set when Magento is installed, and the value is stored in the database. If we query the `core_config_data` table for it's value translated to slashes, `web/unsecure/base_url`, we'll see the value of or storefront URL:
+The value for this URL is typically set when Magento is installed, and the value is stored in the database. If we query the `core_config_data` table for its value translated to slashes, `web/unsecure/base_url`, we'll see the value of or storefront URL:
 
-![web/unsecure/base_url database value](web-unsecure-base-url.png)
+<Image src={import('./web-unsecure-base-url.png')} alt="web/unsecure/base_url database value" />
 
 The value of our website here would typically be a production URL, such as `https://mywebsite.com/`. In staging environments however, this value will need to be different.
 

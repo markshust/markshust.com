@@ -5,6 +5,8 @@ tags: ["aws", "backups", "ec2", "s3"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Here is another hot topic that seems extremely confusing from the start, but is actually very easy to implement. Amazon Web Services EC2 seems to be the most fully-featured cloud-based web services on the internet. Amazon was the first major party to rollout a massive network of VM’s in the ‘cloud’ and remains to be the highest-respected service out there for Linux computing.
 
 Due to the way Amazon is setup using XEN vm software, if there was ever physical hard drive failure, an ‘instance’ would essentially vanish into thin air (all except ‘Volumes). Not good. There does lie great integration with S3 (Amazon’s Simple Storage) that enables you to backup your instance to S3 for easy retrieval in the even that the random occurence actually does happen.

@@ -5,6 +5,8 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I started freelance web development while I was in high school at the age of 15. A couple of years later, the guy I worked for urged me to learn PHP, but it sounded much too hard for me. So I remember taking a trip to a brick-and-morter Borders bookstore (the younger millenials will have no clue what I'm talking about), and remember looking at two different books; one on Perl, and one on PHP. I looked at both, and looking at a bunch of Greek, I was intimidated, left them on the bookshelf and walked out.
 
 A couple years went by, and I wound up at a mundane job doing "case shifting" for a teleradiologist firm. It involved remembering a list of doctors, their medical restrictions (medicaid & medicare), in which states they were licensed, and what their subspecialty was (knees, brains, wrist/ankles, etc.). I actually liked the job quite a bit, as it was something I became an expert in and allowed my mind to otherwise wonder. There was a sheet of paper called the "tally sheet" which we used to keep track of how many cases were sent to which doctor, by literally passing the sheet back and forth in our small office and "tallying" case load.
@@ -13,7 +15,7 @@ I always thought the tally sheet was obscene, and knew in the back of my mind th
 
 Not too long after, the itch got me, and it was the first major career shift I had: **I'm a developer** 💻. I've been down the rabbit hole since.
 
-![I've got mad computer skills](computer-skillz.jpg)
+<Image src={import('./computer-skillz.jpg')} alt="I've got mad computer skills" />
 
 Some time has passed, and I've been primarily a Magento developer for the last 8 years or so. Magento has taken me through a lot of ups & downs. It's a very complex framework to build, and has an extremely high learning curve. Working at agencies has been ok, but my role has been mainly to conduct code & architecture reviews, as well as to train and mentor other developers. While Magento training material has increased substantially since Magento 1 (the <a href="https://devdocs.magento.com" target="_blank">devdocs</a> are awesome!), there is a gap in the market:
 

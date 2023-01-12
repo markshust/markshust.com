@@ -5,6 +5,8 @@ tags: ["git", "github", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Recently a visitor to a Magento website reported an issue with checkout. After some research, it lead me to <a href="https://github.com/magento/magento2/issues/22112" target="_blank">issue 22112</a>, which has a <a href="https://github.com/magento/magento2/pull/23656" target="_blank">related pull request</a> which fixes the issue. If you notice the last comment on issue 22112, it is resolved and slated to be released in version 2.3.3. Unfortunately, the client is currently on 2.3.1, which leaves us in a precarious situation. Since Magento 2.3.3 will <a href="https://twitter.com/mattz_mg/status/1165987249009438721" target="_blank">most likely not be released until October</a> (it's August at the time of this writing), we need a workaround to get the changeset merged into our current codebase ASAP. Luckily, Git and patch files make this possible without too much effort.
 
 Our first step is to find the corresponding pull request for the patch we want to apply to our current store. As pointed out before, the web address for the desired pull request is available at <a href="https://github.com/magento/magento2/pull/23656" target="_blank">https://github.com/magento/magento2/pull/23656</a>.
@@ -27,13 +29,13 @@ and replace it with:
 
 `vendor/magento/module-checkout`
 
-![Find and replace with TextEdit](23656-find-replace-textedt.png)
+<Image src={import('./23656-find-replace-textedt.png')} alt="Find and replace with TextEdit" />
 
 You'll need to go through the changeset and update the filesystem references where appropriate.
 
 Once the file is updated and saved, commit it and Magento Cloud will automatically apply it on the next deployment. You can confirm the patch is applied by checking your deployment logs and looking for the log reference which applies the patch:
 
-![Magento Cloud deployment log for 23656.patch](23656-patch-log.png)
+<Image src={import('./23656-patch-log.png')} alt="Magento Cloud deployment log for 23656.patch" />
 
 If you aren't using Magento Cloud, you can <a href="https://devdocs.magento.com/guides/v2.3/cloud/project/project-patch.html" target="_blank">apply custom patches</a> directly to the codebase. The command to manually apply this patch is:
 

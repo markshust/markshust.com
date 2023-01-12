@@ -5,6 +5,8 @@ tags: ["backups", "magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 **UPDATE!** Code moved to bitbucket: <a href="https://bitbucket.org/markshust/syncdb/src" target="_blank">https://bitbucket.org/markshust/syncdb/src</a>
 
 Often times, you need to pull down an up-to-date version of Magento from your production server to your development or staging servers. This involves:

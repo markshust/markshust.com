@@ -5,6 +5,8 @@ tags: ["orocrm"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Being that I'm pretty heavily involved in Magento, I'm following OroCRM, the open-source content relationship management tool, created by the guys who were very actively involved in Magento's development (Yoav & Jary). I'm very excited about this piece of software, as there is very-much lacking an awesome PHP-based CRM software platform. It's also pretty neat that they released Oro Platform as well for developing all sorts of things (besides just CRM software piece).
 
 As this is a very new piece of software (just released on the date this article is published), there is very little documentation available. I looked for a write-up on installing it, but didn't find anything online. Now, there is a good README.md file after checking out the codebase, but if you are anything like me, you like web documentation! Let's get started.

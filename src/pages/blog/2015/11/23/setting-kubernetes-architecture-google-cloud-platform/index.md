@@ -5,6 +5,8 @@ tags: ["gcp", "kubernetes"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I needed a quick way to kick off some Docker containers, and wanted some experience working with Kubernetes. I've been playing around with Docker for some time now, and wanted to test out a real deployment to Google Cloud Platform. 
 
 ## Architecture Overview

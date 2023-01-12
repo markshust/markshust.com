@@ -5,6 +5,8 @@ tags: ["git", "github", "magento", "magento2", "php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 After updating Magento to 2.3.2, I noticed the builds failing for one of my projects in Magento Cloud after pushing code up for a deployment. After checking the logs, it appeared there was an error with a third-party module, in this case Firebear's <a href="https://firebearstudio.com/improved-configurable-products-for-magento-2.html" target="_blank">Improved Configurable Product</a> module:
 
 ```bash

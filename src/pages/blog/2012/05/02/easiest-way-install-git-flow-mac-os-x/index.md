@@ -5,6 +5,8 @@ tags: ["git"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've recently switched all of my git repositories to use something called git flow. Found this browsing around, and it's a WAY simpler development process than what I've been doing. Basically, it rebases, merges, creates and deletes branches for you.
 
 **Download and install GCC:**

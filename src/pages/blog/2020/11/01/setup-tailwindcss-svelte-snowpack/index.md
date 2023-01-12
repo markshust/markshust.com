@@ -5,6 +5,8 @@ tags: ["tailwindcss", "svelte", "snowpack"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It seemed fairly easy to install TailwindCSS on a fresh Svelte install that was using the Snowpack builder, but following a few different online tutorials lead me down a few black holes.
 
 Luckily, it is quite easy if you keep Postfix and any other build tools out of the process. Here is a very simple way to implement TailwindCSS into a Svelte install that uses Snowpack as the builder.

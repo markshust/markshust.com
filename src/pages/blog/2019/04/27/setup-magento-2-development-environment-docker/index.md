@@ -5,6 +5,8 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It can be very difficult to get a Magento 2 development environment setup quickly & easily. Back in the middle of 2015, I was trying to getting a jump-start on Magento 2 module development, but had a horribly hard time just getting Magento installed (these were the pre-2.0 GM days). I was passively watching a project that was new at the time called Docker, but I really wasn't familiar with it. It didn't matter though; I loved the concepts around containerization, and decided this was the path I was moving forward on.
 
 I seriously locked myself in my office for almost a couple months (I was a freelancer working from home at the time, so I was able to do this). I came out to eat, drink and sleep, but that is about it. A few weeks in, I managed to see the home page of Magento 2 (albeit with a ton of JavaScript errors). A week later, I managed to make all of the errors go away, but had some workflow issues with volumes. After a total of six weeks... I was able to develop on Magento 2!

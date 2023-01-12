@@ -5,6 +5,8 @@ tags: ["drupal", "gatsby", "reactjs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 It's been almost ten years since [my first blog post](/2009/09/21/preventing-injection-attacks-and-securing-your-website/). I needed a simple platform to write blog posts, and was working with [Drupal](https://www.drupal.org/) at the time. Pretty much everyone was using [Wordpress](https://wordpress.com/), but I wasn't a fan. I wanted to use something I was familiar with that can be easily customized.
 
 Fast-forward ten years, and the space has dramatically changed. I've always been a fan of the simplest solution to implement, so naturally static-site generators have been drawing me in lately, specifically [Gatsby](https://www.gatsbyjs.org/). For much of the same reasons I launched on Drupal are the same reasons I decided to make the switch to Gatsby.

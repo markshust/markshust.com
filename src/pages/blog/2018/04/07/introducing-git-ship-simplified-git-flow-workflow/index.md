@@ -5,6 +5,8 @@ tags: ["git"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Ever since I started using git, I was enamored by the nice streamlined process of [git flow](http://nvie.com/posts/a-successful-git-branching-model/). It proved to be a very reliable workflow process for managing features, releases and fixes within a team environment, and added some much-needed structure to git.
 
 Fast-forward 8 years, and it leaves much to be desired. At times I found myself endlessly merging branches, sometimes forgetting to create the numerous pull requests into different branches for hot fixes, and also wondering why we needed a develop branch at all. There must be a better way?
@@ -13,7 +15,7 @@ I was completing work on a [Screencast Course for Docker](https://egghead.io/cou
 
 Let's start with looking at git flow. If you have been using git for any amount of time on a team larger than zero, you have probably encountered this well thought-out workflow.
 
-![git flow workflow](git-model@2x.png)
+<Image src={import('./git-model@2x.png')} alt="git flow workflow" />
 
 However, you will see that there is merging everywhere; merging a feature branch into develop, merging develop into a release branch, and merging a release branch into develop. Oh, and I didn't even touch base with hotfixes; a simple hotfix requires sending pull requests into both develop and master branches, and given the above diagram, is never actually merged into a release branch. (Could it become lost along the way? Yes, yes it can.)
 
@@ -21,7 +23,7 @@ I started to question everything about this process. It appeared `master` branch
 
 Meet `git ship`, a heavily simplified version of `git flow`:
 
-![diagram of git ship](gitship.png)
+<Image src={import('./gitship.png')} alt="diagram of git ship" />
 
 **Key takeaways:**
 

@@ -5,6 +5,8 @@ tags: ["controllers", "magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I would like to start some short segments on how Magento works. There seems to be very little correct information on the web, and given I just came back from <a href="http://www.magentocommerce.com/services/training" target="_blank">Magento U</a>, I figure I can start spreading all of the good news.
 
 Magento makes extensive use of XML. I'm sure all of you developers are fully aware of that by now, and some are completely loss in the mess of XML. In actuality, it's not a mess at all, but a very well designed architecture that believe it or not, you will learn to love after you get involved in module development. The purpose of the XML layer is to provide a much easier ability to override and extend the default Magento classes, and provide some structure to the thousands of files that exist in a default Magento install.

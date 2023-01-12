@@ -6,6 +6,8 @@ canonical: "https://www.twilio.com/blog/real-time-sms-order-notifications-magent
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Managing your own storefront and competing with Amazon can be difficult, especially due to their ability to automate and process orders much faster than their competition. While you may not be able to setup an expensive <a href="https://www.formaxprinting.com/blog/2010/06/what-is-pick-and-pack-fulfillment/" target="_blank">pick and pack fulfillment</a> system & process, there are ways in which you can implement a solution much more quickly and affordably. One of those ways is to implement the Twilio API into your <a href="https://magento.com/" target="_blank">Magento</a> storefront for real-time SMS order notifications.
 
 The <a href="https://www.twilio.com/docs/libraries/php" target="_blank">Twilio PHP Helper Library</a> makes it relatively simple & easy to integrate real-time notifications into your Magento store. In this tutorial, we will walk through all of the steps needed to integrate Twilio with Magento so you can pick & pack incoming orders as soon as they come in.
@@ -304,7 +306,7 @@ class SendOrderNotification implements ObserverInterface
 
 Now place an order through your Magento instance. You should receive an SMS message resembling the following:
 
-![SMS Result](sms-result.png)
+<Image src={import('./sms-result.png')} alt="SMS Result" />
 
 ## Debugging Common Errors
 

@@ -5,6 +5,8 @@ tags: ["bootstrap", "laravel"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Laravel 5.5 just recently got released, and ships with the current stable version of Bootstrap, which is version 3. However, Bootstrap 4 recently hit beta, and should now be solid enough to start development with, especially for new Laravel projects that are just now getting started.
 
 Bootstrap 4 can be easily enabled following these steps. First, remove the Laravel-supplied version of bootstrap-sass from npm:

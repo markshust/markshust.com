@@ -5,11 +5,13 @@ tags: ["docker", "express", "mongodb", "nodejs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've been working on a full-blown course for <a href="https://egghead.io" target="_blank">Egghead</a> the last few months and it has finally been published!
 
 I'd highly recommend this course as it covers each of the twelve-factors separately, and how they relate to Node.js and Docker.
 
-[![12 Factor Node.js App with Docker](EGH_NodeDocker_1000.png)](https://egghead.io/courses/build-a-twelve-factor-node-js-app-with-docker)
+[<Image src={import('./https://egghead.io/courses/build-a-twelve-factor-node-js-app-with-docker')} alt="12 Factor Node.js App with Docker](EGH_NodeDocker_1000.png)" />
 
 [Build a Twelve-Factor Node.js App with Docker - Click Here to watch on Egghead.io]((https://egghead.io/courses/build-a-twelve-factor-node-js-app-with-docker))
 

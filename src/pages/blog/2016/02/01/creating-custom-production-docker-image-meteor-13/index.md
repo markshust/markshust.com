@@ -5,6 +5,8 @@ tags: ["docker", "meteor"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Meteor 1.3 introduces custom `package.json` support, which allows you to use custom NPM packages within your Meteor app. This is great, because up to Meteor 1.2 you needed to use oddly formatted "NPM wrapper" packages.
 
 This setup does include a slightly different build process though, as we need to install these custom NPM packages within our production Meteor app.

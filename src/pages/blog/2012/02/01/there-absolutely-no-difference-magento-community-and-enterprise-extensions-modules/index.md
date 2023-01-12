@@ -5,6 +5,8 @@ tags: ["magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Let me start off my saying that I am a Magento Enterprise Developer, and that I work with both Magento Community and Enterprise editions every day. I also sell customized Magento extensions.
 
 Do you notice something about my modules? As in, the option to purchase a Community or Enterprise edition? There isn't one. Why, you may ask? Because there is a **zero difference** in core functionality between a Community "version" and an Enterprise "version" of an extension / module. Yes, I said it.

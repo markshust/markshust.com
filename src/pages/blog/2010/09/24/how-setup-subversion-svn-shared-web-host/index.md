@@ -5,6 +5,8 @@ tags: ["svn"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Well, if you aren’t privileged enough to host with my hosting company, Insider Host (shameless plug), then you may stumble upon a shared web host that doesn’t have Subversion installed (shame on them! unless they are using Git…). That doesn’t mean you can’t install SVN if you have SSH/shell access.
 
 There are some write-up’s that are correct online, but they are all super-dated (over a couple years old). While Subversion 1.6.X is in fact released, at the time of this writing Subversion 1.4.2 is still the main supported version on major package repositories. Since you will run into mighty trouble eventually trying to mix commits from different versions of SVN, this writing will focus on getting everything configured for Subversion 1.4.2.

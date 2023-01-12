@@ -5,6 +5,8 @@ tags: ["javascript"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 *JavaScript Fatigue* is a real thing, and there must be rules & processes in place to help prevent it from happening to you. These are my thoughts.
 
 ## Learn, don't apply

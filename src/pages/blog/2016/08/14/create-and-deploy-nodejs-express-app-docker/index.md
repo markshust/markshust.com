@@ -5,6 +5,8 @@ tags: ["docker", "express", "nodejs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I'll show you a stupid fast and simple way to create an express app with NodeJS, then deploy it with Docker. All you need is a simple text editor.
 
 ## Install NodeJS & Docker

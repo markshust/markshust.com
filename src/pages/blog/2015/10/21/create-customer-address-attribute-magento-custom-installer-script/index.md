@@ -5,6 +5,8 @@ tags: ["magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Recently, I needed to create a custom customer address attribute, and needed a real simple way to do it. There are a lot of bloated examples online, but this is actually really easy.</p><p>First, create your module definition file. Note that we're putting our module in the local code pool because it's specific to just our one store.
 
 <div class="gatsby-code-title">app/etc/modules/Foo_Bar.xml</div>

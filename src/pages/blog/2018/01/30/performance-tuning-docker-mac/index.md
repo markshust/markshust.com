@@ -5,6 +5,8 @@ tags: ["docker"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 There are many various improvements you can make to Docker for Mac to fine-tune performance, especially when working with large application filesystems such as those with Magento or Zend Framework.
 
 ## Step 1: Computer, Cores & RAM

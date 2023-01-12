@@ -5,6 +5,8 @@ tags: ["bash", "linux", "ubuntu"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 We are all eagerly awaiting the release of ChromeOS in November. But why wait? You can easily hack Ubuntu 10.04 into a minified (yes, it’s actually a stripped down further) version of ChromeOS. Sure, it won’t have all of the built-in security and other features that may be absolutely necessary for a production-level install, but it will give you sub-5 second boot times, while automatically logging you in and presenting you with the fabulous Chrome window directly after boot.
 
 How, you may ask? It’s fairly simple to create a minimal install of Ubuntu, then modify the bootstrapping process to make it all yours – I’ll show you how.

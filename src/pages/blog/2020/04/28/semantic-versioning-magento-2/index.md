@@ -5,6 +5,8 @@ tags: ["magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Knowing how Magento handles versioning is important for compatibility reasons, so you know if your code is expected to function in new versions.
 
 Magento modules follow semantic versioning (also known as SemVer) to keep track of compatibility states. Semantic versioning is usually thought of as `MAJOR`.`MINOR`.`PATCH`, however a much better way to think of SemVer is `BREAKING`.`FEATURE`.`FIX`.

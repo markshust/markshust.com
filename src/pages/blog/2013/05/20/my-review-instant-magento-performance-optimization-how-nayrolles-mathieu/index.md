@@ -5,6 +5,8 @@ tags: ["magento", "magento1", "php", "ioncube"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 A few weeks ago, I was contacted by Packt Publishing to write a review on a new performance eBook that was available titled <a href="http://www.packtpub.com/magento-performance-optimization-how-to/book" target="_blank">**Instant Magento Performance Optimization How-To** written by Nayrolles Mathieu</a>. Since I always love to play devil's advocate and try my best to criticize everything (my guilty pleasure ;), I gladly accepted the challenge.
 
 ## About the Author
@@ -15,7 +17,7 @@ I haven't heard of Nayrolles, but I read the About the Author page. While he loo
 
 I started through the Table of Contents, and I was sort of immediately thrown back at the subject matter:
 
-![Table of Contents](table-of-contents.gif)
+<Image src={import('./table-of-contents.gif')} alt="Table of Contents" />
 
 Removing PayPal's logo -- a must know. This is really a page in this book? Storing your sessions in the database -- I'm hoping this is telling you to NOT do this, so giving them the benefit of the doubt here. Compressing your code with gzip - is that really *expert* material? Also, do I see Clustering? Is that mentioned in the same breath as Removing PayPal's Logo?
 

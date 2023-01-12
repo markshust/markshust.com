@@ -5,6 +5,8 @@ tags: ["cms", "layout", "magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 To disable a static block globally, go to CMS > Static Blocks > Select One > set Status = Disabled > Save
 
 To control the disable of static blocks on various pages, to go CMS > Widgets > Select One > Reference "Layout Updates" section

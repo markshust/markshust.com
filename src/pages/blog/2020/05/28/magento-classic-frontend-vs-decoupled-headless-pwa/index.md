@@ -5,6 +5,8 @@ tags: ["magento", "magento2", "pwa"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've been hearing that PWA's ([progressive web apps](https://en.wikipedia.org/wiki/Progressive_web_application)) are going to be "the future of the web" for quite a while now. The beating of the drum has been going on for a few years now, each year being "the year" that PWA's will win out.
 
 While PWA usage has been slowly increasing since its inception, it's been been a far cry from the death knell of "classic" web apps which we have been promised. The fact is that paradigm shifts in computing usually take many years, if not decades to catch on, and this is no exception.
@@ -13,13 +15,13 @@ A while back, Magento Inc. mentioned that with the release of their [PWA Studio]
 
 A few days back [I ran a poll on Twitter](https://twitter.com/markshust/status/1264193378960519169) asking what everyone thought about those rumblings, and here were the results:
 
-![Classic vs PWA poll](tweet-poll.jpg)
+<Image src={import('./tweet-poll.jpg')} alt="Classic vs PWA poll" />
 
 The results were about what I expected them to be. Twitter wouldn't let me vote in my own poll, but if I had to vote, I'd be between the 🤔 and 😭 emojis.
 
 I followed up this poll with a [thread of why I think it would be a horrible idea for Adobe/Magento to do this](https://twitter.com/markshust/status/1264559797313122305), and what the ideal approach would look like, capping it off with:
 
-![Poll thread](tweet-thread.jpg)
+<Image src={import('./tweet-thread.jpg')} alt="Poll thread" />
 
 The poll was without a doubt at least 80% bias towards developers, as that's who follows me on Twitter. The [Pareto principle](https://en.wikipedia.org/wiki/Pareto_principle) applies here, as 77% of voters were either 🙂 or 🤔. However, if you ask a merchant for their feedback, 80% of them would almost assuredly vote for either the 😭 or 🤯 emoji.
 
@@ -31,7 +33,7 @@ I know there will be those who recommend [Vue Storefront](https://www.vuestorefr
 
 Thankfully, [Ben Marks (Adobe's Magento Evangelist) is in agreement](https://twitter.com/BenMarks/status/1264574294451015680) with a longer deprecation cycle:
 
-![Ben Marks tweet](tweet-reply.jpg)
+<Image src={import('./tweet-reply.jpg')} alt="Ben Marks tweet" />
 
 I do think there will be a time & place when PWA Studio will overtake the existing frontend, as tech tends to majorly roll-over every 5-10 years. However, I think it could still be quite a while longer until this happens within the Magento ecosystem.
 

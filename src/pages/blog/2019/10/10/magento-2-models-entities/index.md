@@ -5,9 +5,11 @@ tags: ["beginningmagento", "magento", "magento2", "php"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 A model in Magento isn't this type of model:
 
-![Ben Stiller really really really ridiculously good-looking](goodlooking.gif)
+<Image src={import('./goodlooking.gif')} alt="Ben Stiller really really really ridiculously good-looking" />
 
 While they aren't really really really ridiculously good-looking, a model is a basic container that represents any entity or object.
 
@@ -58,4 +60,4 @@ I just introduced another quick new concept -- you can pass an array of properti
 
 I wanted this post to keep going, but I'm awfully hungry now. Until next week!
 
-![Mark eating a blimp in Vegas](blimp.jpg)
+<Image src={import('./blimp.jpg')} alt="Mark eating a blimp in Vegas" />

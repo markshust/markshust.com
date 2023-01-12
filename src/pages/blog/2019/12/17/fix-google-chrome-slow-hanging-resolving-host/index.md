@@ -5,11 +5,13 @@ tags: ["chrome", "docker"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've been using Firefox for a while now because I was experiencing issues related to slowness of Google Chrome, seemingly relating to Docker. However due to bugs with a specific SaaS app I use, I needed to switch back to Chrome for the time being.
 
 After working within Chrome for a few days, I was routinely receiving the dreaded "Resolving host..." message for quite a few moments, along with painstakingly slow load times:
 
-![Resolving Host...](resolving-host.png)
+<Image src={import('./resolving-host.png')} alt="Resolving Host..." />
 
 I dug around the internet, reading through countless articles of flushing the DNS cache, tweaking Google Chrome settings, trying out new DNS servers, and all sorts of other things. The issue seemed to be directly related to Google Chrome, because, well, Firefox worked just fine, and pings from Terminal to my local domain name were resolving.
 

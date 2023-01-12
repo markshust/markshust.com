@@ -5,6 +5,8 @@ tags: ["magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Magento implements CSRF (Cross-Site Request Forgery) tokens on form POST submissions. This is designed to prevent unwanted actions from being executed while a user is currently authenticated.
 
 In certain specific situations, you will need to disable CSRF for specific routes. For example, I recently stumbled across a situation when implementing Cybersource Secure Acceptance as a payment method using the Silent Direct Post payment processing implementation. The module had not yet been updated for Magento 2.3, and when submitting a credit card order, Cybersource would post back to Magento and the order submission would fail due to an "Invalid Form Key" error response, even though the Cybersource side of things was successful.

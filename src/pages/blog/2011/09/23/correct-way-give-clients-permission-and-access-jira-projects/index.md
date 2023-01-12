@@ -5,6 +5,8 @@ tags: ["jira", "pm"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Jira is a totally wonderful piece of project management software, especially when coupled with the GreenHopper extension which greatly assists in Agile Development. That said, it's totally meant for programmers - so much so, that it requires a programmer to setup client access to specific projects. Jira's own documentation is pretty weak when it comes to setting up clients with access to one (or more) project.
 
 If you take it from a very high level though, it is very simple to set this up. First, you want to create a new Project Role by going to Administration > Users, Groups & Roles > Project Role Browser, then under Add Project Role: type "Clients" in the Name field, type "A project role that represents clients in a project" in the Description field, then click Add Project Role. This is the role that is defined for clients in Jira.</p><p>After a role is defined, you need to edit the Permission Scheme to accommodate the new Client role by going to Administration > Schemes > Permission Schemes. Click the Permissions link next to Default Permission Scheme in the Operations column. Click the Grant Permission link near the top of the page, select the Permissions you wish to grant to client users, then select Clients from the Project Role select dropdown menu and click Add. You then want to repeat the process for the Project Role: Developers. The Permissions that you typically want to setup with this are:

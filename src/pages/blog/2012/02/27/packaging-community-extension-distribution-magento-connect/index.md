@@ -5,11 +5,13 @@ tags: ["magento", "magento1"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 While packaging a Magento extension is very easy, the <a href="http://www.magentocommerce.com/wiki/7_-_magento_connect/packaging_a_magento_extension_in_1.5" target="_blank">1.5 documentation</a> is an epic failure. It is very poorly written, and doesn't show you exactly what to do, what the dropdowns actually mean, or even what to do after you package the extension. There are <a href="http://www.magentocommerce.com/wiki/7_-_magento_connect/creating_magento_connect_extension_package" target="_blank">other documentation pages</a>, but they are bloated and confusing. Hopefully I can clear up some of the confusion that is out there and write up some better documentation.</p><p>I will show you an example of packaging my <a href="http://www.magentocommerce.com/magento-connect/enterprise-fallback-7091.html" target="_blank">Enterprise Fallback</a> module. First, go to System &gt; Magento Connect &gt; Package Extensions.
 
 ## Package Info
 
-![Package Info](package-info.png)
+<Image src={import('./package-info.png')} alt="Package Info" />
 
 - **Name:** Namespace_Module
 - **Channel:** community
@@ -21,7 +23,7 @@ While packaging a Magento extension is very easy, the <a href="http://www.magent
 
 ## Release Info
 
-![Release Info](release-info.png)
+<Image src={import('./release-info.png')} alt="Release Info" />
 
 - **Release Version:** 1.0.0 (or other version number)
 - **Release Stability:** Stable (unless otherwise specified)
@@ -29,7 +31,7 @@ While packaging a Magento extension is very easy, the <a href="http://www.magent
 
 ## Authors
 
-![Authors](authors.png)
+<Image src={import('./authors.png')} alt="Authors" />
 
 - **Name:** First &amp; Last Name
 - **User:** Your Username from Magento Connect
@@ -37,7 +39,7 @@ While packaging a Magento extension is very easy, the <a href="http://www.magent
 
 ## Dependencies
 
-![Dependencies](dependencies.png)
+<Image src={import('./dependencies.png')} alt="Dependencies" />
 
 - **PHP:** Set Minimum to 5.2.0, and Maximum to 6.0.0
 - **Packages:** Usually not needed, but add if necessary
@@ -45,7 +47,7 @@ While packaging a Magento extension is very easy, the <a href="http://www.magent
 
 ## Contents
 
-![Contents](contents.png)
+<Image src={import('./contents.png')} alt="Contents" />
 
 - **Target**
 - **Magento Local module file:** app/code/local
@@ -71,7 +73,7 @@ While packaging a Magento extension is very easy, the <a href="http://www.magent
 
 ## Load Local Package
 
-![Load Local Package](load-local-package.png)
+<Image src={import('./load-local-package.png')} alt="Load Local Package" />
 
 This section loads a package that has been previously saved/created with this process.
 

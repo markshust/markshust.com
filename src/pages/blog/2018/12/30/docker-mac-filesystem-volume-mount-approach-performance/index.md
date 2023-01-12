@@ -5,6 +5,8 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 I've written blogs in the past on how to improve Docker filesystem mounting performance, including <a href="https://markshust.com/2017/03/02/making-docker-mac-faster-overlay2-filesystem">using the overlay2 filesystem</a> and <a href="https://markshust.com/2018/01/30/performance-tuning-docker-mac">performance tuning Docker for Mac</a>. While they have drastically increased filesystem throughput and performance, none of them have been a silver bullet in truly solving filesystem performance issues with Docker for Mac.
 
 The single biggest performance improvement Docker for Mac has made in the last couple years is adding the <a href="https://docs.docker.com/docker-for-mac/osxfs-caching/#delegated" target="_blank">delegated flag for mounting filesystems</a>. The "weak set of guarantees" noted by Docker is really quite sufficient, as there are really no noticeable changes between the default and delegated volume mount types. Working with open source software with over one hundred thousand lines of code (~Magento), I've noticed no issues by choosing to run this type of volume mount.

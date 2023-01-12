@@ -5,6 +5,8 @@ tags: ["meteor", "mobx", "reactjs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Mobx is a really simple state manager that can be used really nicely with React, when you don't need the complexity of a Redux implementation.
 
 Using Mobx is pretty straight-forward, however their getting started documentation uses `stage-0` class properties, which are currently [not supported with Meteor 1.3](https://github.com/meteor/meteor/issues/6096). The simple fix is to use ES6 formatting.

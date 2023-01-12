@@ -5,6 +5,8 @@ tags: ["aws", "heroku", "magento", "magento1", "rds"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Heroku is a very powerful application deployment system that was initially created for Ruby on Rails apps. But, did you know that Heroku quietly released support for PHP 5? Well, they did, and I will tell you how to deploy Magento to Heroku using Git and Amazon RDS.
 
 Your first step is to unzip your fresh Magento install and get it on git.

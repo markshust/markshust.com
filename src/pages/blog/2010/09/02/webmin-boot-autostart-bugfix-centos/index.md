@@ -5,6 +5,8 @@ tags: ["centos", "linux"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Webmin not autostarting on boot? Sometime over the last year or so, for some reason Webmin stopped starting after a reboot. I’ve always done a manual restart with a:
 
 ```bash

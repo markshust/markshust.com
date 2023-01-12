@@ -5,6 +5,8 @@ tags: ["aws", "elb", "ssl"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 Amazon Web Services (AWS) Elastic Load Balancing (ELB) is a great service that allows you to scale your AWS-based servers very easily. However, setting up SSL within an ELB is a bit tricky if you've never done it before. You can use just about any computer to do this, but if you have a web server with OpenSSL and some command line experience, that will make things easy.
 
 ## Generate a Private Key and Certificate Signing Request (CSR)

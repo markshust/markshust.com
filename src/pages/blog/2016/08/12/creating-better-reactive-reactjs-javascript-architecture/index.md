@@ -5,6 +5,8 @@ tags: ["javascript", "mobx", "reactjs"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from '@astrojs/image/components';
+
 After working through a few ReactJS JavaScript projects based in Meteor, what the ecosystem lacks is a really good architecture that will grow with you. Not only should it be adaptable and somewhat future-proof in a space that seems to be ever-changing at a rapid pace, but it lacks having an established organizational paradigm present, specifically when dealing with reactive, single-page applications.
 
 I'd like to detail the layout and structure of a project I'm currently working on. It aims to have a formal bootstrap process, a modularized approach, and a "go-to" method of creating new code without expanding additional mental thought. A lot of these ideas stem from the <a href="https://kadirahq.github.io/mantra/" target="_blank">Mantra</a> project, but the thoughts are universal and can be applied to any JavaScript project. The idea is to use that as a base for explaining the below concepts at a higher-level of detail.
