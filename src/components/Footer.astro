@@ -1,9 +1,16 @@
 ---
 const today = new Date();
+import HeaderLink from './HeaderLink.astro';
 ---
 
 <footer>
-	&copy; {today.getFullYear()} YOUR NAME HERE. All rights reserved.
+	<div>&copy; 1985-{today.getFullYear()} Mark Shust</div>
+	<nav>
+		<HeaderLink href="https://m.academy" target="_blank">M.academy</HeaderLink>
+		<HeaderLink href="https://github.com/markshust" target="_blank">GitHub</HeaderLink>
+		<HeaderLink href="https://twitter.com/MarkShust" target="_blank">Twitter</HeaderLink>
+		<HeaderLink href="https://linkedin.com/in/markshust/" target="_blank">LinkedIn</HeaderLink>
+    </nav>
 </footer>
 <style>
 	footer {
