@@ -4,10 +4,11 @@ import HeaderLink from './HeaderLink.astro';
 ---
 
 <footer>
-	<div>&copy; 1985-{today.getFullYear()} Mark Shust</div>
+	<div class="copyright">&copy; 1985-{today.getFullYear()} Mark Shust</div>
 	<nav>
 		<HeaderLink href="https://m.academy" target="_blank">M.academy</HeaderLink>
 		<HeaderLink href="https://github.com/markshust" target="_blank">GitHub</HeaderLink>
+		<HeaderLink href="https://youtube.com/markshust" target="_blank">YouTube</HeaderLink>
 		<HeaderLink href="https://twitter.com/MarkShust" target="_blank">Twitter</HeaderLink>
 		<HeaderLink href="https://linkedin.com/in/markshust/" target="_blank">LinkedIn</HeaderLink>
     </nav>
@@ -17,4 +18,7 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 25px;
 		text-align: center;
 	}
+    .copyright {
+        margin-bottom: 20px;
+    }
 </style>

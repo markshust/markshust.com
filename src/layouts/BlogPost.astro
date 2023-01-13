@@ -13,13 +13,13 @@ export interface Props {
 const {
 	content: { title, description, url },
 } = Astro.props;
-const [null0, null1, year, month, day] = url.split('/');
+const [null1, year, month, day] = url.split('/');
 const pubDate = year + '-' + month + '-' + day;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title + " | Mark Shust"} description={description} />
 		<style>
 			.title {
 				font-size: 2em;
@@ -51,6 +51,7 @@ const pubDate = year + '-' + month + '-' + day;
                 </time>
 				<hr />
 				<slot />
+				<hr />
 			</article>
 		</main>
 		<Footer />

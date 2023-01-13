@@ -1,7 +1,7 @@
 ---
 layout: "../layouts/BlogPost.astro"
-title: "About Me"
-description: "Lorem ipsum dolor sit amet"
+title: "About Mark Shust"
+description: "About Mark Shust, a Magento teacher located in Cleveland, Ohio"
 ---
 
 I have been working with PHP and eCommerce for over 20 years, with a specific emphasis on the Magento platform for the past decade. Having extensive experience with the LAMP stack, I've worked my way up from an entry-level programmer, to a solution architect, to running my own business. Over the years, I was able to achieve multiple certifications from both Zend and Adobe as a certified developer. I've been a presenter and have spoken at numerous Magento conferences like Magento Imagine and Meet Magento, and am a big proponent of using the platform in accordance with best practices.

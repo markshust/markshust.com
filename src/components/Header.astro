@@ -1,9 +1,14 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../config';
+import { Image } from '@astrojs/image/components';
+import avatar from './markshust-avatar.png';
 ---
 
 <header>
+    <HeaderLink href="/" class="avatar">
+        <Image src={avatar} width={64} height={64} alt="Mark Shust"/>
+    </Header>
 	<h2>
 		{SITE_TITLE}
 	</h2>
@@ -11,7 +16,7 @@ import { SITE_TITLE } from '../config';
 		<HeaderLink href="/">Home</HeaderLink>
 		<HeaderLink href="/blog">Blog</HeaderLink>
 		<HeaderLink href="/about">About</HeaderLink>
-		<HeaderLink href="mailto:mark@shust.com">Contact</HeaderLink>
+		<HeaderLink href="mailto:mark@shust.com" target="_blank">Contact</HeaderLink>
 	</nav>
 </header>
 <style>
@@ -20,5 +25,9 @@ import { SITE_TITLE } from '../config';
 	}
 	h2 {
 		margin: 0.5em 0;
+	}
+	.avatar {
+	    float: left;
+	    padding: 0 20px;
 	}
 </style>

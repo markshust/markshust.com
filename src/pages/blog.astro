@@ -5,9 +5,9 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob('./blog/**/*.{md,mdx}'))
+const posts = (await Astro.glob('./*/**/*.{md,mdx}'))
     .map(post => {
-      const [null0, null1, year, month, day] = post.url.split('/');
+      const [null1, year, month, day] = post.url.split('/');
       return {
         ...post,
         pubDate: year + '-' + month + '-' + day
@@ -20,7 +20,7 @@ const posts = (await Astro.glob('./blog/**/*.{md,mdx}'))
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title="Mark Shust's Blog about Magento, PHP, Docker and more" description={SITE_DESCRIPTION} />
 		<style>
 			ul {
 				list-style-type: none;
