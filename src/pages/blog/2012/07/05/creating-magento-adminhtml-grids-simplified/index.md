@@ -5,13 +5,11 @@ tags: ["magento", "magento1", "xml"]
 layout: "../../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
-
 As with many coding projects with Magento, it is *very* easy to get frustrated, even with the smallest of tasks. Well, Adminhtml Grids in Magento aren't too much fun, even for the experienced programmer. Lacking quality tutorial posts on Google as well, I thought it was worthwhile to write up a constructed tutorial on how to create these Adminhtml Grids, in the most simplified manner possible.
 
 **Note:** This article isn't for the faint of heart -- this is one of the more confusing Magento topics. If you find yourself not getting anywhere, please go back through all of the comments in the XML files below and make sure they all match appropriately to your module.
 
-## Setup the XML
+## Set up the XML
 
 Let's go ahead and get started by creating your base module definition file and skeleton structure.
 
@@ -285,7 +283,7 @@ class Foo_Bar_Block_Adminhtml_Baz extends Mage_Adminhtml_Block_Widget_Grid_Conta
 }
 ```
 
-After the grid container is setup, we create the class housing our actual grid code, which is almost at the same place as the container, just a directory deeper, and with the file named `Grid.php`, and extending `Mage_Adminhtml_Block_Widget_Grid`.
+After the grid container is set up, we create the class housing our actual grid code, which is almost at the same place as the container, just a directory deeper, and with the file named `Grid.php`, and extending `Mage_Adminhtml_Block_Widget_Grid`.
 
 <div class="gatsby-code-title">app/code/community/Foo/Bar/Block/Adminhtml/Baz/Grid.php</div>
 
@@ -566,3 +564,5 @@ class Foo_Bar_Adminhtml_BazController extends Mage_Adminhtml_Controller_Action
     }
 }
 ```
+
+Test

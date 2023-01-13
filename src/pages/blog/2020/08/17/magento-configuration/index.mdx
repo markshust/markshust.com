@@ -7,7 +7,7 @@ layout: "../../../../../../layouts/BlogPost.astro"
 
 import { Image } from '@astrojs/image/components';
 
-The Magento configuration layer appears to be simple: create a config variable, then assign it a value. Easy-peasy, right? Not so fast. Under the hood, it's actually fairly complex. Let's touch base on the different methods you can create, modify & manage config values. Each has it's drawbacks & benefits, and when to use each depends on your use-case.
+The Magento configuration layer appears to be simple: create a config variable, then assign it a value. Easy-peasy, right? Not so fast. Under the hood, it's actually fairly complex. Let's touch base on the different methods you can create, modify & manage config values. Each has its drawbacks & benefits, and when to use each depends on your use-case.
 
 ## Create configuration with XML
 
@@ -69,8 +69,6 @@ For the above `website/base` example, we will reference the `store_website` data
 This method is useful to override changes already made to the database.
 
 > Need a simple way to write code programmatically to do this? Check out the [MarkShust_SimpleData](https://github.com/markshust/magento2-module-simpledata) module, as I created it just for this scenario!
-> 
-> [<Image src={import('./https://github.com/markshust/magento2-module-simpledata')} alt="markshust/magento2-module-simpledata](markshust-simpledata.png)" />
 
 ## Setting config values with environment variables
 
