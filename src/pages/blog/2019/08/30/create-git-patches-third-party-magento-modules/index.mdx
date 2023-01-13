@@ -30,94 +30,6 @@ After updating Magento to 2.3.2, I noticed the builds failing for one of my proj
     W: 
     [2019-08-29 14:27:40] CRITICAL: 
       Compilation was started.
-      %message% 0/7 [>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]   0% < 1 sec 76.5 MiB
-      %message% 0/7 [>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]   0% < 1 sec 76.5 MiB
-      Proxies code generation... 0/7 [>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]   0% < 1 sec 76.5 MiB
-      Proxies code generation... 1/7 [===>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]  14% 1 sec 82.5 MiB
-      Repositories code generation... 1/7 [===>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]  14% 1 sec 82.5 MiB
       PHP Fatal error:  Declaration of Firebear\ConfigurableProducts\Block\Product\View\Type\Bundle\Type\Select::getValuesHtml() must be compatible with Magento\Catalog\Block\Product\View\Options\Type\Select::getValuesHtml(): string in /app/vendor/firebear/configurableproducts/Block/Product/View/Type/Bundle/Type/Select.php on line 97
     [2019-08-29 14:27:40] CRITICAL: Command php ./bin/magento setup:di:compile  --ansi --no-interaction returned code 255  
       E: Error building project: Step failed with status code 255.
@@ -127,20 +39,6 @@ layout: "../../../../../../layouts/BlogPost.astro"
 The line we care about here is:
 
 ```bash
-Repositories code generation... 1/7 [===>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-]  14% 1 sec 82.5 MiB
 PHP Fatal error:  Declaration of Firebear\ConfigurableProducts\Block\Product\View\Type\Bundle\Type\Select::getValuesHtml() must be compatible with Magento\Catalog\Block\Product\View\Options\Type\Select::getValuesHtml(): string in /app/vendor/firebear/configurableproducts/Block/Product/View/Type/Bundle/Type/Select.php on line 97
 ```
 
@@ -184,21 +82,6 @@ You'll want to checkout the same branch locally which was throwing the deploymen
 bin/magento setup:di:compile --ansi --no-interaction
 Compilation was started.
 Repositories code generation... 1/7 [====>
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
-layout: "../../../../../../layouts/BlogPost.astro"
----
---]  14% < 1 sec 94.5 MiB
 PHP Fatal error: Declaration of Firebear\ConfigurableProducts\Block\Product\View\Type\Bundle\Type\Select::getValuesHtml() must be compatible with Magento\Catalog\Block\Product\View\Options\Type\Select::getValuesHtml(): string in /var/www/html/vendor/firebear/configurableproducts/Block/Product/View/Type/Bundle/Type/Select.php on line 97
 ```
 

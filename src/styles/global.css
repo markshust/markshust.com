@@ -62,6 +62,6 @@ blockquote {
 	border: 1px solid #999;
 	color: #222;
 	padding: 2px 0px 2px 20px;
-	margin: 0px;
+	margin: 0 0 20px;
 	font-style: italic;
 }
