@@ -17,7 +17,7 @@ As far as I know this implementation is architecturally sound, as it keeps the D
 
 In this case, we want to call the `isLoggedIn()` method of the `Magento\Customer\Model\Session` class. Create a `Foo\Customer` module:
 
-<div class="gatsby-code-title">app/code/Foo/Customer/registration.php</div>
+<code class="title">app/code/Foo/Customer/registration.php</code>
 
 ```php
 <?php
@@ -26,7 +26,7 @@ use Magento\Framework\Component\ComponentRegistrar;
 ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Foo_Customer', __DIR__);
 ```
 
-<div class="gatsby-code-title">app/code/Foo/Customer/etc/module.xml</div>
+<code class="title">app/code/Foo/Customer/etc/module.xml</code>
 
 ```xml
 <?xml version="1.0"?>
@@ -37,7 +37,7 @@ ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Foo_Customer', __DIR__
 
 This module will be simple and contain just one ViewModel for this demo:
 
-<div class="gatsby-code-title">app/code/Foo/Customer/ViewModel/Session.php</div>
+<code class="title">app/code/Foo/Customer/ViewModel/Session.php</code>
 
 ```php
 <?php

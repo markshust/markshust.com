@@ -131,7 +131,7 @@ It would seem to me that best practices would denote to not use the versioning c
 
 All that explaned, here is our final class:
 
-<div class="gatsby-code-title">app/code/Acme/Foo/Setup/Patch/Data/AddAlternativeColorAttribute.php</div>
+<code class="title">app/code/Acme/Foo/Setup/Patch/Data/AddAlternativeColorAttribute.php</code>
 
 ```php
 <?php
@@ -199,7 +199,7 @@ class AddAlternativeColorAttribute implements DataPatchInterface
 
 Now when we run `bin/magento setup:upgrade` to apply the updates, our data patch executes and the attribute is created. For all patches which are successfully executed, Magento inserts a record into the `patch_list` database table with the value of the `patch_name` field being the value of our patch class, like so:
 
-<div class="gatsby-code-title">patch_list</div>
+<code class="title">patch_list</code>
 
 ```bash
 patch_id    patch_name

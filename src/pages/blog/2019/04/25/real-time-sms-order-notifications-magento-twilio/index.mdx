@@ -33,7 +33,7 @@ A Magento module typically requires two files, `registration.php` and `module.xm
 
 Let's create our `registration.php` file at `app/code/Acme/Twilio/registration.php` with the following contents:
 
-<div class="gatsby-code-title">app/code/Acme/Twilio/registration.php</div>
+<code class="title">app/code/Acme/Twilio/registration.php</code>
 
 ```php
 <?php
@@ -46,7 +46,7 @@ This file makes Magento aware of our module, and registers it with the bootloade
 
 Next we'll create a file at `app/code/Acme/Twilio/etc/module.xml` with the following contents:
 
-<div class="gatsby-code-title">app/code/Acme/OrderNotifications/etc/module.xml</div>
+<code class="title">app/code/Acme/OrderNotifications/etc/module.xml</code>
 
 ```xml
 <?xml version="1.0"?>
@@ -111,7 +111,7 @@ Now that we know the event we will listen for, let's create an observer that wil
 
 Create an `Observer` directory within our module structure, and then a file named `app/code/Acme/Twilio/Observer/SendOrderNotification.php` with the following contents:
 
-<div class="gatsby-code-title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</div>
+<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
 
 ```php
 namespace Acme\Twilio\Observer;
@@ -137,7 +137,7 @@ We can access the order information of the placed order by accessing `$observer-
 
 Next, we link up the event with our observer within a file at `app/code/Acme/Twilio/etc/events.xml`:
 
-<div class="gatsby-code-title">app/code/Acme/OrderNotifications/etc/events.xml</div>
+<code class="title">app/code/Acme/OrderNotifications/etc/events.xml</code>
 
 ```xml
 <?xml version="1.0"?>
@@ -158,7 +158,7 @@ Once you have located your SID and Token, let's import the Twilio REST client li
 
 Our `Observer` class will now look like this:
 
-<div class="gatsby-code-title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</div>
+<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
 
 ```php
 <?php
@@ -234,7 +234,7 @@ $client->messages->create(self::SEND_TO_NUMBER, $params);
 
 Since it's possible `create` could throw an exception, let's wrap this call within a `try catch` statement, and also implement the `LoggerInterface` to write any exceptions to a log file for diagnosis. Our final observer class will resemble the following (be sure to update the values for the constants to your appropriately desired values):
 
-<div class="gatsby-code-title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</div>
+<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
 
 ```php
 <?php

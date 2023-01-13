@@ -55,7 +55,7 @@ This will essentially generate 3 new compute engines, which will in turn talk to
 
 Pods manage the containers within our infrastructure. This process is very similar to setting up a replication controller, but with a bit simpler YAML file.
 
-<div class="gatsby-code-title">pod.yml</div>
+<code class="title">pod.yml</code>
 
 ```yaml
 apiVersion: v1
@@ -92,7 +92,7 @@ Let's create a replication cluster next. A replication control is just a fancy n
 
 Create a new local file with the following contents:
 
-<div class="gatsby-code-title">pc.yml</div>
+<code class="title">pc.yml</code>
 
 ```yaml
 apiVersion: v1
@@ -137,7 +137,7 @@ kubectl get rc
 
 Getting a service running is the last step in completing our Kubernetes architecture. A service maps a port from our cluster container to the port on a pod. The container ports we expose are in turn available to the pod, completing the cycle.
 
-<div class="gatsby-code-title">service.yml</div>
+<code class="title">service.yml</code>
 
 ```yaml
 apiVersion: v1

@@ -7,7 +7,7 @@ layout: "../../../../../../layouts/BlogPost.astro"
 
 Recently, I needed to create a custom customer address attribute, and needed a real simple way to do it. There are a lot of bloated examples online, but this is actually really easy.</p><p>First, create your module definition file. Note that we're putting our module in the local code pool because it's specific to just our one store.
 
-<div class="gatsby-code-title">app/etc/modules/Foo_Bar.xml</div>
+<code class="title">app/etc/modules/Foo_Bar.xml</code>
 
 ```xml
 <?xml version="1.0"?>
@@ -27,7 +27,7 @@ Recently, I needed to create a custom customer address attribute, and needed a r
 
 Then, we'll create our config XML. Here, we are defining version 0.1.0, and simply setting up our resource setup definition.
 
-<div class="gatsby-code-title">app/code/local/Foo/Bar/etc/config.xml</div>
+<code class="title">app/code/local/Foo/Bar/etc/config.xml</code>
 
 ```xml
 <?xml version="1.0"?>
@@ -58,7 +58,7 @@ Note how we don't need to define a connection, or even create a setup definition
 
 Finally, we'll create our installer script in PHP. The location and naming of this file is important, as Magento does all of the lookups and routing in the backend to accomplish this. The customer address attribute we are creating is called *baz*. Note that we can only create attributes based off of Mage_Customer_Model_Entity_Setup with this method. If you want to create many attributes from different setup files, you'll either need to create multiple models, or define your our setup resource model.
 
-<div class="gatsby-code-title">app/code/local/Foo/Bar/sql/foo_bar_setup/mysql4-install-0.1.0.php</div>
+<code class="title">app/code/local/Foo/Bar/sql/foo_bar_setup/mysql4-install-0.1.0.php</code>
 
 ```php
 <?php

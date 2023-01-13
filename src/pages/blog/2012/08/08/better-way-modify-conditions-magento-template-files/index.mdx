@@ -11,7 +11,7 @@ As it is with almost all Magento projects, you will have times when you need to 
 
 There is a special case regarding code blocks within conditional logic in which I like to take a certain approach. Let's say we need to make updates & changes to the following file:
 
-<div class="gatsby-code-title">app/code/community/Foo/Bar/controllers/Adminhtml/BazController.php</div>
+<code class="title">app/code/community/Foo/Bar/controllers/Adminhtml/BazController.php</code>
 
 ```php
 <?php
@@ -153,7 +153,7 @@ layout: "../../../../../../layouts/BlogPost.astro"
 
 This method, while verbose, does work just fine. However, look how many lines have been changed in this commit. Believe it or not, removing the code has the opposite effect of what you might think, and actually leads to code bloat in this diff, with 36 lines of diffs! These diffs are important when undergoing version upgrades, as you need to execute diffs to find out what has changed in since the last upgrade.
 
-I like to handle *removing* these conditional logic blocks a different way, by adding in a 'false' to the conditional logic statement.
+I like to handle *removing* these conditional logic blocks a different way, by adding in a `false` to the conditional logic statement.
 
 ```diff
 diff --git a/media.phtml b/media.phtml

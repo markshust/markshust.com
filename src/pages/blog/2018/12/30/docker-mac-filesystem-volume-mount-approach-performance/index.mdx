@@ -17,33 +17,33 @@ I'm going to talk into more detail about the Magento filesystem, as this is the 
 
 Here is the normal Magento filesystem, with explanations of each file/folder:
 
-`CHANGELOG.md`, `LICENSE.txt`, `COPYING.txt`, `LICENSE_AFL.txt`: readme/license files
+- `CHANGELOG.md`, `LICENSE.txt`, `COPYING.txt`, `LICENSE_AFL.txt`: readme/license files
 
-`Gruntfile.js.sample`, `grunt-config.json.sample`, `auth.json.sample`, `nginx.conf.sample`, `package.json.sample`, `php.ini.sample`: sample configuration files for respective packages
+- `Gruntfile.js.sample`, `grunt-config.json.sample`, `auth.json.sample`, `nginx.conf.sample`, `package.json.sample`, `php.ini.sample`: sample configuration files for respective packages
 
-`app/`: folder for local code changes/updates
+- `app/`: folder for local code changes/updates
 
-`bin/`: folder for helper scripts
+- `bin/`: folder for helper scripts
 
-`composer.json`, `composer.lock`: Composer configuration files
+- `composer.json`, `composer.lock`: Composer configuration files
 
-`dev/`: folder for built-in dev tools and unit testing
+- `dev/`: folder for built-in dev tools and unit testing
 
-`generated/`: cache directory for code generation
+- `generated/`: cache directory for code generation
 
-`index.php`: main bootstrap file that handles internal requests
+- `index.php`: main bootstrap file that handles internal requests
 
-`lib/`: directory that contains frontend library scripts
+- `lib/`: directory that contains frontend library scripts
 
-`phpserver/`: folder for server configuration using built-in PHP web server
+- `phpserver/`: folder for server configuration using built-in PHP web server
 
-`pub/`: public directory for web server access containing files for routing/requesting static assets
+- `pub/`: public directory for web server access containing files for routing/requesting static assets
 
-`setup/`, `update/`: directories for web installers/updaters
+- `setup/`, `update/`: directories for web installers/updaters
 
-`var/`: directory to contain temp files (sessions, logs, cache, etc)
+- `var/`: directory to contain temp files (sessions, logs, cache, etc)
 
-`vendor/`: folder for artifacts from composer/library install command
+- `vendor/`: folder for artifacts from composer/library install command
 
 Performance issues arose when mounting this entire filesystem. The source for for Magento was placed within a `src` directory, and mounted like so within a Docker Compose file:
 

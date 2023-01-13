@@ -13,7 +13,7 @@ Using Mobx is pretty straight-forward, however their getting started documentati
 
 In a sample application, I wanted to use Mobx for a multi-page form with FlowRouter. First, I created the store for my form, which contains all values within my form across all pages:
 
-<div class="gatsby-code-title">FormStore.js</div>
+<code class="title">FormStore.js</code>
 
 ```javascript
 import { extendObservable } from 'mobx';
@@ -34,7 +34,7 @@ export default FormStore;
 
 Then, I included the FormStore within my `FlowRouter.jsx` file, instantiated it, and passed it to my form component through a prop:
 
-<div class="gatsby-code-title">FlowRouter.jsx</div>
+<code class="title">FlowRouter.jsx</code>
 
 ```javascript
 import React from 'react';
@@ -57,7 +57,7 @@ FlowRouter.route("/my-form/:step", {
 
 The `MyFormStep` component is simple component which renders a child component, depending on the `step` param:
 
-<div class="gatsby-code-title">MyFormStep.jsx</div>
+<code class="title">MyFormStep.jsx</code>
 
 ```javascript
 import React from 'react';
@@ -92,7 +92,7 @@ There is no need to listen for Mobx observables here, as we aren't referencing a
 
 Here is a sample `MyFormStep1` component, where all we need to do is wrap `React.createClass` with `observer`:
 
-<div class="gatsby-code-title">MyFormStep1.jsx</div>
+<code class="title">MyFormStep1.jsx</code>
 
 ```javascript
 import React from 'react';

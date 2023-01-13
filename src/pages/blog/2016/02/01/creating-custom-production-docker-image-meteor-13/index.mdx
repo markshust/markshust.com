@@ -39,7 +39,7 @@ There are other NodeJS images which are smaller like [Alpine](https://github.com
 
 Let's now build our Dockerfile. After a lot of trial and error, here's what I wound up with:
 
-<div class="gatsby-code-title">Dockerfile</div>
+<code class="title">Dockerfile</code>
 
 ```docker
 FROM node:0.10.41-slim
@@ -114,7 +114,7 @@ Our final app code is now all done in /opt/app, so all we have to do is set the 
 
 We'll take one step back here, because we are trying to automate this build process as much as possible. I built a custom build script in my main Meteor app directory with the following:
 
-<div class="gatsby-code-title">.dockerbuilddeploy</div>
+<code class="title">.dockerbuilddeploy</code>
 
 ```bash
 #!/bin/bash
