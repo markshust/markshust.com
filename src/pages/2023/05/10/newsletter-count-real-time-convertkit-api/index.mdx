@@ -15,7 +15,7 @@ Luckily, [Pipedream](https://pipedream.com/) offers the ability to spin up serve
 
 ## Pipedream
 
-If you don't already, set up an account at [Pipedream](https://pipedream.com/). They provide 100 credits a day, which is enough to test this set up. If you like the service when all is up & running, consider signing up for a paid account. I've been using their service for over a year, and it's wonderful.
+If you don't already, set up an account at [Pipedream](https://pipedream.com/). They provide 100 credits a day, which is enough to test this setup. If you like the service when all is up & running, consider signing up for a paid account. I've been using their service for over a year, and it's wonderful.
 
 ### Pipedream Trigger
 
@@ -27,11 +27,11 @@ Next, select the **HTTP Requests (Most Popular")** option, and for Event Data, s
 
 <Image src={import('./trigger-full-http-request.png')} alt="Full HTTP request" />
 
-Click "Save & continue", then click the Generate Test Event button. You will want to generate a test event for a GET request, so select GET from the select dropdown, then click Send HTTP Request.
+Click **Save & continue**, then click the **Generate Test Event** button. You will want to generate a test event for a GET request, so select `GET` from the select dropdown, then click **Send HTTP Request**.
 
 <Image src={import('./trigger-http-get.png')} alt="Trigger HTTP GET" />
 
-You should then see a Success message. Go ahead and click Continue.
+You should then see a success message. Go ahead and click **Continue**.
 
 ### Pipedream Step
 
@@ -41,7 +41,7 @@ Now, you will need to create a new step that runs when this workflow is triggere
 
 Then select *Run Node code*. This will allow us to run some custom backend JavaScript, which will call our ConvertKit API.
 
-Now, go ahead and paste in the following to the Code section, replacing the `tagId` value with the specific tag ID from ConvertKit that you wish to retrieve. :
+Now, go ahead and paste in the following to the **Code** section, replacing the `tagId` value with the specific tag ID from ConvertKit that you wish to retrieve. :
 
 ```js
 import axios from "axios"
@@ -72,7 +72,7 @@ You can find the related tag ID by going to ConvertKit and clicking Subscribers.
 
 ### Pipedream Environment Variables
 
-Note that if you click Test, it will fail. This is because you haven't yet set up the `CONVERTKIT_API_SECRET` environment variable. We place API keys and secrets into environment variables so we do not expose them within our code. This is a best practice when developing any apps that use API keys, or secrets of any kind that we do not want exposed to the outside world.
+Note that if you click **Test**, it will fail. This is because you haven't yet set up the `CONVERTKIT_API_SECRET` environment variable. We place API keys and secrets into environment variables, so we do not expose them within our code. This is a best practice when developing any apps that use API keys, or secrets of any kind that we do not want exposed to the outside world.
 
 In your Pipedream account, go to Settings -> Environment Variables, and you should see a screen like this:
 
