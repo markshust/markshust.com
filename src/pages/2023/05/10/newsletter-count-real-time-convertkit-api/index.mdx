@@ -1,0 +1,124 @@
+---
+title: "Retrieving newsletter count in real-time with the ConvertKit API"
+date: "2023-05-10T13:30:00.000Z"
+tags: ["javascript"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+import { Image } from '@astrojs/image/components';
+
+I recently had someone wonder how I pull in my "live" newsletter subscriber counts. I use [ConvertKit](https://convertkit.com?lmref=H-B-iA), which [offers a great API](https://developers.convertkit.com/) to be able to access figures such as these. The [subscribers endpoint](https://developers.convertkit.com/#subscribers) will return this information. All you need to do is specify the ID of the related tag of your list, and ConvertKit will return the total number of subscribers for that tag.
+
+The catch of calling this endpoint is that since this specific API call requires the use of a private API secret, you do not want to expose it in the client (browser). This means that you need some sort of backend in place in order to make this API call and not have your API secret exposed, which would put your entire ConvertKit account at risk.
+
+Luckily, [Pipedream](https://pipedream.com/) offers the ability to spin up serverless endpoint with a Node.js backend, which you can easily use to write your backend ConvertKit code.
+
+## Pipedream
+
+If you don't already, set up an account at [Pipedream](https://pipedream.com/). They provide 100 credits a day, which is enough to test this set up. If you like the service when all is up & running, consider signing up for a paid account. I've been using their service for over a year, and it's wonderful.
+
+### Pipedream Trigger
+
+Next, create a new Workflow. Every workflow must be initiated with a Trigger. Select "HTTP / Webhook" to set up an endpoint to trigger this workflow.
+
+<Image src={import('./trigger-http-webhook.png')} alt="HTTP Webhook Trigger" />
+
+Next, select the **HTTP Requests (Most Popular")** option, and for Event Data, select **Full HTTP request**. For Http Response, be sure to select **Return a custom response from your workflow**, so we can return the exact output that we wish when calling this endpoint:
+
+<Image src={import('./trigger-full-http-request.png')} alt="Full HTTP request" />
+
+Click "Save & continue", then click the Generate Test Event button. You will want to generate a test event for a GET request, so select GET from the select dropdown, then click Send HTTP Request.
+
+<Image src={import('./trigger-http-get.png')} alt="Trigger HTTP GET" />
+
+You should then see a Success message. Go ahead and click Continue.
+
+### Pipedream Step
+
+Now, you will need to create a new step that runs when this workflow is triggered. We want to run our own custom code, so select Node from the list of steps:
+
+<Image src={import('./step-node.png')} alt="Step Node" />
+
+Then select *Run Node code*. This will allow us to run some custom backend JavaScript, which will call our ConvertKit API.
+
+Now, go ahead and paste in the following to the Code section, replacing the `tagId` value with the specific tag ID from ConvertKit that you wish to retrieve. :
+
+```js
+import axios from "axios"
+
+export default defineComponent({
+  async run({ steps, $ }) {
+    const tagId = 2166167; // Replace this with your actual tag ID
+    const convertKitApiSecret = process.env.CONVERTKIT_API_SECRET;
+    const url = `https://api.convertkit.com/v3/tags/${tagId}/subscriptions?api_secret=${convertKitApiSecret}&subscriber_state=active`;
+    const { data } = await axios({
+      method: "GET",
+      url: url
+    })
+
+    return await $.respond({
+      status: 200,
+      body: {
+        total_subscriptions: data.total_subscriptions
+      }
+    });
+  }
+})
+```
+
+You can find the related tag ID by going to ConvertKit and clicking Subscribers. Then, click the tag that you want to retrieve. The tag ID will then be shown in the URL (in this case it is `2166167`):
+
+<Image src={import('./convertkit-tag-id.png')} alt="ConvertKit Tag ID" />
+
+### Pipedream Environment Variables
+
+Note that if you click Test, it will fail. This is because you haven't yet set up the `CONVERTKIT_API_SECRET` environment variable. We place API keys and secrets into environment variables so we do not expose them within our code. This is a best practice when developing any apps that use API keys, or secrets of any kind that we do not want exposed to the outside world.
+
+In your Pipedream account, go to Settings -> Environment Variables, and you should see a screen like this:
+
+<Image src={import('./pipedream-env-vars.png')} alt="Pipedream env vars" />
+
+Simply click the New Environment Variable button on this page, and create a new environment variable named `CONVERTKIT_API_SECRET`. Paste in your ConvertKit API secret, which you can retrieve on the [Convert Kit Advanced Settings](https://app.convertkit.com/account_settings/advanced_settings) page. Be sure to grab the API Secret (you'll need to click the Show button to see the entire secret). You'll use this as the value of your `CONVERTKIT_API_SECRET` environment variable.
+
+Now when you return to your workflow and try to execute it, it should successfully return the number of subscribers that belong to the specific tag ID that you specified. See the value of `body.total_subscriptions` returned as the response to this call. It should match your total number of ConvertKit subscribers that are tagged with this tag.
+
+<Image src={import('./step-node-code.png')} alt="Step Node code" />
+
+At this point, our serverless function is done. Note the URL in the Pipedream workflow trigger though, as you will need to reference this in your client-side code where you'd like to display your subscriber count:
+
+<Image src={import('./trigger-url.png')} alt="Pipedream Trigger URL" />
+
+## Client-side Code
+
+The hard part is over. Now, all we need to do is call this API endpoint from our client-side code.
+
+Since every HTML page is different, and you may even be inserting this into a SaaS product, I'm going to provide you with the full code. Feel free to place the JavaScript (the part between the `<script></script>` tags) into the "scripts" section of your site, and the HTML where you want this text displayed
+
+Remember to replace the value of the URL with the endpoint from your Pipedream workflow trigger.
+
+```html
+<div id="subscription-text">Read by <span id="subscriber-count"></span> newsletter subscribers in the industry.</div>
+
+<script>
+    async function fetchTotalSubscriptions() {
+        // The Pipedream endpoint provided
+        const url = 'https://eofc4ud28o6m2c4.m.pipedream.net';
+
+        try {
+            const response = await fetch(url);
+            const jsonResponse = await response.json();
+            const totalSubscriptions = jsonResponse.total_subscriptions;
+            const spanElement = document.getElementById('subscriber-count');
+            spanElement.innerHTML = totalSubscriptions;
+        } catch (error) {
+            console.error('Error fetching total subscriptions:', error);
+        }
+    }
+
+    fetchTotalSubscriptions();
+</script>
+```
+
+If you are thoughtful, you will make the text not depend on the subscriber number, as I have done 🤓 If you do this, and the ConvertKit API is down for whatever reason or takes a long time to respond, it will gracefully fallback to that text, so your visitor will simply see "Read by newsletter subscribers in the industry."
+
+Good luck, and enjoy your live subscriber count!
