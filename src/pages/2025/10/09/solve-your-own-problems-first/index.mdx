@@ -1,0 +1,195 @@
+---
+title: "Solve your own problems first"
+date: "2025-10-09T08:55:00.000Z"
+tags: ["business"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+There's a moment every builder experiences when they realize they could build almost anything. Maybe it happens when you ship your first real project, or when AI coding makes you 10x faster, or when you see someone else hit $1M ARR with what looks like a simple idea. Suddenly the constraint isn't "can I build this?" but "what should I build?"
+
+That's when things get dangerous.
+
+The moment capability exceeds clarity, most builders do the same thing: they go hunting for problems to solve. They read market research reports. They browse Reddit looking for pain points. They ask themselves "what do businesses need?" or "what problems exist in the world?" They try to reverse-engineer their way into a good idea.
+
+This almost never works.
+
+## The research trap
+
+I recently spent several hours researching real-time business problems. The research was solid. I found seven legitimate pain points with quantifiable ROI, real user frustration, and clear market demand:
+
+- Approval workflows that bottleneck at $10 purchase orders and kill factory productivity
+- Design review cycles where feedback fragments across twelve different channels
+- Customer support where 62% of businesses never respond to emails
+- Inventory systems that oversell because data syncs hourly instead of instantly
+- CRM dashboards that show 15-minute-old data during live sales calls
+- Project status meetings that exist only because dashboards don't update automatically
+- Quality inspections that find critical defects hours too late
+
+Every single one of these is a real problem. Users are frustrated. Money is being lost. The business case is clear.
+
+And every single one was the wrong thing for me to build.
+
+Why? Because I wasn't experiencing any of them. I found them through research, not through lived experience. They were someone else's problems that I discovered by looking for problems to solve.
+
+The best builders don't hunt for problems. They solve their own problems, and then discover other people have the same problem.
+
+## The pattern that actually works
+
+Tony Dinh didn't research ChatGPT pain points before building TypingMind. He personally wanted a better interface, built it for himself, and other people said "holy shit, I want that too." Now it's a $1M+ business.
+
+Derek Sivers didn't survey musicians about CD distribution problems before building CD Baby. He needed a way to sell his own CD online, built it, and other musicians kept asking to use it.
+
+DHH didn't study project management pain points before building Basecamp. 37signals needed a better way to manage their own client projects, built it internally, and clients kept asking what software they were using.
+
+The pattern is consistent: solve your own problem first, then discover it's valuable to others. Not the reverse.
+
+This isn't just about motivation, though that matters. It's about information density. When you're solving your own problem, you have perfect information about the use case, the context, the edge cases, and what "good enough" actually means. When you're solving someone else's problem based on research, you're building from a description of pain rather than the felt experience of it.
+
+Those are completely different information states.
+
+## Why multi-tenant thinking kills early ideas
+
+There's a related trap that catches builders who've had some success: they try to build multi-tenant from day one because they're already thinking about the business opportunity, not the problem.
+
+Every time I've tried to build something "for everyone" from the start, it's failed or become too complex. The pressure to handle every use case, every edge case, every potential customer's workflow creates paralysis. You end up with something that works okay for everyone and great for no one.
+
+But when you build for yourself first, you get the luxury of constraints. You only need to handle YOUR workflow. YOUR edge cases. YOUR definition of done. Those constraints force clarity. You make fast decisions because you know exactly what you need.
+
+The sophistication comes later, if at all. Maybe you extract it into a standalone product. Maybe you don't. But you start with something that works perfectly for at least one person: you.
+
+This is why successful builders often have a portfolio of features they've built for themselves that COULD become products. They're building in production, learning what actually works through usage, and only then considering extraction.
+
+## Why themes are dangerous
+
+Here's a subtler version of the same mistake: falling in love with a solution approach instead of a problem.
+
+I love real-time visual systems. Something about seeing data flow and update instantly hits the right dopamine receptors for me. It's what got me into programming in the first place (watching MySQL data stream into Dreamweaver UltraDev and render on the page).
+
+So when I started thinking "what should I build next?", my brain naturally went to "what problems need real-time solutions?" I was leading with my preferred solution type, then looking for problems that fit.
+
+This is backwards.
+
+The question isn't "what can I solve with real-time?" It's "what problem am I experiencing?" If that problem happens to benefit from real-time solutions, great. If not, the real-time angle was just a distraction.
+
+Themes are useful for understanding yourself. They are part of your intrinsic motivation and you should pay attention to them. But they're dangerous as filters for finding ideas. They bias you toward forcing your preferred solution onto problems that might need something else entirely.
+
+## The problems bucket strategy
+
+So if you shouldn't research problems and you shouldn't filter by solution themes, how do you find good ideas?
+
+Keep a log of friction you hit daily. Nothing formal. Just a bucket where you throw problems as you encounter them. When something pisses you off enough that you think "there's gotta be a better way," write it down.
+
+Then let it marinate.
+
+Don't immediately research whether it's viable. Don't start architecting solutions. Don't ask if it's a business opportunity. Just log it and move on.
+
+Review the bucket periodically... maybe weekly, maybe during downtime when your brain is in processing mode rather than execution mode. Hot tubs, walks, drives. Times when your pattern recognition can work without the pressure of "figure this out right now."
+
+You're looking for patterns. Problems that keep showing up. Friction that compounds. Things you keep band-aiding with hacky solutions because the proper fix would require building something.
+
+When you notice yourself building a Pipedream script for the third time to work around the same limitation, that's signal. When you have five different manual processes all related to the same core problem, that's signal. When you catch yourself complaining about the same thing across multiple weeks, that's signal.
+
+The right ideas announce themselves through persistence. You don't have to hunt for them.
+
+## The FOMO test
+
+There's a specific moment every builder needs to recognize: the moment you read about someone else's success and feel urgency.
+
+"They hit $1M ARR with that? I could build something like that. The AI window is closing. I need to move fast."
+
+Pause right there.
+
+Ask yourself honestly: "Do I have a problem that needs solving, or do I just have FOMO about missing an opportunity?"
+
+Those feel similar in the moment but they're completely different drivers. FOMO says "I should be building SOMETHING." A real problem says "I need THIS SPECIFIC THING to exist."
+
+FOMO leads to market research and hunting for problems. Real problems lead to building solutions for yourself.
+
+If you find yourself researching problems or browsing "startup ideas" lists, you're probably in FOMO mode. If you find yourself sketching solutions to something that annoyed you yesterday, you're probably onto something real.
+
+The distinction matters because FOMO doesn't sustain you through the boring parts. Building an approval workflow system sounds exciting until you're debugging OAuth flows and email notification edge cases at 2am. The only thing that sustains you through that is solving a problem you personally care about.
+
+## When research actually helps
+
+None of this means research is useless. It means research serves a different purpose than idea generation.
+
+Research helps you validate that your problem isn't uniquely yours. After you've identified something you need, THEN you can research whether others have the same need. That's validation, not discovery.
+
+Research helps you understand how others have tried to solve the problem. After you know what you're building, research on existing solutions shows you what works, what doesn't, and where the gaps are.
+
+Research helps you size the opportunity. After you've built something that works for you, research can help you decide if it's worth extracting into a standalone product.
+
+But research doesn't generate good ideas. Lived experience generates good ideas. Research just helps you figure out what to do with them.
+
+## The focus filter
+
+Here's a simple test for whether you should pursue an idea: What are you currently not finishing because you're thinking about this new thing?
+
+If the answer is "nothing, I'm between projects," then maybe explore it.
+
+If the answer is "I'm about to ship Feature X and launch Product Y," then you don't need a new idea. You need to finish what you started.
+
+Capability creates its own pressure. When building becomes easy, either through experience or through AI assistance, there's a temptation to fill every hour with output. But value doesn't come from building more things. It comes from shipping things that matter and letting them prove themselves.
+
+Some of the best moves in a builder's career are the things they DIDN'T build because they stayed focused on what they'd already started.
+
+## When you actually know it's real
+
+So how do you know when an idea is worth pursuing versus just another distraction?
+
+You'll know it's real when:
+
+You can't stop thinking about it for weeks, not days. Real ideas have staying power. They nag at you. You find yourself sketching solutions in the margins of other work.
+
+You're already building a hacky version in your spare time. If the idea is good, you won't be able to help yourself. You'll start building before you've decided to build.
+
+You bump into the problem multiple times per week. Frequent pain creates urgency. If you only think about the problem when you're trying to think of ideas, it's probably not that important to you.
+
+You'd build it even if no one else ever used it. This is the ultimate test. If the only reason to build it is because it might make money, you're building on a weak foundation. If you'd build it just to make your own life better, you're building on bedrock.
+
+It energizes you more than drains you to think about working on it. Some ideas feel like obligation. Good ideas feel like permission to do something you want to do anyway.
+
+Until you hit all five of these signals, you don't have a real idea yet. You have a possibility. Keep it in the bucket and keep building what's already in front of you.
+
+## The extraction pattern
+
+There's one more pattern worth understanding: treating your existing projects as R&D for future products.
+
+When you're building something for yourself, you often create features that could work as standalone products. A comment notification system. An AI tutor. A translation tool. Each of these solves a specific problem within your larger project.
+
+The discipline is resisting premature extraction.
+
+Build it for your project first. Use it in production until you know it actually works. See if others ask about it. Only then consider extracting it into something standalone.
+
+This pattern works because it removes the pressure of "will anyone want this?" You've already proven someone wants it: you. The feature is already providing value in its native context. Extraction becomes a question of "is there demand beyond my own use?" rather than "will this idea work at all?"
+
+Most features won't get extracted, and that's fine. They served their purpose by making your project better. The few that do get extracted have been battle-tested and refined through real usage rather than theoretical planning.
+
+## The competitive advantage you already have
+
+Here's something most builders don't fully appreciate: your gut feeling about ideas is 25 years of compressed pattern recognition (or however long you've been building).
+
+When something feels off or feels right, that's not mysticism. That's your brain processing patterns your conscious mind hasn't caught up to yet. You've seen hundreds of projects, tried dozens of approaches, and watched countless ideas succeed or fail. All of that experience is encoded in your intuitive response to new ideas.
+
+The problem is we've been trained to ignore intuition in favor of "data-driven decision making." So when we feel uncertain about an idea, we go hunting for research to override the feeling. We want spreadsheets and market analysis to tell us what to build.
+
+But your pattern recognition is the actual competitive advantage. It's the thing you've spent years developing. Trusting it isn't being irrational, but about being efficient with compressed experience.
+
+When an idea feels forced, it probably is. When an idea feels right, it probably is. The research and analysis should support your intuition, not replace it.
+
+## Building the right thing
+
+The hardest part of this advice is that it doesn't give you an answer. It doesn't tell you what to build. It just tells you how to recognize when you've found something worth building.
+
+That's uncomfortable because capability without direction feels like wasted potential. You can build almost anything now, but you don't know what to build, and "wait for the right problem to reveal itself" feels like inaction.
+
+But the alternative -- building something you're not excited about, that doesn't solve your problem, that you discovered through research -- that's not better. That's just busy work that looks like progress.
+
+The best builders aren't the ones who build the most things. They're the ones who build the right things. And the right things almost always start as solutions to their own problems.
+
+So keep building what's in front of you. Keep logging friction as you encounter it. Keep shipping and learning and paying attention. The ideas worth pursuing will make themselves known through persistence and annoyance, not through hunting and analysis.
+
+And when you find yourself researching problems instead of solving them, that's your signal to step back and ask: "Whose problem am I trying to solve here? Mine, or someone else's?"
+
+The answer matters more than you think.
+
