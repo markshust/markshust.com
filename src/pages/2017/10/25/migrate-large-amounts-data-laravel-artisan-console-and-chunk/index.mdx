@@ -5,7 +5,7 @@ tags: ["artisan", "laravel", "php"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I've recently had to create a script to migrate a large amount of data post-deployment. This presented a couple issues; one being that the script needed to be performant, another being that since it took at least a few minutes to run on a couple hundred thousand rows, I needed to display the status of the script for devops so it didn't appear to be hungup or failed.
 

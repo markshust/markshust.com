@@ -6,7 +6,7 @@ canonical: "https://www.twilio.com/blog/real-time-sms-order-notifications-magent
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Managing your own storefront and competing with Amazon can be difficult, especially due to their ability to automate and process orders much faster than their competition. While you may not be able to setup an expensive <a href="https://www.formaxprinting.com/blog/2010/06/what-is-pick-and-pack-fulfillment/" target="_blank">pick and pack fulfillment</a> system & process, there are ways in which you can implement a solution much more quickly and affordably. One of those ways is to implement the Twilio API into your <a href="https://magento.com/" target="_blank">Magento</a> storefront for real-time SMS order notifications.
 
@@ -33,9 +33,7 @@ A Magento module typically requires two files, `registration.php` and `module.xm
 
 Let's create our `registration.php` file at `app/code/Acme/Twilio/registration.php` with the following contents:
 
-<code class="title">app/code/Acme/Twilio/registration.php</code>
-
-```php
+```php title=app/code/Acme/Twilio/registration.php
 <?php
 use Magento\Framework\Component\ComponentRegistrar;
 
@@ -46,9 +44,7 @@ This file makes Magento aware of our module, and registers it with the bootloade
 
 Next we'll create a file at `app/code/Acme/Twilio/etc/module.xml` with the following contents:
 
-<code class="title">app/code/Acme/OrderNotifications/etc/module.xml</code>
-
-```xml
+```xml title=app/code/Acme/OrderNotifications/etc/module.xml
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Acme_Twilio" setup_version="1.0.0" />
@@ -111,9 +107,7 @@ Now that we know the event we will listen for, let's create an observer that wil
 
 Create an `Observer` directory within our module structure, and then a file named `app/code/Acme/Twilio/Observer/SendOrderNotification.php` with the following contents:
 
-<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
-
-```php
+```php title=app/code/Acme/Twilio/Observer/SendOrderNotification.php
 namespace Acme\Twilio\Observer;
 
 use Magento\Framework\Event\Observer;
@@ -137,9 +131,7 @@ We can access the order information of the placed order by accessing `$observer-
 
 Next, we link up the event with our observer within a file at `app/code/Acme/Twilio/etc/events.xml`:
 
-<code class="title">app/code/Acme/OrderNotifications/etc/events.xml</code>
-
-```xml
+```xml title=app/code/Acme/OrderNotifications/etc/events.xml
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_order_place_after">
@@ -158,9 +150,7 @@ Once you have located your SID and Token, let's import the Twilio REST client li
 
 Our `Observer` class will now look like this:
 
-<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
-
-```php
+```php title=app/code/Acme/Twilio/Observer/SendOrderNotification.php
 <?php
 namespace Acme\Twilio\Observer;
 
@@ -234,9 +224,7 @@ $client->messages->create(self::SEND_TO_NUMBER, $params);
 
 Since it's possible `create` could throw an exception, let's wrap this call within a `try catch` statement, and also implement the `LoggerInterface` to write any exceptions to a log file for diagnosis. Our final observer class will resemble the following (be sure to update the values for the constants to your appropriately desired values):
 
-<code class="title">app/code/Acme/Twilio/Observer/SendOrderNotification.php</code>
-
-```php
+```php title=app/code/Acme/Twilio/Observer/SendOrderNotification.php
 <?php
 namespace Acme\OrderNot<?php
 namespace Acme\Twilio\Observer;
@@ -306,7 +294,7 @@ class SendOrderNotification implements ObserverInterface
 
 Now place an order through your Magento instance. You should receive an SMS message resembling the following:
 
-<Image src={import('./sms-result.png')} alt="SMS Result" />
+<Image src={import('./_sms-result.png')} alt="SMS Result" />
 
 ## Debugging Common Errors
 

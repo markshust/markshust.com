@@ -5,7 +5,7 @@ tags: ["magento", "magento2", "declarativeschema"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I was refactoring one of my Magento 2 modules and noticed that the Magento 2.3 core modules use the <a href="https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/" target="_blank">declarative schema</a> approach rather than setup upgrade scripts. This  is the new recommended approach for Magento versions 2.3 and up, as upgrade scripts will be phased out in favor of this declarative schema approach in the future.
 
@@ -131,9 +131,7 @@ It would seem to me that best practices would denote to not use the versioning c
 
 All that explaned, here is our final class:
 
-<code class="title">app/code/Acme/Foo/Setup/Patch/Data/AddAlternativeColorAttribute.php</code>
-
-```php
+```php title=app/code/Acme/Foo/Setup/Patch/Data/AddAlternativeColorAttribute.php
 <?php
 namespace Acme\Foo\Setup\Patch\Data;
 
@@ -199,9 +197,7 @@ class AddAlternativeColorAttribute implements DataPatchInterface
 
 Now when we run `bin/magento setup:upgrade` to apply the updates, our data patch executes and the attribute is created. For all patches which are successfully executed, Magento inserts a record into the `patch_list` database table with the value of the `patch_name` field being the value of our patch class, like so:
 
-<code class="title">patch_list</code>
-
-```bash
+```bash title=patch_list
 patch_id    patch_name
 ...
 126         Magento\WidgetSampleData\Setup\Patch\Data\InstallWidgetSampleData

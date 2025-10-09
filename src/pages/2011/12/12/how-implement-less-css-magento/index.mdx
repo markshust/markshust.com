@@ -5,7 +5,7 @@ tags: ["css", "less", "magento", "magento1"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 A while ago, I stumbled across <a href="http://lesscss.org/" target="_blank">LESS CSS</a>, a dynamic CSS processor which can greatly cleanse the amount of CSS in your website, and lead to generally more accessible cross-browser stylesheet conventions. LESS allows you to reuse your CSS snippets programmatically, and once you use it, you will never go back!
 
@@ -27,7 +27,7 @@ Please feel free to post beneficial mixins and I will try to add them to the fil
 
 <a href="https://github.com/markshust/LESS-CSS-General-Mixins/blob/master/custom.less" target="_blank">Download my base LESS CSS mixin file here</a> or see below!
 
-```less:title=skin/frontend/yourpackage/yourdesign/css/custom.less
+```less title=skin/frontend/yourpackage/yourdesign/css/custom.less
 /* Mixins */
 .border-radius (
     @radius: 5px

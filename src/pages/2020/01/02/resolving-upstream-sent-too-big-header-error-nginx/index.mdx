@@ -5,11 +5,11 @@ tags: ["magento", "nginx", "php"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 After I enabling & configured Elasticsearch within my local Magento development environment, I tried searching for a term to test it out and received the notorious 502 Bad Gateway error:
 
-<Image src={import('./502-bad-gateway.png')} alt="502 Bad Gateway" />
+<Image src={import('./_502-bad-gateway.png')} alt="502 Bad Gateway" />
 
 A 502 gateway error occurs when the web server loses a connection to a backend proxy. In this case, Nginx is my web server and PHP-FPM is the configured backend proxy connection. When Nginx receives a request for a PHP file, it is proxied to the PHP proxy for processing (which is PHP-FPM listening on port 9000).
 

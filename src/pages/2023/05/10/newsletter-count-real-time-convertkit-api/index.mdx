@@ -5,7 +5,7 @@ tags: ["javascript"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I recently had someone wonder how I pull in my "live" newsletter subscriber counts. I use [ConvertKit](https://convertkit.com?lmref=H-B-iA), which [offers a great API](https://developers.convertkit.com/) to be able to access figures such as these. The [subscribers endpoint](https://developers.convertkit.com/#subscribers) will return this information. All you need to do is specify the ID of the related tag of your list, and ConvertKit will return the total number of subscribers for that tag.
 
@@ -21,15 +21,15 @@ If you don't already, set up an account at [Pipedream](https://pipedream.com/). 
 
 Next, create a new workflow. Every workflow must be initiated with a trigger. Select "HTTP / Webhook" to set up an endpoint to trigger this workflow.
 
-<Image src={import('./trigger-http-webhook.png')} alt="HTTP Webhook Trigger" />
+<Image src={import('./_trigger-http-webhook.png')} alt="HTTP Webhook Trigger" />
 
 Next, select the "HTTP Requests (Most Popular)" option, and for Event Data, select "Full HTTP request". For Http Response, be sure to select "Return a custom response from your workflow", so we can return the exact output that we wish when calling this endpoint:
 
-<Image src={import('./trigger-full-http-request.png')} alt="Full HTTP request" />
+<Image src={import('./_trigger-full-http-request.png')} alt="Full HTTP request" />
 
 Click "Save & continue", then click the "Generate Test Event" button. You will want to generate a test event for a GET request, so select `GET` from the select dropdown, then click "Send HTTP Request".
 
-<Image src={import('./trigger-http-get.png')} alt="Trigger HTTP GET" />
+<Image src={import('./_trigger-http-get.png')} alt="Trigger HTTP GET" />
 
 You should then see a success message. Go ahead and click "Continue".
 
@@ -37,7 +37,7 @@ You should then see a success message. Go ahead and click "Continue".
 
 Now, you will need to create a new step that runs when this workflow is triggered. We want to run our own custom code, so select "Node" from the list of steps:
 
-<Image src={import('./step-node.png')} alt="Step Node" />
+<Image src={import('./_step-node.png')} alt="Step Node" />
 
 Then select "Run Node code". This will allow us to run some custom backend JavaScript, which will call our ConvertKit API.
 
@@ -68,7 +68,7 @@ export default defineComponent({
 
 You can find the related tag ID by going to ConvertKit and clicking Subscribers. Then, click the tag that you want to retrieve. The tag ID will then be shown in the URL (in this case it is `2166167`):
 
-<Image src={import('./convertkit-tag-id.png')} alt="ConvertKit Tag ID" />
+<Image src={import('./_convertkit-tag-id.png')} alt="ConvertKit Tag ID" />
 
 ### Pipedream Environment Variables
 
@@ -76,17 +76,17 @@ Note that if you click "Test", it will fail. This is because you haven't yet set
 
 In your Pipedream account, go to Settings -> Environment Variables, and you should see a screen like this:
 
-<Image src={import('./pipedream-env-vars.png')} alt="Pipedream env vars" />
+<Image src={import('./_pipedream-env-vars.png')} alt="Pipedream env vars" />
 
 Simply click the New Environment Variable button on this page, and create a new environment variable named `CONVERTKIT_API_SECRET`. Paste in your ConvertKit API secret, which you can retrieve on the [Convert Kit Advanced Settings](https://app.convertkit.com/account_settings/advanced_settings) page. Be sure to grab the API Secret (you'll need to click the Show button to see the entire secret). You'll use this as the value of your `CONVERTKIT_API_SECRET` environment variable.
 
 Now when you return to your workflow and try to execute it, it should successfully return the number of subscribers that belong to the specific tag ID that you specified. See the value of `body.total_subscriptions` returned as the response to this call. It should match your total number of ConvertKit subscribers that are tagged with this tag.
 
-<Image src={import('./step-node-code.png')} alt="Step Node code" />
+<Image src={import('./_step-node-code.png')} alt="Step Node code" />
 
 At this point, our serverless function is done. Note the URL in the Pipedream workflow trigger though, as you will need to reference this in your client-side code where you'd like to display your subscriber count:
 
-<Image src={import('./trigger-url.png')} alt="Pipedream Trigger URL" />
+<Image src={import('./_trigger-url.png')} alt="Pipedream Trigger URL" />
 
 ## Client-side Code
 

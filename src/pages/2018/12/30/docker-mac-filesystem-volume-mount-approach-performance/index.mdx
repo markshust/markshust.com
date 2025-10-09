@@ -5,7 +5,7 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I've written blogs in the past on how to improve Docker filesystem mounting performance, including <a href="https://markshust.com/2017/03/02/making-docker-mac-faster-overlay2-filesystem">using the overlay2 filesystem</a> and <a href="https://markshust.com/2018/01/30/performance-tuning-docker-mac">performance tuning Docker for Mac</a>. While they have drastically increased filesystem throughput and performance, none of them have been a silver bullet in truly solving filesystem performance issues with Docker for Mac.
 

@@ -5,7 +5,7 @@ tags: ["docker", "magento", "magento2"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I started freelance web development while I was in high school at the age of 15. A couple of years later, the guy I worked for urged me to learn PHP, but it sounded much too hard for me. So I remember taking a trip to a brick-and-morter Borders bookstore (the younger millenials will have no clue what I'm talking about), and remember looking at two different books; one on Perl, and one on PHP. I looked at both, and looking at a bunch of Greek, I was intimidated, left them on the bookshelf and walked out.
 
@@ -15,7 +15,7 @@ I always thought the tally sheet was obscene, and knew in the back of my mind th
 
 Not too long after, the itch got me, and it was the first major career shift I had: **I'm a developer** 💻. I've been down the rabbit hole since.
 
-<Image src={import('./computer-skillz.jpg')} alt="I've got mad computer skills" />
+<Image src={import('./_computer-skillz.jpg')} alt="I've got mad computer skills" />
 
 Some time has passed, and I've been primarily a Magento developer for the last 8 years or so. Magento has taken me through a lot of ups & downs. It's a very complex framework to build, and has an extremely high learning curve. Working at agencies has been ok, but my role has been mainly to conduct code & architecture reviews, as well as to train and mentor other developers. While Magento training material has increased substantially since Magento 1 (the <a href="https://devdocs.magento.com" target="_blank">devdocs</a> are awesome!), there is a gap in the market:
 
@@ -39,7 +39,7 @@ My first soirée into this is developing a curriculum and screencast course abou
 
 <p>
     <a href="https://m.academy/courses/set-up-magento-2-development-environment-docker/" target="_blank">
-        <Image src={import('./magento2-docker-dev-960-740.jpg')} alt="Setup a Magento 2 Development Environment with Docker" />
+        <Image src={import('./_magento2-docker-dev-960-740.jpg')} alt="Setup a Magento 2 Development Environment with Docker" />
     </a>
 </p>
 

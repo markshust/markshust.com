@@ -5,7 +5,7 @@ tags: ["gatsby", "tailwindcss"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I've had a bear of a time trying to add Tailwind CSS to my Gatsby site. Most of the blog posts I found for implementing the library were either outdated, referenced installing a lot of unnecessary npm modules, or contained a lot of opinionated boilerplate code. Instead, I decided to implement Tailwind in the simplest way possible.
 
@@ -15,9 +15,7 @@ I've had a bear of a time trying to add Tailwind CSS to my Gatsby site. Most of 
 
 First create the following two configuration files needed for both Tailwind CSS and PostCSS, and modify as necessary:
 
-<code class="title">tailwind.config.js</code>
-
-```js
+```js title=tailwind.config.js
 const defaultTheme = require("tailwindcss/defaultTheme")
 
 module.exports = {
@@ -34,9 +32,7 @@ module.exports = {
 }
 ```
 
-<code class="title">postcss.config.js</code>
-
-```js
+```js title=postcss.config.js
 module.exports = () => ({
   plugins: [require("tailwindcss")],
 })
@@ -54,9 +50,7 @@ npm install gatsby-plugin-postcss tailwindcss
 
 In order to get PostCSS to trigger properly in the Gatsby build process, add the following line to the Gatsby config file:
 
-<code class="title">gatsby-config.js</code>
-
-```js
+```js title=gatsby-config.js
     // ...
     `gatsby-plugin-postcss`,
    ],
@@ -67,9 +61,7 @@ In order to get PostCSS to trigger properly in the Gatsby build process, add the
 
 And finally, import the Tailwind CSS in the Gatsby Browser JS:
 
-<code class="title">gatsby-browser.js</code>
-
-```js
+```js title=gatsby-browser.js
 // ...
 import "tailwindcss/base.css"
 import "tailwindcss/components.css"

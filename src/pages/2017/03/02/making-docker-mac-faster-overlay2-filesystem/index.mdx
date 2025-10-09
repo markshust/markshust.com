@@ -5,7 +5,7 @@ tags: ["docker"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 By default, Docker for Mac ships with the default filesystem being `aufs`. This is a fairly antiquated filesystem and is quite slow if you deal with lots of files and filesystem reads and writes. You can <a href="https://github.com/chriskuehl/docker-storage-benchmark" target="_blank">see the results of a filesystem benchmark to compare</a>.
 

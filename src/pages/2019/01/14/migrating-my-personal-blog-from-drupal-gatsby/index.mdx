@@ -5,7 +5,7 @@ tags: ["drupal", "gatsby", "reactjs"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 It's been almost ten years since [my first blog post](/2009/09/21/preventing-injection-attacks-and-securing-your-website/). I needed a simple platform to write blog posts, and was working with [Drupal](https://www.drupal.org/) at the time. Pretty much everyone was using [Wordpress](https://wordpress.com/), but I wasn't a fan. I wanted to use something I was familiar with that can be easily customized.
 
@@ -39,10 +39,10 @@ Migrating took a little bit of time, but was more of a slow & redundant process 
 
 ```js
 // recommended usage (no options...)
-```js:title=this/is/my/file.js
+```js title=this/is/my/file.js
 
 // This isn't possible!
-```js:title=this/is/my/file.js
+```js title=this/is/my/file.js
 
 // y no liek dis?
 ```js:{numberLines: true, title: "this/is/my/file.js"}
@@ -51,9 +51,7 @@ Migrating took a little bit of time, but was more of a slow & redundant process 
 ...however the ability to just define a `div` right above it is working for the time being:
 
 ```js
-<code class="title">this/is/my/file.js</code>
-
-```js
+```js title=this/is/my/file.js
 // code goes here...
 ```
 
@@ -67,7 +65,7 @@ The frontend styling for my website isn't exactly where I want it to be, but I m
 
 I really never had much custom on my personal website, however I did wind up doing something a bit different on my home page. My previous home page was just a mug of me and the title of my current position, but this time around I showed posts right on my home page. I also thought it would be nice if there was an easy way for someone to jump to any topic, so I put a list of tags, and made a sort-of tag cloud (note the font size):
 
-```jsx:title=src/pages/tags.js
+```jsx title=src/pages/tags.js
 ...
 <Layout location={location} subtitle={description} title={title}>
     <h1>Tags</h1>

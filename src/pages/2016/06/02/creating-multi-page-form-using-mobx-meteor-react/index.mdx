@@ -5,7 +5,7 @@ tags: ["meteor", "mobx", "reactjs"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Mobx is a really simple state manager that can be used really nicely with React, when you don't need the complexity of a Redux implementation.
 
@@ -13,9 +13,7 @@ Using Mobx is pretty straight-forward, however their getting started documentati
 
 In a sample application, I wanted to use Mobx for a multi-page form with FlowRouter. First, I created the store for my form, which contains all values within my form across all pages:
 
-<code class="title">FormStore.js</code>
-
-```javascript
+```javascript title=FormStore.js
 import { extendObservable } from 'mobx';
 
 class FormStore {
@@ -34,9 +32,7 @@ export default FormStore;
 
 Then, I included the FormStore within my `FlowRouter.jsx` file, instantiated it, and passed it to my form component through a prop:
 
-<code class="title">FlowRouter.jsx</code>
-
-```javascript
+```javascript title=FlowRouter.jsx
 import React from 'react';
 import FormStore from '../stores/form';
 import LayoutMain from '../layouts/main';
@@ -57,9 +53,7 @@ FlowRouter.route("/my-form/:step", {
 
 The `MyFormStep` component is simple component which renders a child component, depending on the `step` param:
 
-<code class="title">MyFormStep.jsx</code>
-
-```javascript
+```javascript title=MyFormStep.jsx
 import React from 'react';
 import MyFormStep1 from './MyFormStep1';
 import MyFormStep2 from './MyFormStep2';
@@ -92,9 +86,7 @@ There is no need to listen for Mobx observables here, as we aren't referencing a
 
 Here is a sample `MyFormStep1` component, where all we need to do is wrap `React.createClass` with `observer`:
 
-<code class="title">MyFormStep1.jsx</code>
-
-```javascript
+```javascript title=MyFormStep1.jsx
 import React from 'react';
 import { observer } from 'mobx-react';
 

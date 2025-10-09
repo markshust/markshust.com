@@ -5,11 +5,11 @@ tags: ["composer", "magento", "magento2", "packagist"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 ## Introduction
 
-<Image src={import('./setting-up-magento-2-module-right-way-composer-packagist.png')} alt="Composer & Packagist" />
+<Image src={import('./_setting-up-magento-2-module-right-way-composer-packagist.png')} alt="Composer & Packagist" />
 
 Creating a module for Magento 2 is very different from the "old" way that we are used to in Magento 1. Now that we have Composer at our fingertips, the storage of our module in the VCS is quite a bit cleaner, and we also don't have to worry about code pools since they are by the wayside with M2. This also eliminates the need for third-party code management tools such as modman.
 
@@ -74,7 +74,7 @@ Here, we are defining the schema that the XML file should follow. You can pretty
 
 ## Git Tagging with Packagist
 
-<Image src={import('./packagist.png')} alt="Packagist" />
+<Image src={import('./_packagist.png')} alt="Packagist" />
 
 For open source Magento modules, you'll want to go to <a href="https://packagist.org" target="_blank">https://packagist.org</a> and register your namespace & repository for easy installation. Let's first create a repository at either GitHub or Bitbucket, then we will push up our code. We want to use the Git HTTPS URL so Composer can easily download things without an SSH key.
 
@@ -92,7 +92,7 @@ Of course you will want to change `your-name` to the name of your GitHub/Bitbuck
 
 ## Downloading Module with Composer
 
-<Image src={import('./composer.png')} alt="Composer" />
+<Image src={import('./_composer.png')} alt="Composer" />
 
 After the package is registered at Packagist, we can easily install our module with Composer by running:
 

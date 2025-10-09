@@ -5,7 +5,7 @@ tags: ["magento", "magento2"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Magento implements CSRF (Cross-Site Request Forgery) tokens on form POST submissions. This is designed to prevent unwanted actions from being executed while a user is currently authenticated.
 
@@ -15,9 +15,7 @@ Whenever you come across an "Invalid Form Key" error, it typically means the CSR
 
 Instead of modifying the controller directly, I created a local module override for the Cybersource module. First I create a `Foo_SecureAcceptance` module (a good way to name a module overriding the `Cybersource_SecureAcceptance` module):
 
-<code class="title">Foo/SecureAcceptance/registration.php</code>
-
-```php
+```php title=Foo/SecureAcceptance/registration.php
 <?php
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
@@ -26,9 +24,7 @@ Instead of modifying the controller directly, I created a local module override 
 );
 ```
 
-<code class="title">Foo/SecureAcceptance/etc/module.xml</code>
-
-```xml
+```xml title=Foo/SecureAcceptance/etc/module.xml
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Foo_SecureAcceptance" setup_version="1.0.0">
@@ -41,9 +37,7 @@ Instead of modifying the controller directly, I created a local module override 
 
 This is a simple module, using a class preference to override the `PlaceOrder` controller of the Cybersource Secure Acceptance module:
 
-<code class="title">Foo/SecureAcceptance/etc/di.xml</code>
-
-```xml
+```xml title=Foo/SecureAcceptance/etc/di.xml
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="CyberSource\SecureAcceptance\Controller\Index\PlaceOrder" type="Foo\SecureAcceptance\Controller\Index\PlaceOrder"/>
@@ -55,9 +49,7 @@ For this class preference, I wanted to extend the existing `PlaceOrder` class. T
 - *createCsrfValidationException*: responsible for throwing a validation exception
 - *validateForCsrf*: whether this controller should be validated for CSRF
 
-<code class="title">Foo/SecureAcceptance/Controller/Index/PlaceOrder.php</code>
-
-```php
+```php title=Foo/SecureAcceptance/Controller/Index/PlaceOrder.php
 <?php
 namespace Foo\SecureAcceptance\Controller\Index;
 

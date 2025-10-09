@@ -5,7 +5,7 @@ tags: ["docker", "express", "nodejs"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I'll show you a stupid fast and simple way to create an express app with NodeJS, then deploy it with Docker. All you need is a simple text editor.
 
@@ -51,9 +51,7 @@ to this:
 
 And we'll create our `index.js` file. We'll keep it simple ;)
 
-<code class="title">index.js</code>
-
-```javascript
+```javascript title=index.js
 const app = require('express')();
 
 app.get('/', (req, res) => {
@@ -87,9 +85,7 @@ We want to exclude our local packages from Docker, as these will be installed at
 
 Now, we'll create a new file named `Dockerfile` with the following contents:
 
-<code class="title">Dockerfile</code>
-
-```docker
+```docker title=Dockerfile
 FROM mhart/alpine-node
 
 WORKDIR /src

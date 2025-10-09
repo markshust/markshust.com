@@ -5,7 +5,7 @@ tags: ["blocks", "magento", "magento2", "viewmodels"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 The current best practice for Magento 2.3 is to use ViewModels rather than Block classes. Jisse of Yireo wrote a great blog post about <a href="https://www.yireo.com/blog/2017-08-12-viewmodels-in-magento-2" target="_blank">ViewModels in Magento 2</a> that you should really read if you haven't already.
 
@@ -17,18 +17,14 @@ As far as I know this implementation is architecturally sound, as it keeps the D
 
 In this case, we want to call the `isLoggedIn()` method of the `Magento\Customer\Model\Session` class. Create a `Foo\Customer` module:
 
-<code class="title">app/code/Foo/Customer/registration.php</code>
-
-```php
+```php title=app/code/Foo/Customer/registration.php
 <?php
 use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Foo_Customer', __DIR__);
 ```
 
-<code class="title">app/code/Foo/Customer/etc/module.xml</code>
-
-```xml
+```xml title=app/code/Foo/Customer/etc/module.xml
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Foo_Customer" setup_version="1.0.0"/>
@@ -37,9 +33,7 @@ ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Foo_Customer', __DIR__
 
 This module will be simple and contain just one ViewModel for this demo:
 
-<code class="title">app/code/Foo/Customer/ViewModel/Session.php</code>
-
-```php
+```php title=app/code/Foo/Customer/ViewModel/Session.php
 <?php
 namespace Foo\Customer\ViewModel;
 

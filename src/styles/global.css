@@ -65,3 +65,18 @@ blockquote {
 	margin: 0 0 20px;
 	font-style: italic;
 }
+.remark-code-title {
+	background-color: #1a1d23;
+	color: #e1e4e8;
+	padding: 1rem;
+	font-family: monospace;
+	font-size: 0.875rem;
+	font-weight: 400;
+	border-radius: 6px 6px 0 0;
+	margin-bottom: 0;
+	margin-top: 1.5rem;
+}
+.remark-code-title + pre {
+	margin-top: 0;
+	border-radius: 0 0 6px 6px;
+}

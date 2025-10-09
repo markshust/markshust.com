@@ -5,7 +5,7 @@ tags: ["apache", "magento", "magento1", "performance"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Performance is the one area of your site that you can make you or break you on the web. Testing out a lot of strategies and hearing about how removing .htaccess files would *drastically* increase your page speed, I had to put it to the test. The theory behind this tweak is that when AllowOverrides are turned on, Apache checks every single directory to see if an .htaccess file exists, and that this lookup costs valuable web server time in projects that have lots of files (such as Magento and Zend Framework) and could cause latency in page requests.
 

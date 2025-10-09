@@ -5,7 +5,7 @@ tags: ["mysql", "nodejs", "socketio"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Personally, I find Node.js to be completely fascinating. It's a direct lineage of <a href="http://www.codinghorror.com/blog/2007/07/the-principle-of-least-power.html" target="_blank">Atwood's Law</a>, that "any application that can be written in JavaScript, will eventually be written in JavaScript". Even the server. This, my friends, in a day of jQuery and JSON starting to rule the world, is a beautiful thing.
 
@@ -46,9 +46,7 @@ cd node
 
 Now we want to create our `server.js` file and put in our backend code to run the server. Check out the comments for some basic understanding of what's going on; it's all really pretty simple.
 
-<code class="title">server.js</code>
-
-```js
+```js title=server.js
 var mysql = require('mysql')
 // Let’s make node/socketio listen on port 3000
 var io = require('socket.io').listen(3000)
@@ -126,9 +124,7 @@ Call me lazy or just biased, but I don't even think to begin any JavaScript app 
 
 Create a client-side html file which will load jQuery, socket.io, as well as our client-side code. We'll name this index.html.
 
-<code class="title">index.html</code>
-
-```html
+```html title=index.html
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>

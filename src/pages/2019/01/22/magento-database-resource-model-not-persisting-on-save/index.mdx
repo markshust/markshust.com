@@ -5,13 +5,11 @@ tags: ["magento", "magento2", "model"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 It's been a while since I've done any regular programming within Magento 2, and I was head down getting a new module to work. I was setting up the regular model & resource model for a new database entity like so:
 
-<code class="title">Foo/Bar/Model/Baz.php</code>
-
-```php
+```php title=Foo/Bar/Model/Baz.php
 <?php
 
 namespace Foo\Bar\Model;
@@ -29,9 +27,7 @@ class Baz extends AbstractModel
 }
 ```
 
-<code class="title">Foo/Bar/Model/ResourceModel/Baz.php</code>
-
-```php
+```php title=Foo/Bar/Model/ResourceModel/Baz.php
 <?php
 
 namespace Foo\Bar\Model\ResourceModel;
@@ -49,9 +45,7 @@ class Baz extends AbstractDb
 
 Then within another model, I was trying to save a new record to the database using Magento 2's preferred method with a resource object...
 
-<code class="title">Foo/Bar/Model/SomeOtherModel.php</code>
-
-```php
+```php title=Foo/Bar/Model/SomeOtherModel.php
 ...
 
     protected function createBazRecord($data)
@@ -84,9 +78,7 @@ When you create a new resource model that extends `Magento\Framework\Model\Resou
 ...unless, you set it to false within your resource model:
 
 
-<code class="title">Foo/Bar/Model/ResourceModel/Baz.php</code>
-
-```php
+```php title=Foo/Bar/Model/ResourceModel/Baz.php
 <?php
 
 namespace Foo\Bar\Model\ResourceModel;

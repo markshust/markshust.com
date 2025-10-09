@@ -5,7 +5,7 @@ tags: ["gatsby", "seo"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Gatsby has a simple plugin named `gatsby-plugin-canonical-urls` which sets the base URL used for canonical URLs for your website. Canonical URLs are important, as they tell search engines what the "original" URL was for a specific page or blog post. This helps prevent your website from being penalized for duplicate content.
 
@@ -134,7 +134,7 @@ Finally, we have one last step. Add the value of `canonical` to your blog post f
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
  title: "Post goes here"
  date: "2019-04-27T12:00:00.000Z"
@@ -142,7 +142,7 @@ import { Image } from '@astrojs/image/components';
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 ```
 

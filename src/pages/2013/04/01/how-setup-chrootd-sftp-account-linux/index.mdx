@@ -5,7 +5,7 @@ tags: ["php", "ioncube"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 When I went to create an SFTP account for a client, which needed to be chroot'd (~ locked down to that directory), I really didn't think it would be that difficult. Setting up regular SSH and FTP accounts is usually pretty straight forward, and actually so is creating SFTP accounts. But when you add in the ability to chroot it, it becomes a bit more complex. There aren't too many good straight-forward writeups about this online that actually explain things in any detail, so I did my best and tried to keep it simple.
 

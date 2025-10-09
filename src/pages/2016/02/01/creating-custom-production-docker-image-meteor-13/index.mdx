@@ -5,7 +5,7 @@ tags: ["docker", "meteor"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Meteor 1.3 introduces custom `package.json` support, which allows you to use custom NPM packages within your Meteor app. This is great, because up to Meteor 1.2 you needed to use oddly formatted "NPM wrapper" packages.
 
@@ -39,9 +39,7 @@ There are other NodeJS images which are smaller like [Alpine](https://github.com
 
 Let's now build our Dockerfile. After a lot of trial and error, here's what I wound up with:
 
-<code class="title">Dockerfile</code>
-
-```docker
+```docker title=Dockerfile
 FROM node:0.10.41-slim
 MAINTAINER Mark Shust &lt;mark@shust.com&gt;
 
@@ -114,9 +112,7 @@ Our final app code is now all done in /opt/app, so all we have to do is set the 
 
 We'll take one step back here, because we are trying to automate this build process as much as possible. I built a custom build script in my main Meteor app directory with the following:
 
-<code class="title">.dockerbuilddeploy</code>
-
-```bash
+```bash title=.dockerbuilddeploy
 #!/bin/bash
 VERSION=$1
 CURRENT_DIR=`basename $PWD`

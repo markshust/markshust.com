@@ -5,9 +5,9 @@ tags: ["layout", "magento", "magento2"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
-<Image src={import('./how-create-template-block-magento-2.png')} alt="How to create a template block in Magento 2" />
+<Image src={import('./_how-create-template-block-magento-2.png')} alt="How to create a template block in Magento 2" />
 
 Hopefully you've already read <a href="/2015/07/22/setting-your-magento-2-module-right-way-composer-packagist#overlay-context=2015/09/03/using-docker-machine-os-x-dinghy">Setting Up Your Magento 2 Module the Right Way with Composer & Packagist</a>, so we can start creating our module. We won't use Composer or Packagist in this tutorial to save some time, as we are just writing code to test out functionality. Let's get right into things.
 
@@ -21,9 +21,7 @@ mkdir -p app/code/Foo/Bar/etc
 
 Next, we'll create the module definition file:
 
-<code class="title">app/code/Foo/Bar/etc/module.xml</code>
-
-```xml
+```xml title=app/code/Foo/Bar/etc/module.xml
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Module/etc/module.xsd">
     <module name="Foo_Bar" setup_version="0.0.0"/>
 </config>
@@ -44,9 +42,7 @@ And with that, we're off to the races, as enabling a module also flushes the cac
 
 Magento 2 is now aware of our module, so let's create our block class. We'll do this by extending the `\Magento\Framework\View\Element\Template` class, and create a custom `getName` function:
 
-<code class="title">app/code/Foo/Bar/Block/Baz.php</code>
-
-```php
+```php title=app/code/Foo/Bar/Block/Baz.php
 <?php
 namespace Foo\Bar\Block;
 
@@ -74,9 +70,7 @@ mkdir -p app/code/Foo/Bar/view/frontend/layout
 
 Then create a layout XML file:
 
-<code class="title">app/code/Foo/Bar/view/frontend/layout/cms_index_index.xml</code>
-
-```xml
+```xml title=app/code/Foo/Bar/view/frontend/layout/cms_index_index.xml
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
     <body>
@@ -101,9 +95,7 @@ mkdir -p app/code/Foo/Bar/view/frontend/templates/default
 
 Then the actual template HTML file containing:
 
-<code class="title">app/code/Foo/Bar/view/frontend/templates/default/baz.phtml</code>
-
-```html
+```html title=app/code/Foo/Bar/view/frontend/templates/default/baz.phtml
 <h1><echo $block->getTitle() ></h1>
 ```
 
@@ -115,7 +107,7 @@ If you need to flush the cache for any reason (if the block isn't showing or was
 ./bin/magento cache:flush full_page  # Flush Full Page Cache
 ```
 
-<Image src={import('./foo-bar-baz-title.jpg')} alt="Foo bar baz title" />
+<Image src={import('./_foo-bar-baz-title.jpg')} alt="Foo bar baz title" />
 
 ## Conclusion
 

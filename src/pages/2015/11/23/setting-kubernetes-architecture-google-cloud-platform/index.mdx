@@ -5,7 +5,7 @@ tags: ["gcp", "kubernetes"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I needed a quick way to kick off some Docker containers, and wanted some experience working with Kubernetes. I've been playing around with Docker for some time now, and wanted to test out a real deployment to Google Cloud Platform. 
 
@@ -55,9 +55,7 @@ This will essentially generate 3 new compute engines, which will in turn talk to
 
 Pods manage the containers within our infrastructure. This process is very similar to setting up a replication controller, but with a bit simpler YAML file.
 
-<code class="title">pod.yml</code>
-
-```yaml
+```yaml title=pod.yml
 apiVersion: v1
 kind: Pod 
 metadata:
@@ -92,9 +90,7 @@ Let's create a replication cluster next. A replication control is just a fancy n
 
 Create a new local file with the following contents:
 
-<code class="title">pc.yml</code>
-
-```yaml
+```yaml title=pc.yml
 apiVersion: v1
 kind: ReplicationController
 metadata:
@@ -137,9 +133,7 @@ kubectl get rc
 
 Getting a service running is the last step in completing our Kubernetes architecture. A service maps a port from our cluster container to the port on a pod. The container ports we expose are in turn available to the pod, completing the cycle.
 
-<code class="title">service.yml</code>
-
-```yaml
+```yaml title=service.yml
 apiVersion: v1
 kind: Service
 metadata:

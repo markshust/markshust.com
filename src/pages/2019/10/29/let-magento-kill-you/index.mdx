@@ -5,7 +5,7 @@ tags: ["beginningmagento", "magento", "magento2", "php"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 I noticed a funny image online of a bright neon sign hanging in an office someplace. It read: "Find what you love and let it kill you".
 
@@ -54,7 +54,7 @@ Most developers just can't grasp the concepts. But, there's a simple reason for 
 
 Let's go back to this image:
 
-<Image src={import('./let-it-kill-you.jpg')} alt="Find what you love and let it kill you" />
+<Image src={import('./_let-it-kill-you.jpg')} alt="Find what you love and let it kill you" />
 
 There's something I haven't touched base on yet. **I love Magento.** I've been through so many ups and downs over the last 10 years, that it's amazing that I'm still doing this. But I persisted, and you should too.
 
@@ -66,4 +66,4 @@ I'll leave with this quote from perhaps my favorite movie documentary ever, the 
 
 > "Once you decide on your occupation...you must immerse yourself in your work. You have to fall in love with your work. Never complain about your job. You must dedicate your life to mastering your skill. That's the secret of success...and is the key to being regarded honorably." -- Jiro Ono
 
-<Image src={import('./sushi.jpg')} alt="Piece of sushi" />
+<Image src={import('./_sushi.jpg')} alt="Piece of sushi" />

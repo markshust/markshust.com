@@ -5,7 +5,7 @@ tags: ["layout", "magento", "magento1", "xml"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-import { Image } from '@astrojs/image/components';
+import { Image } from 'astro:assets';
 
 Sometimes it is necessary to create a custom layout file. Other times, you may need to define and set custom variables for use in your template file. This article demonstrates the ability to do both, in hopes to clarify the "Magento XML Magic" that is going on behind the scenes.
 
@@ -17,9 +17,7 @@ This example assumes you are rewriting the catalog product view block. To find o
 
 Let's go ahead and create your module, and setup all of the appropriate XML.
 
-<code class="title">app/etc/modules/Foo_Bar.xml</code>
-
-```xml
+```xml title=app/etc/modules/Foo_Bar.xml
 <?xml version="1.0"?>
 <config>
     <modules>
@@ -31,9 +29,7 @@ Let's go ahead and create your module, and setup all of the appropriate XML.
 </config>
 ```
 
-<code class="title">app/code/community/Foo/Bar/etc/config.xml</code>
-
-```xml
+```xml title=app/code/community/Foo/Bar/etc/config.xml
 <?xml version="1.0"?>
 <config>
     <modules>
@@ -74,9 +70,7 @@ Let's go ahead and create your module, and setup all of the appropriate XML.
 
 This is our custom layout XML file. We look in `app/design/frontend/base/default/layout/` for the appropriate XML handle to override. Once you find it (in this case, `catalog.xml`), take the name of the block you want to override, and reference it in your layout XML. We then use the setTemplate method using the action handle to set the appropriate template for this block.
 
-<code class="title">app/design/frontend/base/default/layout/foo/bar.xml</code>
-
-```xml
+```xml title=app/design/frontend/base/default/layout/foo/bar.xml
 <?xml version="1.0"?>
 <layout>
     <catalog_product_view>
@@ -90,9 +84,7 @@ This is our custom layout XML file. We look in `app/design/frontend/base/default
 
 Now that our XML is all taken care of, let's create our baz object by defining it within our model directory. Extending Varien_Object let's our model inherit the properties that are defined within that class.
 
-<code class="title">app/code/community/Foo/Bar/Model/Baz.php</code>
-
-```php
+```php title=app/code/community/Foo/Bar/Model/Baz.php
 <?php
 class Foo_Bar_Model_Baz extends Varien_Object
 {
@@ -103,9 +95,7 @@ Yep, that easy! Just a blank class.
 
 We then create our custom block, where we will reference the baz object we just created, and use Magento's magic setter methods to set the desired variable and it's value.
 
-<code class="title">app/code/community/Foo/Bar/Block/Catalog/Product/View.php</code>
-
-```php
+```php title=app/code/community/Foo/Bar/Block/Catalog/Product/View.php
 <?php
 class Foo_Bar_Block_Catalog_Product_View extends Mage_Catalog_Block_Product_View
 {
@@ -122,9 +112,7 @@ class Foo_Bar_Block_Catalog_Product_View extends Mage_Catalog_Block_Product_View
 
 The final step is to retrieve the object and the appropriate variable assigned to that object, again using the singleton method, and Magento's magic getter method.
 
-<code class="title">app/design/frontend/base/default/template/foo/bar/catalog/product/view.phtml</code>
-
-```php
+```php title=app/design/frontend/base/default/template/foo/bar/catalog/product/view.phtml
 <?php
 /**
  * Magento
