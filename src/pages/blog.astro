@@ -3,18 +3,44 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-// Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob('./*/**/*.{md,mdx}'))
-    .map(post => {
-      const [null1, year, month, day] = post.url.split('/');
+// Read frontmatter directly from files to avoid compiling all MDX content.
+const thisFile = fileURLToPath(import.meta.url);
+const pagesDir = path.resolve(path.dirname(thisFile), '..', 'pages');
+// In build mode, import.meta.url points to dist/, so resolve back to src/pages.
+const srcPagesDir = pagesDir.includes('/dist/')
+    ? pagesDir.replace('/dist/', '/src/')
+    : pagesDir;
+const postFiles = Object.keys(import.meta.glob('./*/**/*.{md,mdx}'));
+const posts = postFiles
+    .map(filePath => {
+      const raw = fs.readFileSync(path.join(srcPagesDir, filePath), 'utf-8');
+      const match = raw.match(/^---\n([\s\S]*?)\n---/);
+      const frontmatter: Record<string, string> = {};
+      if (match) {
+        for (const line of match[1].split('\n')) {
+          const [key, ...rest] = line.split(':');
+          if (key && rest.length) {
+            frontmatter[key.trim()] = rest.join(':').trim().replace(/^["']|["']$/g, '');
+          }
+        }
+      }
+      // filePath looks like: ./2023/05/10/slug/index.mdx
+      const segments = filePath.split('/');
+      const year = segments[1];
+      const month = segments[2];
+      const day = segments[3];
+      const slug = segments[4];
       return {
-        ...post,
-        pubDate: year + '-' + month + '-' + day
+        url: `/${year}/${month}/${day}/${slug}/`,
+        title: frontmatter.title || '',
+        pubDate: `${year}-${month}-${day}`
       };
     })
-    .sort((a, b) => new Date(a.pubDate).valueOf() - new Date(b.pubDate).valueOf())
-    .reverse()
+    .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
 ---
 
 <!DOCTYPE html>
@@ -55,7 +81,7 @@ const posts = (await Astro.glob('./*/**/*.{md,mdx}'))
 										timeZone: 'UTC'
 									})}
 								</time>
-								<a href={post.url}>{post.frontmatter.title}</a>
+								<a href={post.url}>{post.title}</a>
 							</li>
 						))
 					}
