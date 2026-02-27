@@ -36,7 +36,7 @@ const projects = [
   <div class="section-inner">
     <div class="reveal">
       <div class="section-label">02 / Building</div>
-      <h2 class="section-title">Tools that<br>developers love.</h2>
+      <h2 class="section-title">tools that<br>developers <span class="highlight">love</span>.</h2>
     </div>
     <div class="projects-grid">
       {projects.map((p, i) => (
@@ -97,6 +97,7 @@ const projects = [
   margin-bottom: 3rem;
   color: #000;
 }
+.section-title .highlight { color: #fff; }
 
 .project-poster {
   background: var(--dark);
