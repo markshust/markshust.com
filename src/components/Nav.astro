@@ -101,20 +101,26 @@ nav.main-nav.scrolled {
 
 @media (max-width: 768px) {
   nav.main-nav { padding: 1rem 1.25rem; }
+  nav.main-nav.menu-open {
+    top: 0; left: 0; right: 0; bottom: 0;
+    height: 100vh;
+    background: rgba(10, 10, 15, 0.98);
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+  }
   .nav-links {
     display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 10, 15, 0.98);
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     gap: 2.5rem;
-    z-index: 999;
+    width: 100%;
+    padding-top: calc(50vh - 10rem);
   }
   .nav-links.open { display: flex; }
   .nav-links a { font-size: 1.3rem; }
-  .nav-toggle { display: block; }
+  .nav-toggle { display: block; position: relative; z-index: 1; }
+  .nav-toggle.open { position: absolute; top: 1rem; right: 1.25rem; }
   .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
   .nav-toggle.open span:nth-child(2) { opacity: 0; }
   .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
@@ -127,15 +133,17 @@ nav.main-nav.scrolled {
   const links = document.getElementById('navLinks');
   const nav = document.getElementById('mainNav');
 
-  if (toggle && links) {
+  if (toggle && links && nav) {
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('open');
       links.classList.toggle('open');
+      nav.classList.toggle('menu-open');
     });
     links.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         toggle.classList.remove('open');
         links.classList.remove('open');
+        nav.classList.remove('menu-open');
       });
     });
   }
