@@ -29,21 +29,24 @@
         </div>
       </div>
 
-      <a class="academy-poster reveal-right delay-2" href="https://m.academy" target="_blank" rel="noreferrer">
-        <div class="academy-logo"><span class="accent">M</span>.academy</div>
-        <div class="academy-sub">Magento &amp; Adobe Commerce</div>
+      <div class="academy-poster reveal-right delay-2">
+        <a class="academy-logo-link" href="https://m.academy" target="_blank" rel="noreferrer">
+          <div class="academy-logo"><span class="accent">M</span>.academy</div>
+        </a>
+        <div class="academy-sub">Magento &amp; Adobe Commerce Developer Training</div>
         <ul class="course-list">
-          <li><span class="course-dot"></span>Set Up Magento 2 Dev Environment with Docker</li>
-          <li><span class="course-dot"></span>Build a 12 Factor Node.js App with Docker</li>
-          <li><span class="course-dot"></span>Magento 2 for Beginners</li>
-          <li><span class="course-dot"></span>Magento 2 Backend Development</li>
-          <li><span class="course-dot"></span>Advanced Magento Architecture</li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/magento-2-coding-kickstart/" target="_blank" rel="noreferrer">Magento 2 Coding Kickstart</a></li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/magento-2-theming/" target="_blank" rel="noreferrer">Magento 2 Power Theming</a></li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/knockoutjs-magento-2/" target="_blank" rel="noreferrer">Defeat Knockout.js in Magento 2</a></li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/customize-magento-2-checkout/" target="_blank" rel="noreferrer">Customize the Magento 2 Checkout</a></li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/ui-components-magento-2/" target="_blank" rel="noreferrer">UI Components in Magento 2</a></li>
+          <li><span class="course-dot"></span><a href="https://m.academy/courses/magento-2-admin-grids-forms/" target="_blank" rel="noreferrer">Transform M2 Admin Grids &amp; Forms</a></li>
         </ul>
-        <span class="academy-cta">
+        <a class="academy-cta" href="https://m.academy" target="_blank" rel="noreferrer">
           Start learning
           <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
-      </a>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -164,9 +167,10 @@
   color: var(--white);
 }
 .academy-logo .accent { color: var(--green); }
+.academy-logo-link { text-decoration: none; }
 .academy-sub {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--gray);
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -191,6 +195,10 @@
   transition: color 0.3s ease, padding-left 0.3s ease;
 }
 .course-list li:hover { color: var(--white); padding-left: 0.5rem; }
+.course-list a {
+  color: inherit;
+  text-decoration: none;
+}
 .course-dot {
   width: 8px; height: 8px;
   background: var(--green);

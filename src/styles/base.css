@@ -15,7 +15,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: #000;
+  background: #0a0a0f;
   color: var(--white);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -55,6 +55,15 @@ b {
 }
 
 /* Links: orange for dark theme */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+summary {
+  cursor: pointer;
+}
+
 a {
   color: var(--orange);
   text-decoration: none;

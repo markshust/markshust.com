@@ -6,13 +6,15 @@ const { postsByYear } = Astro.props;
 
 const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a));
 const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'];
+const visibleYears = years.filter(y => parseInt(y) >= 2020);
+const hiddenYears = years.filter(y => parseInt(y) < 2020);
 ---
 
 <section class="archive-room" id="archive">
   <div class="room-inner">
     <h2 class="archive-title reveal">The Archive <span>— by year</span></h2>
-    <div class="archive-years">
-      {years.map((year, yi) => (
+    <div class="archive-years" id="archiveYears">
+      {visibleYears.map((year, yi) => (
         <div class={`archive-year reveal delay-${Math.min(yi+1, 6)}`}>
           <div class="archive-year-label" style={`--year-color: ${dotColors[yi % 4]}`}>
             {year}
@@ -27,9 +29,71 @@ const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'
           </div>
         </div>
       ))}
+
+      {hiddenYears.map((year, yi) => {
+        const colorIdx = (visibleYears.length + yi) % 4;
+        return (
+          <div
+            class="archive-year archive-year--hidden"
+            data-archive-year={year}
+            style={`--year-color: ${dotColors[colorIdx]}`}
+          >
+            <div class="archive-year-label">
+              {year}
+            </div>
+            <div class="archive-posts">
+              {postsByYear[year].map(post => (
+                <a href={post.url} class="archive-post">
+                  <span class="archive-post-title">{post.title}</span>
+                  <span class="archive-post-date">{post.shortDate}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
+
+    {hiddenYears.length > 0 && (
+      <div class="archive-view-more-wrap" id="archiveViewMore">
+        <button class="archive-view-more" id="archiveViewMoreBtn" type="button">
+          View More
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    )}
   </div>
 </section>
+
+<script>
+(function() {
+  'use strict';
+  const btn = document.getElementById('archiveViewMoreBtn');
+  const wrap = document.getElementById('archiveViewMore');
+  if (!btn || !wrap) return;
+
+  const hidden = Array.from(document.querySelectorAll('.archive-year--hidden'));
+  let nextIndex = 0;
+
+  btn.addEventListener('click', () => {
+    if (nextIndex >= hidden.length) return;
+
+    const yearEl = hidden[nextIndex];
+    yearEl.classList.remove('archive-year--hidden');
+    yearEl.classList.add('archive-year--revealing');
+
+    requestAnimationFrame(() => {
+      yearEl.classList.add('archive-year--visible');
+    });
+
+    nextIndex++;
+
+    if (nextIndex >= hidden.length) {
+      wrap.style.display = 'none';
+    }
+  });
+})();
+</script>
 
 <style>
 .archive-room {
@@ -81,6 +145,26 @@ const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
+/* Hidden years: collapsed with no height */
+.archive-year--hidden {
+  display: none;
+}
+
+/* Revealing: show but start transparent and shifted */
+.archive-year--revealing {
+  display: grid;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Visible: animate in */
+.archive-year--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .archive-year-label {
   font-family: var(--font-heading);
   font-weight: 700;
@@ -117,26 +201,64 @@ const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'
 .archive-post-title {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
   color: var(--gray-light);
   letter-spacing: -0.01em;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .archive-post-date {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
   color: var(--gray);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
+/* View More button */
+.archive-view-more-wrap {
+  text-align: center;
+  margin-top: 3rem;
+}
+.archive-view-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  background: var(--orange);
+  padding: 0.9rem 2.25rem;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 6px 30px rgba(255,107,53,0.3);
+}
+.archive-view-more:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: var(--orange-bright);
+  box-shadow: 0 10px 40px rgba(255,107,53,0.4);
+}
+.archive-view-more svg {
+  width: 20px;
+  height: 20px;
+  stroke: #000;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 @media (max-width: 1024px) {
   .archive-year { grid-template-columns: 120px 1fr; gap: 1.5rem; }
+  .archive-year--revealing { grid-template-columns: 120px 1fr; }
 }
 @media (max-width: 768px) {
   .archive-room { padding: 5rem 0; }
   .room-inner { padding: 0 1.5rem; }
   .archive-year { grid-template-columns: 1fr; gap: 1.5rem; }
+  .archive-year--revealing { grid-template-columns: 1fr; }
   .archive-year-label { position: static; font-size: 2.5rem; }
   .archive-post { flex-direction: column; gap: 0.3rem; }
 }

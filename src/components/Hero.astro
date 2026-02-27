@@ -9,12 +9,12 @@
         <span class="line-2">Mark 👋</span>
       </h1>
       <div class="hero-tagline">
-        <span class="vr">$mark</span> <span class="punc">=</span> <span class="punc">[</span><span class="str">'writing'</span><span class="punc">,</span> <span class="str">'building'</span><span class="punc">,</span> <span class="str">'teaching'</span><span class="punc">];</span><span class="blink">_</span>
+        <span class="vr">$mark</span> <span class="punc">=</span> <span class="punc">[</span><span class="str">'computers'</span><span class="punc">,</span> <span class="str">'tennis'</span><span class="punc">,</span> <span class="str">'240sx'</span><span class="punc">];</span><span class="blink">_</span>
       </div>
       <div class="hero-roles">
-        <span class="hero-role writing">Writer</span>
-        <span class="hero-role building">Builder</span>
-        <span class="hero-role teaching">Teacher</span>
+        <a class="hero-role writing" href="#writing">writer</a>
+        <a class="hero-role building" href="#building">builder</a>
+        <a class="hero-role teaching" href="#teaching">teacher</a>
       </div>
       <p class="hero-desc">
         Building artisanal software through craft, code, and architecture, and sharing what I learn along the way.
@@ -25,6 +25,9 @@
         <div class="hero-photo-inner">
           <div class="photo-grid"></div>
           <div class="photo-scanline"></div>
+          <div class="photo-scanline h2"></div>
+          <div class="photo-scanline-v"></div>
+          <div class="photo-foreground"></div>
         </div>
         <div class="corner tl"></div>
         <div class="corner tr"></div>
@@ -136,7 +139,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: default;
+  text-decoration: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .hero-role:hover { transform: translateY(-2px); }
@@ -177,7 +180,7 @@
 .hero-photo-inner {
   width: 100%;
   height: 100%;
-  background: var(--dark-card) url('/images/mark-shust.png') center/cover no-repeat;
+  background: var(--dark-card) url('/images/mark-shust-bg.jpg') center/cover no-repeat;
   position: relative;
   overflow: hidden;
   clip-path: polygon(
@@ -194,7 +197,8 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, rgba(255,107,53,0.12) 0%, rgba(59,130,246,0.08) 50%, rgba(16,185,129,0.12) 100%);
-  z-index: 1;
+  z-index: 5;
+  pointer-events: none;
 }
 .photo-grid {
   position: absolute;
@@ -203,15 +207,42 @@
     linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 30px 30px;
-  z-index: 0;
+  z-index: 1;
 }
 .photo-scanline {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,107,53,0.3), rgba(59,130,246,0.3), rgba(16,185,129,0.3), transparent);
+  z-index: 2;
+  animation: scanDown 17s linear infinite;
+}
+.photo-scanline.h2 {
+  animation: scanDown 18s linear infinite;
+  animation-delay: -7s;
+  opacity: 0.15;
+}
+.photo-scanline-v {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255,107,53,0.3), rgba(59,130,246,0.3), rgba(16,185,129,0.3), transparent);
+  z-index: 2;
+  animation: scanRight 18s linear infinite;
+  animation-delay: -3s;
+}
+@keyframes scanRight {
+  0% { left: -1px; opacity: 0.2; }
+  15% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+  100% { left: 100%; opacity: 0.2; }
+}
+.photo-foreground {
+  position: absolute;
+  inset: 0;
+  background: url('/images/mark-shust-over.png') center/cover no-repeat;
   z-index: 3;
-  animation: scanDown 14s linear infinite;
+  pointer-events: none;
 }
 @keyframes scanDown {
   0% { top: -1px; opacity: 0.2; }
@@ -334,7 +365,7 @@
 }
 @media (max-width: 768px) {
   .hero { padding: 7rem 1.25rem 10rem; min-height: auto; }
-  .hero-photo { width: 200px; height: 250px; }
+  .hero-photo { width: clamp(260px, 65vw, 340px); height: clamp(320px, 80vw, 420px); }
   .scroll-cue { display: none; }
 }
 </style>

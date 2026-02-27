@@ -6,14 +6,13 @@ const today = new Date();
   <div class="footer-inner">
     <div>
       <div class="f-brand">mark<span>.</span>shust</div>
-      <div class="f-tagline">builder &middot; writer &middot; teacher</div>
+      <div class="f-tagline"><span class="ft-writer">writer</span> &middot; <span class="ft-builder">builder</span> &middot; <span class="ft-teacher">teacher</span></div>
     </div>
     <div class="f-links">
       <a href="https://m.academy" target="_blank" rel="noreferrer">M.academy</a>
       <a href="https://github.com/markshust" target="_blank" rel="noreferrer">GitHub</a>
-      <a href="https://youtube.com/markshust" target="_blank" rel="noreferrer">YouTube</a>
-      <a href="https://twitter.com/MarkShust" target="_blank" rel="noreferrer">Twitter</a>
       <a href="https://linkedin.com/in/markshust/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://youtube.com/markshust" target="_blank" rel="noreferrer">YouTube</a>
     </div>
     <div class="f-copy">&copy; 1985&ndash;{today.getFullYear()} Mark Shust. Cleveland, Ohio.</div>
   </div>
@@ -43,22 +42,26 @@ const today = new Date();
 .f-brand {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 2rem;
   color: var(--white);
   letter-spacing: -0.03em;
 }
 .f-brand span { color: var(--orange); }
 .f-tagline {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 1.1rem;
   color: var(--gray);
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
 }
+.ft-writer { color: var(--orange); }
+.ft-builder { color: var(--blue); }
+.ft-teacher { color: var(--green); }
 .f-links {
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 0.5rem;
 }
 .f-links a {
   font-family: var(--font-mono);
@@ -77,6 +80,7 @@ const today = new Date();
   text-align: right;
   justify-self: end;
   align-self: start;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {

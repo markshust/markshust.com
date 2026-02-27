@@ -40,18 +40,20 @@ if (url) {
   <body>
     <Nav homepage={false} />
     <main class="post-main">
-      <article class="post-article">
-        <header class="post-header">
-          <h1 class="post-title">{title}</h1>
-          {formattedDate && (
-            <time class="post-date" datetime={pubDate}>{formattedDate}</time>
-          )}
-          <div class="post-divider"></div>
-        </header>
-        <div class="post-content">
-          <slot />
-        </div>
-      </article>
+      <div class="post-wrap">
+        <article class="post-article">
+          <header class="post-header">
+            <h1 class="post-title">{title}</h1>
+            {formattedDate && (
+              <time class="post-date" datetime={pubDate}>{formattedDate}</time>
+            )}
+            <div class="post-divider"></div>
+          </header>
+          <div class="post-content">
+            <slot />
+          </div>
+        </article>
+      </div>
     </main>
     <Footer />
   </body>
@@ -60,41 +62,48 @@ if (url) {
 <style>
   /* Layout */
   .post-main {
-    padding-top: calc(var(--nav-height) + 3rem);
-    padding-bottom: 6rem;
+    padding-top: var(--nav-height);
     min-height: 100vh;
-    background: var(--dark);
+    background: #0b0d14;
+  }
+
+  .post-wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+    background: rgba(255, 255, 255, 0.02);
   }
 
   .post-article {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 3rem;
   }
 
   /* Header */
   .post-header {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 
   .post-title {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(3rem, 7vw, 5rem);
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     color: var(--white);
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .post-date {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 1.05rem;
     color: var(--gray);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .post-divider {
@@ -106,10 +115,10 @@ if (url) {
   /* Article content typography */
   .post-content :global(p) {
     font-family: var(--font-body);
-    font-size: clamp(1rem, 1.1vw, 1.125rem);
-    line-height: 1.8;
+    font-size: clamp(1.2rem, 1.5vw, 1.375rem);
+    line-height: 1.85;
     color: var(--gray-light);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 
   .post-content :global(h1),
@@ -120,14 +129,14 @@ if (url) {
   .post-content :global(h6) {
     font-family: var(--font-heading);
     color: var(--white);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.15;
   }
 
-  .post-content :global(h2) { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -0.02em; }
-  .post-content :global(h3) { font-size: clamp(1.25rem, 2vw, 1.5rem); }
-  .post-content :global(h4) { font-size: 1.125rem; }
+  .post-content :global(h2) { font-size: clamp(2rem, 3.5vw, 2.75rem); letter-spacing: -0.03em; }
+  .post-content :global(h3) { font-size: clamp(1.6rem, 2.5vw, 2rem); letter-spacing: -0.02em; }
+  .post-content :global(h4) { font-size: clamp(1.3rem, 2vw, 1.6rem); }
 
   .post-content :global(a) {
     color: var(--orange);
@@ -153,9 +162,9 @@ if (url) {
   }
 
   .post-content :global(li) {
-    font-size: clamp(1rem, 1.1vw, 1.125rem);
-    line-height: 1.8;
-    margin-bottom: 0.4rem;
+    font-size: clamp(1.2rem, 1.5vw, 1.375rem);
+    line-height: 1.85;
+    margin-bottom: 0.5rem;
   }
 
   .post-content :global(blockquote) {
@@ -178,7 +187,7 @@ if (url) {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
 
   .post-content :global(th) {
@@ -214,7 +223,7 @@ if (url) {
   }
 
   .post-content :global(pre) {
-    margin: 1.5rem 0;
+    margin: 3rem -4rem;
     border-radius: 8px;
     overflow-x: auto;
   }
@@ -222,18 +231,20 @@ if (url) {
   .post-content :global(pre > code) {
     all: unset;
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
     display: block;
   }
 
   .post-content :global(.remark-code-title) {
     background: #1a1d23;
     color: #e1e4e8;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
     border-radius: 6px 6px 0 0;
-    margin-top: 1.5rem;
+    margin-top: 3rem;
+    margin-left: -4rem;
+    margin-right: -4rem;
     margin-bottom: 0;
   }
 
@@ -243,7 +254,10 @@ if (url) {
   }
 
   @media (max-width: 768px) {
-    .post-article { padding: 0 1.25rem; }
+    .post-article { padding: 0 1.5rem; }
     .post-main { padding-top: calc(var(--nav-height) + 2rem); }
+    .post-content :global(pre) { margin-left: -1.5rem; margin-right: -1.5rem; border-radius: 0; }
+    .post-content :global(.remark-code-title) { margin-left: -1.5rem; margin-right: -1.5rem; border-radius: 0; }
+    .post-content :global(.remark-code-title + pre) { border-radius: 0; }
   }
 </style>
