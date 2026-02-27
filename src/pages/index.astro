@@ -1,28 +1,168 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import DiagonalBand from '../components/DiagonalBand.astro';
+import MarqueeTrack from '../components/MarqueeTrack.astro';
+import WritingSection from '../components/WritingSection.astro';
+import BuildingSection from '../components/BuildingSection.astro';
+import TeachingSection from '../components/TeachingSection.astro';
+import ArchiveSection from '../components/ArchiveSection.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const thisFile = fileURLToPath(import.meta.url);
+const pagesDir = path.resolve(path.dirname(thisFile), '..', 'pages');
+const srcPagesDir = pagesDir.includes('/dist/')
+    ? pagesDir.replace('/dist/', '/src/')
+    : pagesDir;
+const postFiles = Object.keys(import.meta.glob('./*/**/*.{md,mdx}'));
+
+const allPosts = postFiles
+    .map(filePath => {
+      const raw = fs.readFileSync(path.join(srcPagesDir, filePath), 'utf-8');
+      const match = raw.match(/^---\n([\s\S]*?)\n---/);
+      const frontmatter: Record<string, string> = {};
+      if (match) {
+        for (const line of match[1].split('\n')) {
+          const [key, ...rest] = line.split(':');
+          if (key && rest.length) {
+            frontmatter[key.trim()] = rest.join(':').trim().replace(/^["']|["']$/g, '');
+          }
+        }
+      }
+      const segments = filePath.split('/');
+      const year = segments[1];
+      const month = segments[2];
+      const day = segments[3];
+      const slug = segments[4];
+      const pubDate = `${year}-${month}-${day}`;
+      return {
+        url: `/${year}/${month}/${day}/${slug}/`,
+        title: frontmatter.title || '',
+        pubDate,
+      };
+    })
+    .filter(p => p.title)
+    .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf());
+
+const latestPosts = allPosts.slice(0, 4).map(p => ({
+  url: p.url,
+  title: p.title,
+  date: new Date(p.pubDate).toLocaleDateString('en-us', {
+    year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC'
+  }),
+}));
+
+const postsByYear: Record<string, Array<{ url: string; title: string; date: string; shortDate: string }>> = {};
+for (const p of allPosts) {
+  const year = p.pubDate.split('-')[0];
+  if (!postsByYear[year]) postsByYear[year] = [];
+  postsByYear[year].push({
+    url: p.url,
+    title: p.title,
+    date: p.pubDate,
+    shortDate: new Date(p.pubDate).toLocaleDateString('en-us', {
+      month: 'short', day: 'numeric', timeZone: 'UTC'
+    }),
+  });
+}
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title="Mark Shust | Adobe Commerce Certified Magento Developer, Architect & Teacher in Cleveland, Ohio" description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header title="Mark Shust" />
-		<main>
-			<h1>Hey, I'm Mark! 👋</h1>
-			<p>I’ve been following Magento since the early days (version 0.8?). Before Magento, I was an experienced PHP developer with a number of development agencies. Eventually, I learned enough to become a <a href="https://www.zend-zce.com/en/yellow-pages/ZEND014633" target="_blank" rel="noreferrer">Zend Certified Engineer</a>.</p>
-		    <p>Once I started developing full time in Magento, around version 1.4, I quickly realized this framework was special, and wanted to learn everything about it. I flew out to Culver City and got trained at Magento Inc.’s headquarters, and the bug bit me.</p>
-			<p>On the flight home, I knew I’d be involved with Magento for a long time. I wanted to deliver exceptional work to my clients, so I learned everything I could. I created a number of Magento modules, gained experience as a solution architect, and even gave a speech at Magento Imagine in Las Vegas.</p>
-			<p>Years passed, and my passion has only grown since those early years, eventually becoming an <a href="https://www.youracclaim.com/users/mark-shust" target="_blank" rel="noreferrer">Adobe Certified Magento Developer</a>. I got quite involved with Docker in my early years of trying to setup Magento 2 on my Mac, which eventually became <a href="https://github.com/markshust/docker-magento" target="_blank" rel="noreferrer">the most popular development environment for Magento 2</a>.</p>
-			<p>As the repository grew in popularity, I became quite versed with <a href="https://m.academy/courses/build-12-factor-nodejs-app-docker/" target="_blank" rel="noreferrer">building 12 Factor Apps with Docker</a>, and even gave another speech at Meet Magento in New York.</p>
-			<p>As usage for the project grew, so did the number of questions I received about it. I decided to put together a collection of lessons to teach all of the concepts so you can easily <a href="https://m.academy/courses/set-up-magento-2-development-environment-docker/" target="_blank" rel="noreferrer">set up a Magento 2 Development environment with Docker</a>. This course became the first contribution to <a href="https://m.academy" target="_blank" rel="noreferrer">M.academy</a>, a training resource I put together to teach everything I know about Magento to others.</p>
-			<p>Over the years my passion has changed from consultant to teacher. I’m obsessed with teaching others all of the special techniques &amp; tricks I learned over all these years.</p><p>My wish is that you learn to love Magento as much as I do, and became a great developer or architect at that. I promise to do my best, and hope that one day you can <a href="/2019/10/29/let-magento-kill-you/">let Magento kill you</a> too.</p>
-			<p>Keep coding,<br>- Mark</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead
+      title="Mark Shust — Builder, Writer, Teacher"
+      description="Mark Shust builds artisanal software through craft, code, and architecture, and shares what he learns along the way."
+    />
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <Nav homepage={true} />
+      <Hero />
+      <DiagonalBand variant="1">
+        <MarqueeTrack />
+      </DiagonalBand>
+      <WritingSection posts={latestPosts} />
+      <DiagonalBand variant="2" />
+      <BuildingSection />
+      <TeachingSection />
+      <ArchiveSection postsByYear={postsByYear} />
+      <Footer />
+    </div>
+  </body>
 </html>
+
+<style>
+  .site-wrapper {
+    max-width: 2560px;
+    margin: 0 auto;
+    background: var(--dark);
+    position: relative;
+    overflow-x: hidden;
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  // Scroll reveal (IntersectionObserver)
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  const cObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseInt(el.dataset.target || '0');
+        const dur = 2200;
+        const start = performance.now();
+        (function tick(now) {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target).toLocaleString();
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+        cObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => cObs.observe(c));
+
+  // Project card mouse glow
+  document.querySelectorAll('.project-poster').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+
+  // Smooth scroll for hash links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      const t = document.querySelector(href);
+      if (t) {
+        e.preventDefault();
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+})();
+</script>

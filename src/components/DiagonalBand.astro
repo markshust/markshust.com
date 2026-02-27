@@ -1,0 +1,54 @@
+---
+export interface Props {
+  variant: '1' | '2';
+}
+const { variant } = Astro.props;
+---
+<div class={`diagonal-band diagonal-band--${variant}`}>
+  <slot />
+</div>
+
+<style>
+.diagonal-band {
+  position: relative;
+  overflow: hidden;
+  margin-left: -5vw;
+  margin-right: -5vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.diagonal-band::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.diagonal-band--1 {
+  background: var(--orange);
+  z-index: 30;
+  transform: skewY(-3deg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: clamp(3rem, 5vw, 3rem);
+  padding-bottom: clamp(5rem, 5vw, 3rem);
+  margin-top: clamp(-5rem, -5vw, -3rem);
+  margin-bottom: clamp(-5rem, -5vw, -3rem);
+}
+
+.diagonal-band--2 {
+  background: var(--blue);
+  z-index: 30;
+  transform: skewY(3deg);
+  height: clamp(6rem, 12vw, 10rem);
+  margin-top: clamp(-5rem, -5vw, -3rem);
+  margin-bottom: clamp(-5rem, -5vw, -3rem);
+}
+
+@media (max-width: 480px) {
+  .diagonal-band--1 { padding: 1.5rem 5vw; }
+}
+</style>

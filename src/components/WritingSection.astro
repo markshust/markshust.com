@@ -1,0 +1,259 @@
+---
+export interface Props {
+  posts: Array<{ url: string; title: string; date: string }>;
+}
+const { posts } = Astro.props;
+const featuredPost = posts[0];
+const stackPosts = posts.slice(1, 4);
+---
+
+<section class="section-writing" id="writing">
+  <div class="bg-text">WRITING</div>
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">01 / Writing</div>
+      <h2 class="section-title">Words that<br>ship ideas.</h2>
+    </div>
+
+    <div class="writing-grid">
+      <!-- Featured post -->
+      <a class="featured-post reveal delay-1" href={featuredPost.url}>
+        <span class="ghost-num">01</span>
+        <div class="badge-latest">Latest</div>
+        <h3 class="post-title">{featuredPost.title}</h3>
+        <div class="post-date">{featuredPost.date}</div>
+        <div class="arrow-circle">
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </div>
+      </a>
+
+      <!-- Post stack -->
+      <div class="post-stack">
+        {stackPosts.map((post, i) => (
+          <a class={`post-card reveal delay-${i+2}`} href={post.url}>
+            <span class="card-num">0{i+2}</span>
+            <div class="post-date">{post.date}</div>
+            <h3 class="post-title">{post.title}</h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.section-writing {
+  background: var(--orange);
+  color: #000;
+  padding: clamp(5rem, 10vw, 20rem) 2.5rem;
+  padding-top: clamp(5rem, 5vw, 5rem);
+  position: relative;
+  overflow: hidden;
+  z-index: 20;
+}
+.section-writing .bg-text {
+  position: absolute;
+  top: 5rem; right: -0.5rem;
+  font-family: var(--font-heading);
+  font-size: clamp(10rem, 22vw, 24rem);
+  font-weight: 700;
+  color: rgba(0,0,0,0.05);
+  line-height: 0.85;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+}
+.section-writing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 3rem;
+  color: #000;
+}
+
+.writing-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Featured post */
+.featured-post {
+  background: var(--dark);
+  color: var(--white);
+  padding: clamp(2.25rem, 4vw, 3.5rem);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+  cursor: pointer;
+}
+.featured-post:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+}
+.featured-post::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-bright));
+}
+.ghost-num {
+  position: absolute;
+  top: 0.5rem; right: 1rem;
+  font-family: var(--font-heading);
+  font-size: 9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+.badge-latest {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.badge-latest::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+.featured-post .post-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+.featured-post .post-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+.arrow-circle {
+  position: absolute;
+  bottom: 2rem; right: 2rem;
+  width: 52px; height: 52px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.featured-post:hover .arrow-circle {
+  transform: translate(5px, -5px) scale(1.1);
+}
+.arrow-circle svg {
+  width: 22px; height: 22px;
+  stroke: #000; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Post stack */
+.post-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.post-card {
+  background: var(--dark);
+  color: var(--white);
+  padding: clamp(1.4rem, 2.2vw, 2rem);
+  border-radius: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.post-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+}
+.post-card .post-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gray);
+  letter-spacing: 0.04em;
+}
+.post-card .post-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--white);
+}
+.card-num {
+  position: absolute;
+  top: 0.5rem; right: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .writing-grid { grid-template-columns: 1fr; }
+  .section-writing { padding-bottom: 12rem; }
+}
+@media (max-width: 768px) {
+  .section-writing { padding: 4rem 1.25rem 12rem; }
+  .section-title { font-size: clamp(2.8rem, 11vw, 4rem); }
+  .featured-post { min-height: 300px; }
+  .featured-post .post-title { font-size: 1.7rem; }
+}
+</style>

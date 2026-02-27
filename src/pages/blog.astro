@@ -1,20 +1,19 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
+import { SITE_DESCRIPTION } from '../config';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Read frontmatter directly from files to avoid compiling all MDX content.
 const thisFile = fileURLToPath(import.meta.url);
 const pagesDir = path.resolve(path.dirname(thisFile), '..', 'pages');
-// In build mode, import.meta.url points to dist/, so resolve back to src/pages.
 const srcPagesDir = pagesDir.includes('/dist/')
     ? pagesDir.replace('/dist/', '/src/')
     : pagesDir;
 const postFiles = Object.keys(import.meta.glob('./*/**/*.{md,mdx}'));
+
 const posts = postFiles
     .map(filePath => {
       const raw = fs.readFileSync(path.join(srcPagesDir, filePath), 'utf-8');
@@ -28,7 +27,6 @@ const posts = postFiles
           }
         }
       }
-      // filePath looks like: ./2023/05/10/slug/index.mdx
       const segments = filePath.split('/');
       const year = segments[1];
       const month = segments[2];
@@ -37,57 +35,166 @@ const posts = postFiles
       return {
         url: `/${year}/${month}/${day}/${slug}/`,
         title: frontmatter.title || '',
-        pubDate: `${year}-${month}-${day}`
+        pubDate: `${year}-${month}-${day}`,
       };
     })
-    .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
+    .filter(p => p.title)
+    .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf());
+
+// Group by year
+const postsByYear: Record<string, typeof posts> = {};
+for (const post of posts) {
+  const year = post.pubDate.split('-')[0];
+  if (!postsByYear[year]) postsByYear[year] = [];
+  postsByYear[year].push(post);
+}
+const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a));
+const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'];
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title="Mark Shust's Blog about Magento, PHP, Docker and more" description={SITE_DESCRIPTION} />
-		<style>
-			ul {
-				list-style-type: none;
-				padding: unset;
-			}
-			ul li {
-				display: flex;
-			}
-			ul li time {
-				flex: 0 0 130px;
-				font-style: italic;
-				color: #595959;
-			}
-			ul li a:visited {
-				color: #8e32dc;
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<time datetime={post.pubDate}>
-									{new Date(post.pubDate).toLocaleDateString('en-us', {
-										year: 'numeric',
-										month: 'short',
-										day: 'numeric',
-										timeZone: 'UTC'
-									})}
-								</time>
-								<a href={post.url}>{post.title}</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead
+      title="The Archive | Mark Shust"
+      description={SITE_DESCRIPTION}
+    />
+  </head>
+  <body>
+    <Nav homepage={false} />
+    <main class="archive-page">
+      <div class="archive-page-inner">
+        <h1 class="archive-page-title">The Archive <span>— all posts</span></h1>
+        <div class="archive-years">
+          {years.map((year, yi) => (
+            <div class="archive-year">
+              <div
+                class="archive-year-label"
+                style={`--year-color: ${dotColors[yi % 4]}`}
+              >
+                {year}
+              </div>
+              <div class="archive-posts">
+                {postsByYear[year].map(post => (
+                  <a href={post.url} class="archive-post">
+                    <span class="archive-post-title">{post.title}</span>
+                    <span class="archive-post-date">
+                      {new Date(post.pubDate).toLocaleDateString('en-us', {
+                        month: 'short', day: 'numeric', timeZone: 'UTC'
+                      })}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+    <Footer />
+  </body>
 </html>
+
+<style>
+  .archive-page {
+    background: var(--dark);
+    min-height: 100vh;
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 6rem;
+  }
+
+  .archive-page-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .archive-page-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+  .archive-page-title span { color: var(--gray); }
+
+  .archive-years {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .archive-year {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .archive-year-label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 3.5rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--year-color);
+    position: sticky;
+    top: calc(var(--nav-height) + 1rem);
+  }
+
+  .archive-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .archive-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding: 1.1rem 1.5rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .archive-post:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+    transform: translateX(8px);
+  }
+
+  .archive-post-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--gray-light);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .archive-post:hover .archive-post-title { color: var(--white); }
+
+  .archive-post-date {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--gray);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .archive-year { grid-template-columns: 120px 1fr; gap: 1.5rem; }
+  }
+  @media (max-width: 768px) {
+    .archive-page-inner { padding: 0 1.5rem; }
+    .archive-year { grid-template-columns: 1fr; gap: 1.5rem; }
+    .archive-year-label { position: static; font-size: 2.5rem; }
+    .archive-post { flex-direction: column; gap: 0.3rem; }
+  }
+</style>

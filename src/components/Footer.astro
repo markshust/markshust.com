@@ -1,24 +1,87 @@
 ---
 const today = new Date();
-import HeaderLink from './HeaderLink.astro';
 ---
 
-<footer>
-	<div class="copyright">&copy; 1985-{today.getFullYear()} Mark Shust</div>
-	<nav>
-		<HeaderLink href="https://m.academy" target="_blank">M.academy</HeaderLink>
-		<HeaderLink href="https://github.com/markshust" target="_blank">GitHub</HeaderLink>
-		<HeaderLink href="https://youtube.com/markshust" target="_blank">YouTube</HeaderLink>
-		<HeaderLink href="https://twitter.com/MarkShust" target="_blank">Twitter</HeaderLink>
-		<HeaderLink href="https://linkedin.com/in/markshust/" target="_blank">LinkedIn</HeaderLink>
-    </nav>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="f-brand">mark<span>.</span>shust</div>
+      <div class="f-tagline">builder &middot; writer &middot; teacher</div>
+    </div>
+    <div class="f-links">
+      <a href="https://m.academy" target="_blank" rel="noreferrer">M.academy</a>
+      <a href="https://github.com/markshust" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://youtube.com/markshust" target="_blank" rel="noreferrer">YouTube</a>
+      <a href="https://twitter.com/MarkShust" target="_blank" rel="noreferrer">Twitter</a>
+      <a href="https://linkedin.com/in/markshust/" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+    <div class="f-copy">&copy; 1985&ndash;{today.getFullYear()} Mark Shust. Cleveland, Ohio.</div>
+  </div>
 </footer>
+
 <style>
-	footer {
-		padding: 25px;
-		text-align: center;
-	}
-    .copyright {
-        margin-bottom: 20px;
-    }
+.site-footer {
+  background: var(--dark-card);
+  padding: clamp(3rem, 6vw, 5rem) 2.5rem;
+  position: relative;
+}
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--blue), var(--green));
+}
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 3rem;
+  align-items: start;
+}
+.f-brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+.f-brand span { color: var(--orange); }
+.f-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--gray);
+  margin-top: 0.4rem;
+}
+.f-links {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.f-links a {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--gray-light);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+}
+.f-links a:hover { color: var(--white); }
+.f-copy {
+  font-size: 0.82rem;
+  color: var(--gray);
+  text-align: right;
+  justify-self: end;
+  align-self: start;
+}
+
+@media (max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+  .f-links { align-items: center; }
+  .f-copy { text-align: center; }
+}
 </style>

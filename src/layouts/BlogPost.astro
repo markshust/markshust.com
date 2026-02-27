@@ -1,59 +1,249 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 export interface Props {
-	content: {
-		title: string;
-		description: string;
-	};
+  content: {
+    title: string;
+    description: string;
+    url?: string;
+  };
 }
 
 const {
-	content: { title, description, url },
+  content: { title, description, url },
 } = Astro.props;
-const [null1, year, month, day] = url.split('/');
-const pubDate = year + '-' + month + '-' + day;
+
+// Parse date from URL path: /year/month/day/slug/
+let pubDate = '';
+let formattedDate = '';
+if (url) {
+  const segments = url.split('/').filter(Boolean);
+  if (segments.length >= 3) {
+    const [year, month, day] = segments;
+    pubDate = `${year}-${month}-${day}`;
+    const d = new Date(pubDate);
+    if (!isNaN(d.getTime())) {
+      formattedDate = d.toLocaleDateString('en-us', {
+        year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'
+      });
+    }
+  }
+}
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title + " | Mark Shust"} description={description} />
-		<style>
-			.title {
-				font-size: 2em;
-				margin: 0.25em 0 0;
-			}
-			hr {
-				border-top: 1px solid #ddd;
-				margin: 1rem 0;
-			}
-			article time {
-				font-style: italic;
-				color: #595959;
-			}
-		</style>
-	</head>
-
-	<body>
-		<Header />
-		<main>
-			<article>
-				<h1 class="title">{title}</h1>
-				<time datetime={pubDate}>
-                    {day && new Date(pubDate).toLocaleDateString('en-us', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        timeZone: 'UTC'
-                    })}
-                </time>
-				<hr />
-				<slot />
-				<hr />
-			</article>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={title + " | Mark Shust"} description={description} />
+  </head>
+  <body>
+    <Nav homepage={false} />
+    <main class="post-main">
+      <article class="post-article">
+        <header class="post-header">
+          <h1 class="post-title">{title}</h1>
+          {formattedDate && (
+            <time class="post-date" datetime={pubDate}>{formattedDate}</time>
+          )}
+          <div class="post-divider"></div>
+        </header>
+        <div class="post-content">
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>
+
+<style>
+  /* Layout */
+  .post-main {
+    padding-top: calc(var(--nav-height) + 3rem);
+    padding-bottom: 6rem;
+    min-height: 100vh;
+    background: var(--dark);
+  }
+
+  .post-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Header */
+  .post-header {
+    margin-bottom: 3rem;
+  }
+
+  .post-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .post-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+    margin-bottom: 2.5rem;
+  }
+
+  /* Article content typography */
+  .post-content :global(p) {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.1vw, 1.125rem);
+    line-height: 1.8;
+    color: var(--gray-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3),
+  .post-content :global(h4),
+  .post-content :global(h5),
+  .post-content :global(h6) {
+    font-family: var(--font-heading);
+    color: var(--white);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .post-content :global(h2) { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -0.02em; }
+  .post-content :global(h3) { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+  .post-content :global(h4) { font-size: 1.125rem; }
+
+  .post-content :global(a) {
+    color: var(--orange);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+  .post-content :global(a:hover) { color: var(--orange-bright); }
+
+  .post-content :global(strong),
+  .post-content :global(b) {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .post-content :global(em) { color: var(--gray-light); font-style: italic; }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    padding-left: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--gray-light);
+  }
+
+  .post-content :global(li) {
+    font-size: clamp(1rem, 1.1vw, 1.125rem);
+    line-height: 1.8;
+    margin-bottom: 0.4rem;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 3px solid var(--orange);
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--gray-light);
+  }
+
+  .post-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+  }
+
+  .post-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+  }
+
+  .post-content :global(th) {
+    font-family: var(--font-heading);
+    color: var(--white);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--dark-subtle);
+  }
+
+  .post-content :global(td) {
+    color: var(--gray-light);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--dark-subtle);
+  }
+
+  .post-content :global(hr) {
+    border: none;
+    height: 1px;
+    background: var(--dark-subtle);
+    margin: 3rem 0;
+  }
+
+  /* Code */
+  .post-content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--dark-subtle);
+    color: var(--orange-bright);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .post-content :global(pre) {
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  .post-content :global(pre > code) {
+    all: unset;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    display: block;
+  }
+
+  .post-content :global(.remark-code-title) {
+    background: #1a1d23;
+    color: #e1e4e8;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    border-radius: 6px 6px 0 0;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .post-content :global(.remark-code-title + pre) {
+    margin-top: 0;
+    border-radius: 0 0 6px 6px;
+  }
+
+  @media (max-width: 768px) {
+    .post-article { padding: 0 1.25rem; }
+    .post-main { padding-top: calc(var(--nav-height) + 2rem); }
+  }
+</style>

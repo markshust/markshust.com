@@ -1,0 +1,45 @@
+---
+const keywords = ['PHP','DOCKER','MAGENTO','REACT','LINUX','AI','CLAUDE CODE','PHP','MYSQL','JAVASCRIPT','NGINX','GRAPHQL','WEBSOCKETS','M.ACADEMY','REDIS','COMPOSER','GIT','NODE.JS','MARKO'];
+---
+<div class="marquee-track">
+  {keywords.map(k => <span>{k}</span>)}
+  {keywords.map(k => <span>{k}</span>)}
+</div>
+
+<style>
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 40s linear infinite;
+}
+
+.marquee-track span {
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000;
+  white-space: nowrap;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  transform: skewX(4deg);
+}
+
+.marquee-track span::after {
+  content: '·';
+  font-size: 1.2em;
+  color: #000;
+  margin: 0 3rem;
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 480px) {
+  .marquee-track span { font-size: 1rem; }
+}
+</style>

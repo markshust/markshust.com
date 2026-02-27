@@ -1,0 +1,143 @@
+---
+export interface Props {
+  postsByYear: Record<string, Array<{ url: string; title: string; date: string; shortDate: string }>>;
+}
+const { postsByYear } = Astro.props;
+
+const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a));
+const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'];
+---
+
+<section class="archive-room" id="archive">
+  <div class="room-inner">
+    <h2 class="archive-title reveal">The Archive <span>— by year</span></h2>
+    <div class="archive-years">
+      {years.map((year, yi) => (
+        <div class={`archive-year reveal delay-${Math.min(yi+1, 6)}`}>
+          <div class="archive-year-label" style={`--year-color: ${dotColors[yi % 4]}`}>
+            {year}
+          </div>
+          <div class="archive-posts">
+            {postsByYear[year].map(post => (
+              <a href={post.url} class="archive-post">
+                <span class="archive-post-title">{post.title}</span>
+                <span class="archive-post-date">{post.shortDate}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.archive-room {
+  background: var(--dark);
+  position: relative;
+  padding: 8rem 0;
+  overflow: hidden;
+}
+.archive-room::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,107,53,0.03), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(59,130,246,0.03), transparent 50%);
+  pointer-events: none;
+}
+.room-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.archive-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 4rem;
+  text-align: center;
+}
+.archive-title span { color: var(--gray); }
+
+.archive-years {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+.archive-year {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  align-items: start;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.archive-year-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3.5rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  position: sticky;
+  top: 100px;
+  color: var(--year-color);
+}
+
+.archive-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.archive-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2rem;
+  padding: 1.1rem 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+.archive-post:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+  transform: translateX(8px);
+}
+.archive-post-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--gray-light);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+.archive-post-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gray);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .archive-year { grid-template-columns: 120px 1fr; gap: 1.5rem; }
+}
+@media (max-width: 768px) {
+  .archive-room { padding: 5rem 0; }
+  .room-inner { padding: 0 1.5rem; }
+  .archive-year { grid-template-columns: 1fr; gap: 1.5rem; }
+  .archive-year-label { position: static; font-size: 2.5rem; }
+  .archive-post { flex-direction: column; gap: 0.3rem; }
+}
+</style>

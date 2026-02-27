@@ -1,0 +1,236 @@
+---
+---
+
+<section class="section-teaching" id="teaching">
+  <div class="bg-text">TEACHING</div>
+  <div class="section-inner">
+    <div class="teaching-layout">
+      <div class="teaching-left">
+        <div class="reveal">
+          <div class="section-label">03 / Teaching</div>
+          <h2 class="section-title">Learn.<br>Build.<br>Ship.</h2>
+        </div>
+        <p class="teaching-desc reveal delay-1">
+          My passion shifted from consulting to teaching, and I share techniques and tricks I've learned along the way to help others learn too.
+        </p>
+        <div class="stats-row reveal delay-2">
+          <div class="stat-block">
+            <div class="stat-num"><span class="counter" data-target="20">0</span>+</div>
+            <div class="stat-label">Courses</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num"><span class="counter" data-target="15000">0</span>+</div>
+            <div class="stat-label">Students</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-num"><span class="counter" data-target="25">0</span>+</div>
+            <div class="stat-label">Years</div>
+          </div>
+        </div>
+      </div>
+
+      <a class="academy-poster reveal-right delay-2" href="https://m.academy" target="_blank" rel="noreferrer">
+        <div class="academy-logo"><span class="accent">M</span>.academy</div>
+        <div class="academy-sub">Magento &amp; Adobe Commerce</div>
+        <ul class="course-list">
+          <li><span class="course-dot"></span>Set Up Magento 2 Dev Environment with Docker</li>
+          <li><span class="course-dot"></span>Build a 12 Factor Node.js App with Docker</li>
+          <li><span class="course-dot"></span>Magento 2 for Beginners</li>
+          <li><span class="course-dot"></span>Magento 2 Backend Development</li>
+          <li><span class="course-dot"></span>Advanced Magento Architecture</li>
+        </ul>
+        <span class="academy-cta">
+          Start learning
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.section-teaching {
+  background: var(--green);
+  color: #000;
+  padding: clamp(5rem, 10vw, 9rem) 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.section-teaching .bg-text {
+  position: absolute;
+  top: -0.5rem; right: -0.5rem;
+  font-family: var(--font-heading);
+  font-size: clamp(10rem, 22vw, 24rem);
+  font-weight: 700;
+  color: rgba(0,0,0,0.05);
+  line-height: 0.85;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+.section-teaching::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 3rem;
+  color: #000;
+}
+.teaching-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.teaching-left .section-title { margin-bottom: 1.5rem; }
+.teaching-desc {
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  line-height: 1.75;
+  color: rgba(0,0,0,0.7);
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+}
+.stats-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.stat-block { text-align: left; }
+.stat-num {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  color: #000;
+  line-height: 1;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(0,0,0,0.5);
+  margin-top: 0.25rem;
+}
+
+/* M.academy poster */
+.academy-poster {
+  background: var(--dark);
+  color: var(--white);
+  border-radius: 24px;
+  padding: clamp(2.5rem, 4vw, 3.5rem);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+.academy-poster:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+.academy-poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(16,185,129,0.15), transparent 65%);
+  pointer-events: none;
+}
+.academy-logo {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+  color: var(--white);
+}
+.academy-logo .accent { color: var(--green); }
+.academy-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.course-list {
+  list-style: none;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.course-list li {
+  font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--gray-light);
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+.course-list li:hover { color: var(--white); padding-left: 0.5rem; }
+.course-dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.academy-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #000;
+  background: var(--green);
+  padding: 0.9rem 2rem;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.academy-cta:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 40px rgba(16,185,129,0.4);
+}
+.academy-cta svg {
+  width: 18px; height: 18px;
+  stroke: #000; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+@media (max-width: 1024px) {
+  .teaching-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .section-teaching { padding-bottom: 12rem; }
+}
+@media (max-width: 768px) {
+  .section-teaching { padding: 4rem 1.25rem 8rem; }
+  .stats-row { gap: 1.5rem; }
+}
+</style>

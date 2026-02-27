@@ -1,0 +1,149 @@
+---
+export interface Props {
+  homepage?: boolean;
+}
+const { homepage = false } = Astro.props;
+---
+
+<nav class="main-nav" id="mainNav">
+  <a href="/" class="nav-logo">mark<span>.</span>shust</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href={homepage ? '#writing' : '/#writing'} class="nav-writing">Writing</a></li>
+    <li><a href={homepage ? '#building' : '/#building'} class="nav-building">Building</a></li>
+    <li><a href={homepage ? '#teaching' : '/#teaching'} class="nav-teaching">Teaching</a></li>
+    <li><a href="/blog" class="nav-archive">Archive</a></li>
+    <li><a href="mailto:mark@shust.com" class="nav-contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<style>
+nav.main-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 10, 15, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.4s ease;
+}
+nav.main-nav.scrolled {
+  padding: 0.75rem 2.5rem;
+  background: rgba(10, 10, 15, 0.95);
+}
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.03em;
+}
+.nav-logo span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 2.25rem;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--gray-light);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-writing:hover { color: var(--orange) !important; }
+.nav-writing::after { background: var(--orange); }
+.nav-building:hover { color: var(--blue) !important; }
+.nav-building::after { background: var(--blue); }
+.nav-teaching:hover { color: var(--green) !important; }
+.nav-teaching::after { background: var(--green); }
+.nav-archive::after, .nav-contact::after { background: var(--white); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.nav-toggle span {
+  display: block;
+  width: 26px; height: 2px;
+  background: var(--white);
+  margin: 6px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  nav.main-nav { padding: 1rem 1.25rem; }
+  .nav-links {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 15, 0.98);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    z-index: 999;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1.3rem; }
+  .nav-toggle { display: block; }
+  .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+}
+</style>
+
+<script>
+(function() {
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  const nav = document.getElementById('mainNav');
+
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      links.classList.toggle('open');
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        links.classList.remove('open');
+      });
+    });
+  }
+
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  }
+})();
+</script>
