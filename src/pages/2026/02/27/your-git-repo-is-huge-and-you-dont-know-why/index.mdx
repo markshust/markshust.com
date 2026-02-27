@@ -1,0 +1,149 @@
+---
+title: "Your git repo is huge and you don't know why"
+date: "2026-02-27T00:00:00.000Z"
+tags: ["git"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+So you just pushed your repo to GitHub and noticed it's... way bigger than it should be. Like, 40MB+ for what should be a lightweight PHP app. What gives?
+
+Been there. Here's what happened and how I fixed it.
+
+## The problem
+
+I had a real-time chat app -- PHP, PostgreSQL, Tailwind CSS, the usual. Small codebase, maybe 20 commits deep. I pushed it upstream and the repo was *massive*. Something was clearly wrong.
+
+A quick investigation:
+
+```bash
+du -sh .git
+# 41M  .git
+```
+
+41 megs of git objects for a small app? Nah. Let's find the big blobs:
+
+```bash
+git rev-list --objects --all \
+  | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+  | sed -n 's/^blob //p' \
+  | sort -rnk2 \
+  | head -5
+```
+
+```
+8f2c1cd... 48071552 tailwindcss
+52128a86... 571330   vendor/phpunit/php-code-coverage/...
+a11263f0... 234146   vendor/composer/autoload_static.php
+27d4921c... 232018   vendor/phpunit/php-code-coverage/...
+5e6c10ee... 210428   composer.lock
+```
+
+There it is. A 48MB Tailwind CSS standalone binary and the entire `vendor/` directory -- both committed to git history.
+
+## Why .gitignore didn't save me
+
+Here's the thing that trips people up: `.gitignore` only prevents *untracked* files from being added. If you committed `vendor/` or a binary *before* adding the ignore rule, git keeps tracking it. The `.gitignore` entry becomes a no-op for those files.
+
+My `.gitignore` had all the right entries:
+
+```gitignore
+/vendor/
+/tailwindcss
+.idea/
+.phpunit.cache/
+```
+
+But they were committed early on, before these rules existed. Classic.
+
+## The naive fix (don't stop here)
+
+You might think this is enough:
+
+```bash
+git rm -r --cached vendor/ tailwindcss .idea/ .phpunit.cache/
+git commit -m "Remove tracked files that should be gitignored"
+git push
+```
+
+This removes them from the *current* tree, sure. But every previous commit still has those files baked in. Your repo is still huge because git stores the full history of every object.
+
+## The real fix: git filter-repo
+
+`git filter-repo` is a tool that rewrites your git history. It can surgically remove files or directories from every commit in your repo. Your commit messages, structure, and timeline stay intact — just the unwanted files disappear, as if they were never committed.
+
+### Install it
+
+```bash
+# macOS
+brew install git-filter-repo
+
+# pip
+pip install git-filter-repo
+```
+
+### Run it
+
+```bash
+git filter-repo \
+  --invert-paths \
+  --path vendor/ \
+  --path tailwindcss \
+  --path .idea/ \
+  --path .phpunit.cache/ \
+  --force
+```
+
+That's it. Every commit in history is rewritten without those paths. The `--invert-paths` flag means "remove everything matching these paths" (without it, you'd be *keeping only* those paths).
+
+### One gotcha: your remote gets removed
+
+`git filter-repo` removes your `origin` remote as a safety measure. It doesn't want you to accidentally push rewritten history without thinking about it. Just add it back:
+
+```bash
+git remote add origin git@github.com:youruser/yourrepo.git
+git push --force origin main
+```
+
+Yes, you need `--force` because you've rewritten history. Every commit gets a new hash. If others have cloned the repo, they'll need to re-clone or `git pull --rebase`. For a fresh repo or a solo project, this is a non-issue.
+
+## The results
+
+| | Before | After |
+|---|---|---|
+| `.git` size | 41 MB | 424 KB |
+| Commits | 20 | 20 |
+| History | Intact | Intact |
+
+From 41MB to 424KB. Same 20 commits, same messages, same structure. Just no more bloat.
+
+## When to reach for this
+
+The most common scenario is when you accidentally committed `node_modules/`, `vendor/`, or build artifacts early in a project before your `.gitignore` was set up properly. We've all been there. You scaffold a project, make a few commits to get things working, and only later realize you forgot to ignore the dependency directory. By then it's already baked into history.
+
+It's also useful when a large binary sneaks in -- a standalone CLI tool, a compiled asset, a database dump you used for testing. Anything that has no business living in version control but ended up there anyway.
+
+And if you've ever committed secrets or credentials by mistake, `git filter-repo` is how you actually remove them. Deleting the file and committing again doesn't help -- the old commit still has your API keys sitting right there in the history for anyone to find.
+
+You'll also notice this problem when your repo clone time is unreasonably slow for its actual codebase size. If a project with a few dozen source files takes minutes to clone, something big is hiding in the history.
+
+## When to think twice
+
+That said, rewriting history isn't something to do casually on a shared repo. If your project has a bunch of active collaborators with local clones, they'll all need to re-clone or carefully rebase after you force push. That's not a dealbreaker, but it's a conversation you should have with your team first.
+
+Same goes if the repo is a dependency for CI/CD pipelines pinned to specific commit SHAs -- those SHAs will all change after a rewrite, which could break builds in ways that aren't immediately obvious.
+
+And of course, if you don't have the ability to force push (protected branches, org policies, etc.), this approach won't work without getting those restrictions loosened first.
+
+## A few things I learned along the way
+
+Do this early. The fewer people who have cloned your repo, the less disruption a history rewrite causes. If you notice the problem on a fresh project with one or two contributors, fix it now. Don't wait until a dozen people have clones and forks.
+
+Make sure your `.gitignore` is right *before* you rewrite. There's nothing worse than running `git filter-repo` to purge `vendor/` from history, then accidentally re-committing it because your ignore rules aren't in place. Ask me how I know.
+
+That blob-size command from earlier in the post is your best diagnostic tool. Run it before you start rewriting so you know exactly what's eating space. Sometimes the culprit isn't what you expect.
+
+And if you're nervous about the whole thing, just `cp -r myrepo myrepo-backup` before you start. Though honestly, if it's already pushed to a remote, you already have a backup.
+
+## TL;DR
+
+`.gitignore` doesn't retroactively untrack files. If you committed big files before ignoring them, they live in your git history forever -- unless you rewrite it. `git filter-repo` does exactly that, cleanly and quickly. Install it, point it at the paths you want gone, force push, and move on with your life.
