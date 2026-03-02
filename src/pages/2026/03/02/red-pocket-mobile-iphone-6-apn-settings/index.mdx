@@ -1,0 +1,147 @@
+---
+title: "How I fixed Red Pocket Mobile APN settings on an old iPhone 6 (with Claude Code)"
+date: "2026-03-02T16:00:00.000Z"
+tags: ["claude-code"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+My sister has an old iPhone 6 that was on T-Mobile prepaid. She recently ported her number over to Red Pocket Mobile on their GSMA plan (which uses AT&T's network), and everything seemed fine -- until we realized cellular data and MMS weren't working.
+
+No big deal, right? Just go into Settings and set up the APN. Except the iPhone was completely missing the "Cellular Data Network" option. It just wasn't there — the entire menu was just missing.
+
+I contacted Red Pocket support about it, and honestly, they weren't much help. They kept insisting the phone was carrier-locked, which I knew for a fact it wasn't. The real issue was that the iPhone 6 is just old enough that it falls through the cracks of modern support workflows.
+
+Nobody really knows what to do with it anymore.
+
+## The carrier settings rabbit hole
+
+So I started digging around. The classic fix for this is to connect the iPhone to a computer and use iTunes to push a carrier settings update. But iTunes doesn't exist anymore. On modern macOS, Finder took over iPhone management. I tried that, but no carrier settings update was available.
+
+I also tried the trick where you go to Settings > General > About and wait for the carrier settings popup to appear. Nothing.
+
+I tried Red Pocket's official configure page at `redpocket.com/configure-handset`. Useless for this situation, because it gave me APN details that I couldn’t apply anywhere (though they were helpful in a later step).
+
+At this point I'm thinking, okay, the only real path forward is to create a custom APN configuration profile -- a `.mobileconfig` file -- and install it on the phone manually.
+
+## Apple Configurator almost worked
+
+I downloaded Apple Configurator 2 from the Mac App Store and started building a cellular profile. It lets you set the APN name, authentication type, proxy, all that stuff.
+
+But -- there's no MMS section. The "Configured APN Type" dropdown only has three options: Default APN, Data APN, and Default and Data APNs. No MMS option anywhere.
+
+I scrolled up and down that Cellular payload screen multiple times thinking I was missing something. I wasn't. Apple just doesn't expose MMS configuration fields in Apple Configurator.
+
+## Claude Code to the rescue
+
+This is where things got fun. I'd been going back and forth with Claude Code this whole time, and when Apple Configurator hit a wall, I just asked it to generate the `.mobileconfig` file directly. Because at the end of the day, a `.mobileconfig` file is just XML. You don't need a fancy GUI to create one.
+
+Claude Code generated a clean profile with the correct APN settings for Red Pocket GSMA. Getting it onto the phone was its own adventure though. AirDrop from Mac to iPhone 6 running iOS 12.5.8 gave me a "Failed to save item" error. So Claude Code spun up a quick Python web server on my Mac with the correct MIME type (`application/x-apple-aspen-config`), and I typed the local URL into Safari on the iPhone.
+
+Safari downloaded the profile, I went to Settings > General > Profiles, tapped install, and it just worked. Cellular data came right up.
+
+## The config file
+
+If you're in the same boat -- old iPhone, Red Pocket GSMA, no Cellular Data Network option, and Red Pocket support telling you the phone is locked when it isn't -- here's the `.mobileconfig` file that worked for me.
+
+Save this as `RedPocket-GSMA.mobileconfig`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>APNs</key>
+			<array>
+				<dict>
+					<key>AllowedProtocolMask</key>
+					<integer>3</integer>
+					<key>AllowedProtocolMaskInDomesticRoaming</key>
+					<integer>3</integer>
+					<key>AllowedProtocolMaskInRoaming</key>
+					<integer>3</integer>
+					<key>DefaultProtocolMask</key>
+					<integer>3</integer>
+					<key>Name</key>
+					<string>ERESELLER</string>
+				</dict>
+			</array>
+			<key>AttachAPN</key>
+			<dict>
+				<key>AllowedProtocolMask</key>
+				<integer>3</integer>
+				<key>Name</key>
+				<string>ERESELLER</string>
+			</dict>
+			<key>PayloadDescription</key>
+			<string>Configures cellular data and MMS settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Red Pocket GSMA</string>
+			<key>PayloadIdentifier</key>
+			<string>com.redpocket.gsma.cellular</string>
+			<key>PayloadType</key>
+			<string>com.apple.cellular</string>
+			<key>PayloadUUID</key>
+			<string>A1B2C3D4-E5F6-7890-ABCD-EF1234567890</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>APN and MMS settings for Red Pocket Mobile GSMA</string>
+	<key>PayloadDisplayName</key>
+	<string>Red Pocket GSMA</string>
+	<key>PayloadIdentifier</key>
+	<string>com.redpocket.gsma.profile</string>
+	<key>PayloadOrganization</key>
+	<string>Red Pocket Mobile</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>C3D4E5F6-A7B8-9012-CDEF-123456789012</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
+```
+
+## How to install it
+
+You can't just AirDrop a `.mobileconfig` file to an old iPhone -- it doesn't handle it well. The easiest approach is to email the file to yourself and open the attachment on the iPhone. If that doesn't work, you can serve it from your computer over your local Wi-Fi network.
+
+On your Mac, open Terminal, navigate to the folder where you saved the file, and run:
+
+```bash
+python3 -c "
+import http.server, socketserver
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        '.mobileconfig': 'application/x-apple-aspen-config',
+    }
+
+with socketserver.TCPServer(('', 8888), Handler) as httpd:
+    httpd.serve_forever()
+"
+```
+
+Then find your Mac's local IP address (System Settings > Wi-Fi > your network > Details, or run `ipconfig getifaddr en0` in Terminal), and on the iPhone open Safari and go to `http://YOUR_IP:8888/RedPocket-GSMA.mobileconfig`.
+
+The key detail here is the MIME type. A regular Python web server serves `.mobileconfig` files with the wrong content type and iOS will reject them. You need `application/x-apple-aspen-config` for iOS to recognize it as an installable profile.
+
+Once Safari downloads the profile, go to Settings > General > Profiles, tap it, and install.
+
+## The whole thing took about 20 minutes
+
+What I love about this whole experience is that it's exactly the kind of problem that I never would've been able to solve on my own.
+
+Red Pocket couldn't help. Apple Configurator couldn't do it. The old iTunes workflow is dead.
+
+But just talking through the problem step by step with Claude Code, hitting walls, adjusting, and trying again... we got there. It generated the config file, figured out the MIME type issue, set up the local server — all of it.
+
+Sometimes the best use of AI isn't writing code for a massive project. Sometimes it's just getting data for an old iPhone 6 working for your sister.
