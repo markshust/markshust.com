@@ -10,6 +10,7 @@ export default defineConfig({
 		sitemap(),
 	],
 	markdown: {
+		smartypants: false,
 		shikiConfig: {
 			theme: 'github-dark',
 			wrap: false,
