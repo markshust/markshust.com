@@ -1,0 +1,223 @@
+---
+title: "How PHP 8 attributes work"
+date: "2026-03-12T00:00:00.000Z"
+tags: ["php"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+If you've been writing PHP for a while, you've probably seen those `#[...]` annotations showing up in frameworks like Laravel and Symfony. Maybe you've used them, maybe you've just scrolled past them. Either way, PHP 8 attributes are one of those features that seem simple on the surface but are worth understanding properly -- because once you do, a lot of framework "magic" stops being magical.
+
+## What are attributes?
+
+Attributes are metadata annotations that are stored directly in PHP's compiled bytecode. They're not comments. The `#[...]` syntax looks comment-like by design (so older PHP versions ignore them gracefully), but the parser treats them as first-class language constructs.
+
+Before attributes, PHP developers used docblock annotations to attach metadata to classes, methods, and properties:
+
+```php
+/**
+ * @Route("/posts", methods={"GET"})
+ */
+public function index(): Response { ... }
+```
+
+This worked, but it was hacky. Frameworks had to parse these with regex, there was no type safety, no IDE autocompletion, and no validation at parse time. If you typo'd `@Rotue` instead of `@Route`, nothing told you until runtime -- if you were lucky.
+
+Attributes replaced all of that with something the language actually understands.
+
+## How they work
+
+There are three steps to attributes, and the third one is the part most people miss.
+
+**Step 1: Define an attribute class.** An attribute is just a regular PHP class marked with `#[Attribute]`:
+
+```php
+#[Attribute(Attribute::TARGET_METHOD)]
+class Route
+{
+    public function __construct(
+        public string $path,
+        public string $method = 'GET',
+    ) {}
+}
+```
+
+The `Attribute::TARGET_METHOD` flag tells PHP this attribute can only be placed on methods. You can also use `TARGET_CLASS`, `TARGET_PROPERTY`, `TARGET_PARAMETER`, `TARGET_FUNCTION`, `TARGET_CLASS_CONSTANT`, or combine them with bitwise OR. If you skip the flag entirely, the attribute can go anywhere.
+
+**Step 2: Attach it to something.** You place the attribute on a class, method, property, parameter... whatever the target allows:
+
+```php
+class PostController
+{
+    #[Route('/posts', method: 'GET')]
+    public function index(): Response { ... }
+
+    #[Route('/posts', method: 'POST')]
+    public function store(): Response { ... }
+}
+```
+
+**Step 3: Nothing happens.** This is the key insight -- attributes are *inert metadata*. PHP doesn't read them or act on them on its own. They just sit there until something asks for them.
+
+That "something" is the Reflection API:
+
+```php
+$ref = new ReflectionMethod(PostController::class, 'index');
+$attributes = $ref->getAttributes(Route::class);
+
+foreach ($attributes as $attr) {
+    $route = $attr->newInstance(); // calls Route('/posts', method: 'GET')
+    $router->register($route->method, $route->path, [PostController::class, 'index']);
+}
+```
+
+`$attr->newInstance()` is what actually calls the attribute class constructor with the arguments you passed in the annotation. Until that line runs, the `Route` object doesn't even exist.
+
+## The full lifecycle
+
+Here's how the whole thing flows:
+
+```
+#[Route('/posts')]                 <- Parser stores this as metadata in opcache
+         |
+ReflectionMethod::getAttributes()  <- Framework reads it at runtime
+         |
+$attr->newInstance()               <- Instantiates the Route object
+         |
+Framework acts on it               <- Registers the route, applies middleware, etc.
+```
+
+The framework is doing all the work. Attributes are just a structured, type-safe way to say "here's some metadata about this thing" and let other code decide what to do with it.
+
+## Real-world examples
+
+Once you understand the pattern, you start seeing it everywhere.
+
+**Validation rules in Laravel:**
+
+```php
+class CreatePostRequest extends FormRequest
+{
+    #[Rule('required|string|max:255')]
+    public string $title;
+
+    #[Rule('required|string')]
+    public string $body;
+}
+```
+
+**Event listeners in Symfony:**
+
+```php
+class SendWelcomeEmail
+{
+    #[AsEventListener(event: UserRegistered::class)]
+    public function __invoke(UserRegistered $event): void
+    {
+        // send the email
+    }
+}
+```
+
+**API resource configuration:**
+
+```php
+#[ApiResource(
+    operations: [new Get(), new GetCollection()],
+    paginationItemsPerPage: 20,
+)]
+class BlogPost
+{
+    // ...
+}
+```
+
+In every case, the attribute is just metadata. Some framework code somewhere is scanning for these attributes using the Reflection API and wiring things up based on what it finds.
+
+## Stacking and repeating attributes
+
+By default, an attribute can only appear once on a given target. But you can allow repeats by adding `Attribute::IS_REPEATABLE`, combined with the target flag using the bitwise OR (`|`) operator:
+
+```php
+#[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
+```
+
+Symfony's `#[AsEventListener]` is a real-world example of this. A single method can handle multiple events by stacking the attribute on the same target:
+
+```php
+class ActivityLogger
+{
+    #[AsEventListener(event: UserRegistered::class)]
+    #[AsEventListener(event: UserLoggedIn::class)]
+    #[AsEventListener(event: UserLoggedOut::class)]
+    public function logActivity(object $event): void
+    {
+        // log the activity
+    }
+}
+```
+
+Without `IS_REPEATABLE`, PHP would throw an error if you tried to use the same attribute more than once on a single target. Using the same attribute on *different* methods or classes is always fine -- each one is its own target.
+
+## Building your own
+
+Here's a practical example -- a simple `#[Deprecated]` attribute that logs warnings when deprecated methods are called:
+
+```php
+#[Attribute(Attribute::TARGET_METHOD)]
+class Deprecated
+{
+    public function __construct(
+        public string $reason = '',
+        public string $since = '',
+    ) {}
+}
+```
+
+```php
+class PaymentService
+{
+    #[Deprecated(reason: 'Use processPaymentV2 instead', since: '2.1.0')]
+    public function processPayment(float $amount): bool
+    {
+        // ...
+    }
+}
+```
+
+And then a helper that checks for it:
+
+```php
+function callWithDeprecationCheck(object $obj, string $method, array $args = []): mixed
+{
+    $ref = new ReflectionMethod($obj, $method);
+    $attrs = $ref->getAttributes(Deprecated::class);
+
+    if (!empty($attrs)) {
+        $dep = $attrs[0]->newInstance();
+        $msg = "Method {$method} is deprecated.";
+        if ($dep->since) $msg .= " Since {$dep->since}.";
+        if ($dep->reason) $msg .= " {$dep->reason}";
+        trigger_error($msg, E_USER_DEPRECATED);
+    }
+
+    return $ref->invoke($obj, ...$args);
+}
+```
+
+Is this something you'd build from scratch in a real app? Probably not -- your framework likely has better tooling for this. But it shows the pattern clearly: define the attribute, attach it, reflect on it, act on it.
+
+## Why this matters
+
+The advantages over the old docblock approach are significant:
+
+- **Type safety.** Attribute constructors are real PHP code. Wrong argument types fail at instantiation, not silently.
+- **IDE support.** Autocompletion, refactoring, go-to-definition -- all work because attributes are real classes.
+- **Parser validation.** Put a `TARGET_METHOD` attribute on a class and PHP tells you immediately.
+- **No regex parsing.** The Reflection API gives you clean, structured access. No more fragile string parsing.
+- **Namespaced.** Attributes are classes, so they follow PHP's namespace and autoloading rules. No more global annotation name collisions.
+
+## The mental model
+
+If there's one thing to take away, it's this: attributes don't *do* anything. They're labels. Stickers you put on your code that say "hey, this thing is a route" or "this property needs validation" or "this class listens for events."
+
+The framework is the one walking around reading those stickers and acting on them. Once you internalize that, the whole system clicks -- and you stop wondering why adding `#[Route('/foo')]` to a method in a plain PHP script doesn't magically register a route.
