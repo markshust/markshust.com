@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const thisFile = fileURLToPath(import.meta.url);
 const pagesDir = path.resolve(path.dirname(thisFile), '..', 'pages');
 const srcPagesDir = pagesDir.includes('/dist/')
-    ? pagesDir.replace('/dist/', '/src/')
+    ? pagesDir.replace(/\/dist\/.*?\/pages/, '/src/pages')
     : pagesDir;
 const postFiles = Object.keys(import.meta.glob('./*/**/*.{md,mdx}'));
 
