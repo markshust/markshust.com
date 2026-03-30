@@ -6,8 +6,8 @@ const { postsByYear } = Astro.props;
 
 const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a));
 const dotColors = ['var(--orange)', 'var(--blue)', 'var(--green)', 'var(--gray)'];
-const visibleYears = years.filter(y => parseInt(y) >= 2020);
-const hiddenYears = years.filter(y => parseInt(y) < 2020);
+const visibleYears = years.filter(y => parseInt(y) >= 2023);
+const hiddenYears = years.filter(y => parseInt(y) < 2023);
 ---
 
 <section class="archive-room" id="archive">
