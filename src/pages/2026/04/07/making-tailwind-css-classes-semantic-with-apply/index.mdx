@@ -1,0 +1,135 @@
+---
+title: "Making Tailwind CSS classes semantic with @apply"
+date: "2026-04-07T00:00:00.000Z"
+tags: ["css", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+I keep running into the same moment in frontend work.
+
+I open a template, and instead of seeing structure, I see something like this:
+
+```html
+<body class="flex flex-col min-h-screen bg-gray-50">
+    <header class="flex items-center h-14 bg-indigo-600 text-white px-4 shadow">
+        ...
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="w-64 bg-gray-900 text-white flex-shrink-0 overflow-y-auto">
+            ...
+        </aside>
+        <main class="flex-1 overflow-y-auto p-6">
+            ...
+        </main>
+    </div>
+</body>
+```
+
+Twenty, thirty class names per element, describing padding, flex direction, background color, border radius, responsive breakpoints -- all inline, all at once. The HTML stops being a document and starts being a stylesheet that happens to live in the wrong file.
+
+And it's not that any one of those classes is wrong. Utility-first CSS is genuinely useful. But there's a difference between using utility classes as a design tool and treating markup as the final destination for every visual decision in your application.
+
+## The problem with class-heavy markup
+
+This is how most Tailwind projects look. And it works -- the design system is right there, the output is correct, and you didn't have to name anything.
+
+But read it again. What is this page's structure? There's a body, a header, some kind of wrapper div, a sidebar, and a main area. You can figure that out -- but you have to read *past* the styling to get there. The utility classes aren't wrong, they're just loud. They're taking up the space where structure should be the focus.
+
+Now multiply this across dozens of templates, partials, and components. Every time you open a file, you're parsing visual implementation details just to understand what the page *is*.
+
+It's not a crisis. But it's friction. And friction compounds.
+
+## How I solved this in MarkoTalk
+
+When I started building <a href="https://github.com/marko-php/markotalk" target="_blank">MarkoTalk</a> (a real-time chat app built on my <a href="https://github.com/marko-php/marko" target="_blank">Marko framework</a>), I reached for Tailwind CSS v4 because I genuinely like the utility-first model. But pretty quickly, I hit that same friction.
+
+My Latte templates were becoming unreadable. Not because the styling was wrong, but because the templates had stopped communicating structure. They were communicating visual implementation instead.
+
+So I pulled the presentation out and gave each structural element a semantic class name. Here's what the main layout actually looks like:
+
+```html
+<body class="app-shell">
+    <header class="app-header">...</header>
+    <div class="app-body">
+        <aside class="app-sidebar">...</aside>
+        <main class="main-content">...</main>
+    </div>
+</body>
+```
+
+You read that and immediately understand the page. There's a shell, a header, a body with a sidebar and main content area. No mental parsing required. The template communicates structure, and only structure.
+
+The presentation lives in dedicated CSS files, organized by concern. Layout styling goes in `layout.css`:
+
+```css
+.app-shell {
+    @apply flex flex-col min-h-screen bg-gray-50;
+}
+
+.app-header {
+    @apply flex items-center h-14 bg-brand text-white px-4 shadow;
+}
+
+.app-sidebar {
+    @apply w-64 bg-gray-900 text-white flex-shrink-0 overflow-y-auto;
+}
+
+.main-content {
+    @apply flex-1 overflow-y-auto;
+}
+```
+
+Reusable UI patterns go in `components.css`:
+
+```css
+.btn {
+    @apply inline-flex items-center px-4 py-2 rounded font-medium transition-colors;
+}
+
+.btn-primary {
+    @apply bg-brand text-white hover:bg-brand-dark;
+}
+
+.form-field {
+    @apply w-full border border-gray-300 rounded px-3 py-2
+           focus:outline-none focus:ring-2 focus:ring-brand;
+}
+```
+
+Base element styles go in `base.css`. And each module in the app can ship its own CSS file, which gets imported into the main `app.css` entry point.
+
+The utility classes are still doing all the work. I'm still using Tailwind's design system, its spacing scale, its color palette, its responsive primitives. But `@apply` lets me compose those utilities into named concepts, and those names live in CSS -- not stretched across HTML attributes.
+
+## Why this matters
+
+The shift is small, but it changes a few things that compound over time.
+
+**Templates become scannable.** When you open a layout file, you see structure. You don't have to mentally filter out `flex items-center justify-between px-4 py-2 bg-white border-b shadow-sm` just to realize you're looking at a header.
+
+**Structural styling gets centralized.** If your app shell layout needs to change, you change it in one CSS file. You don't hunt through templates looking for which `div` has the right combination of flex utilities.
+
+**The intent becomes obvious.** When you see `class="app-sidebar"` in a template, you know what it is. When you see `class="w-64 bg-gray-900 text-white flex-shrink-0 overflow-y-auto"`, you have to reverse-engineer what it is from how it looks.
+
+**CSS gets to do what CSS is good at.** CSS is a composition language. It's built for collecting visual rules under a name. Tailwind's utility classes are the building blocks, but `@apply` gives you a way to compose them without losing the system.
+
+## Where to draw the line
+
+I'm not saying every utility class should be extracted. That would just be writing CSS with extra steps.
+
+The distinction I've landed on is about *reuse and structural meaning*. If a combination of utilities represents a concept that shows up more than once, or if it describes a structural element of the page, it deserves a name. App shell, sidebar, content area, card, form field -- these are concepts, not just collections of visual properties.
+
+But a one-off `mt-4` on a paragraph? A `text-sm text-gray-500` on a helper line? Those are fine inline. They're presentational details that don't represent a broader concept. Extracting them would add indirection without adding clarity.
+
+The practical test is simple: can someone read your template and understand the structure without mentally parsing the styling? If not, the presentation has leaked into the wrong layer.
+
+## The instinct
+
+When I stepped back and looked at how the CSS organization in MarkoTalk had evolved, it felt less like a decision I made and more like a pattern I discovered. The templates kept pushing presentation out, and the CSS kept absorbing it, and the system got easier to work with every time.
+
+Utility-first CSS gave us a way out of the thousand-class naming problem. But we over-corrected. We moved *everything* inline because we could, and then our templates stopped being readable documents and started being stylesheets wearing an HTML costume.
+
+The fix isn't to abandon utility classes. It's to remember that CSS exists for a reason. It's the composition layer. Let it compose.
+
+Markup should stay readable, structural, and semantically clear. CSS should absorb presentation complexity when doing so makes the system easier to maintain.
+
+That's it. Not an anti-Tailwind stance. Just a design instinct: let each layer do what it's good at, and don't make one do the other's job.
