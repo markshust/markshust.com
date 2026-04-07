@@ -1,5 +1,5 @@
 ---
-title: "Open Module Architecture"
+title: "Peer Module Architecture"
 date: "2026-04-06T00:00:00.000Z"
 tags: ["php", "building"]
 layout: "../../../../../layouts/BlogPost.astro"
@@ -91,11 +91,11 @@ Magento's XML creates a parallel configuration system. Rather than having two la
 
 ## The pattern
 
-I've started calling this setup the **Open Module Architecture**.
+I've started calling this setup the **Peer Module Architecture**.
 
-![Open Module Architecture](./open-module-architecture.png)
+![Peer Module Architecture](./peer-module-architecture.png)
 
-Open Module Architecture is defined by four properties that are held together simultaneously:
+Peer Module Architecture is defined by four properties that are held together simultaneously:
 
 1. **Universal Module Equality** -- all modules follow identical rules regardless of origin
 2. **Non-Invasive Universal Interception** -- any module can modify any other's behavior without the target's cooperation
@@ -108,11 +108,11 @@ Universal interception without loud conflicts is dangerous (Magento's silent XML
 
 But all four together create something where the whole system is extensible, inspectable, and safe.
 
-## What makes it "open"
+## What makes it “peer”
 
-The word "open" isn't about open source (though Marko is MIT licensed). It's about the architectural property: every module is open to extension by every other module, and doesn’t require an opt-in or the original package author to anticipate your needs. It’s done by default.
+The word “peer” captures the core insight: every module is a peer. No hierarchy, no special framework code, no guests in someone else’s house. Peers interact with each other freely, peers have equal rights, and peers can override each other through the priority chain.
 
-The premise comes from the Open/Closed Principle, which is code that is "open for extension, but closed for modification”, but it's elevated from the class design to system architecture. This allows you to extend behavior without modifying source code -- and across module boundaries -- with the framework enforcing the rules.
+It also comes from the Open/Closed Principle -- code that is “open for extension, but closed for modification” -- but elevated from class design to system architecture. Every module is open to extension by every other module, not by opt-in, but by default. You extend behavior without modifying source code, across module boundaries, with the framework enforcing the rules.
 
 ## The comparison
 
@@ -130,7 +130,7 @@ Magento is the closest to Marko, and that's not a coincidence. But the two diffe
 
 ## The accidental part
 
-I want to be honest about this: I didn't design Open Module Architecture from the top-down. I didn't read a paper and implement it. I had pain points, and I solved them one at a time.
+I want to be honest about this: I didn't design Peer Module Architecture from the top-down. I didn't read a paper and implement it. I had pain points, and I solved them one at a time.
 
 The module equality came from being frustrated from the fact that framework code and application code played by different rules.
 
