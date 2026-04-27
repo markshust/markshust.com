@@ -1,0 +1,317 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "COHORT 01 · 10 SEATS" [ref=e6] [cursor=pointer]:
+        - /url: /cohort/ai-workflow/
+        - generic [ref=e8]: COHORT 01 · 10 SEATS
+      - link "Join the waitlist →" [ref=e9] [cursor=pointer]:
+        - /url: /cohort/ai-workflow/
+        - text: Join the waitlist
+        - generic [ref=e10]: →
+    - navigation [ref=e11]:
+      - link "mark.shust" [ref=e12] [cursor=pointer]:
+        - /url: /
+      - button "Toggle menu" [ref=e13] [cursor=pointer]
+    - generic [ref=e19]:
+      - heading "hey, I'm Mark 👋" [level=1] [ref=e20]:
+        - text: hey, I'm
+        - generic [ref=e21]: Mark 👋
+      - generic [ref=e22]: $mark = ['computers', 'tennis', '240sx'];_
+      - generic [ref=e23]:
+        - link "writer" [ref=e24] [cursor=pointer]:
+          - /url: "#writing"
+        - link "builder" [ref=e25] [cursor=pointer]:
+          - /url: "#building"
+        - link "teacher" [ref=e26] [cursor=pointer]:
+          - /url: "#teaching"
+      - paragraph [ref=e27]: Building artisanal software through craft, code, and architecture, and sharing what I learn along the way.
+    - generic [ref=e40]:
+      - generic [ref=e41]: WEBSOCKETS ·
+      - generic [ref=e42]: DOCKER ·
+      - generic [ref=e43]: REACT ·
+      - generic [ref=e44]: LINUX ·
+      - generic [ref=e45]: AI ·
+      - generic [ref=e46]: CLAUDE CODE ·
+      - generic [ref=e47]: PHP ·
+      - generic [ref=e48]: MYSQL ·
+      - generic [ref=e49]: OPEN SOURCE ·
+      - generic [ref=e50]: MARKO ·
+      - generic [ref=e51]: MAGENTO ·
+      - generic [ref=e52]: JAVASCRIPT ·
+      - generic [ref=e53]: NGINX ·
+      - generic [ref=e54]: GRAPHQL ·
+      - generic [ref=e55]: PHP ·
+      - generic [ref=e56]: M.ACADEMY ·
+      - generic [ref=e57]: REDIS ·
+      - generic [ref=e58]: COMPOSER ·
+      - generic [ref=e59]: GIT ·
+      - generic [ref=e60]: NODE.JS ·
+      - generic [ref=e61]: WEBSOCKETS ·
+      - generic [ref=e62]: DOCKER ·
+      - generic [ref=e63]: REACT ·
+      - generic [ref=e64]: LINUX ·
+      - generic [ref=e65]: AI ·
+      - generic [ref=e66]: CLAUDE CODE ·
+      - generic [ref=e67]: PHP ·
+      - generic [ref=e68]: MYSQL ·
+      - generic [ref=e69]: OPEN SOURCE ·
+      - generic [ref=e70]: MARKO ·
+      - generic [ref=e71]: MAGENTO ·
+      - generic [ref=e72]: JAVASCRIPT ·
+      - generic [ref=e73]: NGINX ·
+      - generic [ref=e74]: GRAPHQL ·
+      - generic [ref=e75]: PHP ·
+      - generic [ref=e76]: M.ACADEMY ·
+      - generic [ref=e77]: REDIS ·
+      - generic [ref=e78]: COMPOSER ·
+      - generic [ref=e79]: GIT ·
+      - generic [ref=e80]: NODE.JS ·
+    - generic [ref=e81]:
+      - generic: WRITING
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e84]: 01 / Writing
+          - heading "words that ship ideas." [level=2] [ref=e85]:
+            - text: words that
+            - text: ship ideas.
+        - generic [ref=e86]:
+          - link "01 Latest You are not your label Apr 14, 2026" [ref=e87] [cursor=pointer]:
+            - /url: /2026/04/14/you-are-not-your-label/
+            - generic: "01"
+            - generic [ref=e88]: Latest
+            - heading "You are not your label" [level=3] [ref=e89]
+            - generic [ref=e90]: Apr 14, 2026
+            - img [ref=e92]
+          - generic [ref=e94]:
+            - link "02 Apr 7, 2026 Making Tailwind CSS classes semantic with @apply" [ref=e95] [cursor=pointer]:
+              - /url: /2026/04/07/making-tailwind-css-classes-semantic-with-apply/
+              - generic: "02"
+              - generic [ref=e96]: Apr 7, 2026
+              - heading "Making Tailwind CSS classes semantic with @apply" [level=3] [ref=e97]
+            - link "03 Apr 6, 2026 Peer Module Architecture" [ref=e98] [cursor=pointer]:
+              - /url: /2026/04/06/peer-module-architecture/
+              - generic: "03"
+              - generic [ref=e99]: Apr 6, 2026
+              - heading "Peer Module Architecture" [level=3] [ref=e100]
+            - link "04 Mar 28, 2026 The frequency underneath" [ref=e101] [cursor=pointer]:
+              - /url: /2026/03/28/the-frequency-underneath/
+              - generic: "04"
+              - generic [ref=e102]: Mar 28, 2026
+              - heading "The frequency underneath" [level=3] [ref=e103]
+    - generic [ref=e105]:
+      - generic: BUILDING
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - generic [ref=e108]: 02 / Building
+          - heading "tools that developers love." [level=2] [ref=e109]:
+            - text: tools that
+            - text: developers love.
+        - generic [ref=e110]:
+          - link "🧩 Marko A modular PHP 8.5+ framework combining Magento's extensibility with Laravel's developer experience. PHP Framework Open Source 01" [ref=e111] [cursor=pointer]:
+            - /url: https://github.com/marko-php/marko
+            - generic [ref=e112]:
+              - generic [ref=e113]: 🧩
+              - heading "Marko" [level=3] [ref=e114]
+              - paragraph [ref=e115]: A modular PHP 8.5+ framework combining Magento's extensibility with Laravel's developer experience.
+            - generic [ref=e116]:
+              - generic [ref=e117]: PHP
+              - generic [ref=e118]: Framework
+              - generic [ref=e119]: Open Source
+            - generic: "01"
+          - link "🐋 docker-magento The most popular Docker development environment for Magento. Used by thousands of developers worldwide. Docker Magento PHP Nginx 02" [ref=e120] [cursor=pointer]:
+            - /url: https://github.com/markshust/docker-magento
+            - generic [ref=e121]:
+              - generic [ref=e122]: 🐋
+              - heading "docker-magento" [level=3] [ref=e123]
+              - paragraph [ref=e124]: The most popular Docker development environment for Magento. Used by thousands of developers worldwide.
+            - generic [ref=e125]:
+              - generic [ref=e126]: Docker
+              - generic [ref=e127]: Magento
+              - generic [ref=e128]: PHP
+              - generic [ref=e129]: Nginx
+            - generic: "02"
+          - link "🕐 MergeLater Schedule GitHub pull request merges for later. Merge PRs on your schedule, not at your desk. GitHub DevOps Automation 03" [ref=e130] [cursor=pointer]:
+            - /url: https://mergelater.com
+            - generic [ref=e131]:
+              - generic [ref=e132]: 🕐
+              - heading "MergeLater" [level=3] [ref=e133]
+              - paragraph [ref=e134]: Schedule GitHub pull request merges for later. Merge PRs on your schedule, not at your desk.
+            - generic [ref=e135]:
+              - generic [ref=e136]: GitHub
+              - generic [ref=e137]: DevOps
+              - generic [ref=e138]: Automation
+            - generic: "03"
+          - link "🔓 Disable2FA Disable two-factor authentication for Magento development and testing environments. Over 2.5M downloads. Magento Security PHP 04" [ref=e139] [cursor=pointer]:
+            - /url: https://github.com/markshust/magento2-module-disabletwofactorauth/
+            - generic [ref=e140]:
+              - generic [ref=e141]: 🔓
+              - heading "Disable2FA" [level=3] [ref=e142]
+              - paragraph [ref=e143]: Disable two-factor authentication for Magento development and testing environments. Over 2.5M downloads.
+            - generic [ref=e144]:
+              - generic [ref=e145]: Magento
+              - generic [ref=e146]: Security
+              - generic [ref=e147]: PHP
+            - generic: "04"
+    - generic [ref=e148]:
+      - generic: TEACHING
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: 03 / Teaching
+            - heading "learn. build. ship." [level=2] [ref=e153]:
+              - text: learn.
+              - text: build.
+              - text: ship.
+          - paragraph [ref=e154]: My passion shifted from consulting to teaching, and I share techniques and tricks I've learned along the way to help others learn too.
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - generic [ref=e157]: 0+
+              - generic [ref=e158]: Courses
+            - generic [ref=e159]:
+              - generic [ref=e160]: 0+
+              - generic [ref=e161]: Students
+            - generic [ref=e162]:
+              - generic [ref=e163]: 0+
+              - generic [ref=e164]: Years
+        - generic [ref=e165]:
+          - generic [ref=e166] [cursor=pointer]:
+            - link "M.academy" [ref=e167]:
+              - /url: https://m.academy
+              - generic [ref=e168]: M.academy
+            - generic [ref=e169]: Magento & Adobe Commerce Developer Training
+            - list [ref=e170]:
+              - listitem [ref=e171]:
+                - link "Magento 2 Coding Kickstart" [ref=e173]:
+                  - /url: https://m.academy/courses/magento-2-coding-kickstart/
+              - listitem [ref=e174]:
+                - link "Magento 2 Power Theming" [ref=e176]:
+                  - /url: https://m.academy/courses/magento-2-theming/
+              - listitem [ref=e177]:
+                - link "Defeat Knockout.js in Magento 2" [ref=e179]:
+                  - /url: https://m.academy/courses/knockoutjs-magento-2/
+              - listitem [ref=e180]:
+                - link "Customize the Magento 2 Checkout" [ref=e182]:
+                  - /url: https://m.academy/courses/customize-magento-2-checkout/
+              - listitem [ref=e183]:
+                - link "UI Components in Magento 2" [ref=e185]:
+                  - /url: https://m.academy/courses/ui-components-magento-2/
+              - listitem [ref=e186]:
+                - link "Transform M2 Admin Grids & Forms" [ref=e188]:
+                  - /url: https://m.academy/courses/magento-2-admin-grids-forms/
+            - link "Start learning" [ref=e189]:
+              - /url: https://m.academy
+              - text: Start learning
+              - img [ref=e190]
+          - link "COHORT 01 JUNE 2026 AI Workflow Architecture Stop prompting. Start architecting. 5 weeks of live sessions 10 seats only Your real codebase Join the waitlist COHORT" [ref=e192] [cursor=pointer]:
+            - /url: /cohort/ai-workflow/
+            - generic [ref=e194]:
+              - generic [ref=e195]: COHORT 01
+              - generic [ref=e196]: JUNE 2026
+            - generic [ref=e197]:
+              - generic [ref=e198]: AI Workflow
+              - generic [ref=e199]: Architecture
+            - generic [ref=e200]:
+              - text: Stop prompting.
+              - text: Start architecting.
+            - list [ref=e201]:
+              - listitem [ref=e202]:
+                - generic [ref=e204]: 5 weeks of live sessions
+              - listitem [ref=e205]:
+                - generic [ref=e207]: 10 seats only
+              - listitem [ref=e208]:
+                - generic [ref=e210]: Your real codebase
+            - generic [ref=e211]:
+              - text: Join the waitlist
+              - img [ref=e212]
+            - text: COHORT
+    - generic [ref=e215]:
+      - heading "the archive, by year" [level=2] [ref=e216]
+      - generic [ref=e217]:
+        - generic [ref=e218]:
+          - generic [ref=e219]: "2026"
+          - generic [ref=e220]:
+            - link "You are not your label Apr 14" [ref=e221] [cursor=pointer]:
+              - /url: /2026/04/14/you-are-not-your-label/
+              - generic [ref=e222]: You are not your label
+              - generic [ref=e223]: Apr 14
+            - link "Making Tailwind CSS classes semantic with @apply Apr 7" [ref=e224] [cursor=pointer]:
+              - /url: /2026/04/07/making-tailwind-css-classes-semantic-with-apply/
+              - generic [ref=e225]: Making Tailwind CSS classes semantic with @apply
+              - generic [ref=e226]: Apr 7
+            - link "Peer Module Architecture Apr 6" [ref=e227] [cursor=pointer]:
+              - /url: /2026/04/06/peer-module-architecture/
+              - generic [ref=e228]: Peer Module Architecture
+              - generic [ref=e229]: Apr 6
+            - link "The frequency underneath Mar 28" [ref=e230] [cursor=pointer]:
+              - /url: /2026/03/28/the-frequency-underneath/
+              - generic [ref=e231]: The frequency underneath
+              - generic [ref=e232]: Mar 28
+            - link "How PHP 8 attributes work Mar 12" [ref=e233] [cursor=pointer]:
+              - /url: /2026/03/12/how-php-8-attributes-work/
+              - generic [ref=e234]: How PHP 8 attributes work
+              - generic [ref=e235]: Mar 12
+            - link "Ship it anyway Mar 9" [ref=e236] [cursor=pointer]:
+              - /url: /2026/03/09/ship-it-anyway/
+              - generic [ref=e237]: Ship it anyway
+              - generic [ref=e238]: Mar 9
+            - link "The merge conflict Mar 6" [ref=e239] [cursor=pointer]:
+              - /url: /2026/03/06/the-merge-conflict/
+              - generic [ref=e240]: The merge conflict
+              - generic [ref=e241]: Mar 6
+            - link "How I fixed an iPhone 6 cellular data failure using Claude Code Mar 2" [ref=e242] [cursor=pointer]:
+              - /url: /2026/03/02/how-i-fixed-an-iphone-6-cellular-data-failure-using-claude-code/
+              - generic [ref=e243]: How I fixed an iPhone 6 cellular data failure using Claude Code
+              - generic [ref=e244]: Mar 2
+            - link "Your git repo is huge and you don't know why Feb 27" [ref=e245] [cursor=pointer]:
+              - /url: /2026/02/27/your-git-repo-is-huge-and-you-dont-know-why/
+              - generic [ref=e246]: Your git repo is huge and you don't know why
+              - generic [ref=e247]: Feb 27
+        - generic [ref=e248]:
+          - generic [ref=e249]: "2025"
+          - generic [ref=e250]:
+            - link "Solve your own problems first Oct 9" [ref=e251] [cursor=pointer]:
+              - /url: /2025/10/09/solve-your-own-problems-first/
+              - generic [ref=e252]: Solve your own problems first
+              - generic [ref=e253]: Oct 9
+            - link "Finding joy in business inefficiency Jan 3" [ref=e254] [cursor=pointer]:
+              - /url: /2025/01/03/joy-efficiency-paradox/
+              - generic [ref=e255]: Finding joy in business inefficiency
+              - generic [ref=e256]: Jan 3
+        - generic [ref=e257]:
+          - generic [ref=e258]: "2023"
+          - link "Retrieving newsletter count in real-time with the ConvertKit API May 10" [ref=e260] [cursor=pointer]:
+            - /url: /2023/05/10/newsletter-count-real-time-convertkit-api/
+            - generic [ref=e261]: Retrieving newsletter count in real-time with the ConvertKit API
+            - generic [ref=e262]: May 10
+      - button "View More" [ref=e264] [cursor=pointer]:
+        - text: View More
+        - img [ref=e265]
+    - contentinfo [ref=e267]:
+      - generic [ref=e268]:
+        - generic [ref=e269]:
+          - link "mark.shust" [ref=e270] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e271]: writer · builder · teacher
+        - generic [ref=e272]:
+          - link "M.academy" [ref=e273] [cursor=pointer]:
+            - /url: https://m.academy
+          - link "GitHub" [ref=e274] [cursor=pointer]:
+            - /url: https://github.com/markshust
+          - link "LinkedIn" [ref=e275] [cursor=pointer]:
+            - /url: https://linkedin.com/in/markshust/
+          - link "YouTube" [ref=e276] [cursor=pointer]:
+            - /url: https://youtube.com/markshust
+        - generic [ref=e277]: © 1985–2026 Mark Shust. Cleveland, Ohio.
+  - generic [ref=e280]:
+    - button "Menu" [ref=e281]:
+      - img [ref=e283]
+      - generic: Menu
+    - button "Inspect" [ref=e287]:
+      - img [ref=e289]
+      - generic: Inspect
+    - button "Audit" [ref=e291]:
+      - img [ref=e293]
+      - generic: Audit
+    - button "Settings" [ref=e296]:
+      - img [ref=e298]
+      - generic: Settings

@@ -22,7 +22,8 @@ const { homepage = false } = Astro.props;
 <style>
 nav.main-nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--banner-h, 0);
+  left: 0; right: 0;
   z-index: 1000;
   padding: 1.25rem 2.5rem;
   display: flex;
@@ -32,7 +33,7 @@ nav.main-nav {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid rgba(255,255,255,0.04);
-  transition: all 0.4s ease;
+  transition: padding 0.4s ease, background 0.4s ease;
 }
 nav.main-nav.scrolled {
   padding: 0.75rem 2.5rem;
@@ -101,6 +102,7 @@ nav.main-nav.scrolled {
 
 @media (max-width: 768px) {
   nav.main-nav { padding: 1rem 1.25rem; }
+  nav.main-nav.scrolled { padding: 0.75rem 1.25rem; }
   nav.main-nav.menu-open {
     top: 0; left: 0; right: 0; bottom: 0;
     height: 100vh;

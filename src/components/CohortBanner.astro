@@ -1,0 +1,159 @@
+---
+const { pathname } = Astro.url;
+const isCohortPage = pathname.startsWith('/cohort/');
+---
+
+{!isCohortPage && (
+  <a class="cohort-banner" id="cohortBanner" href="/cohort/ai-workflow/">
+    <div class="cb-stripe"></div>
+    <div class="cb-inner">
+      <span class="cb-left">
+        <span class="cb-dot"></span>
+        <span class="cb-meta">COHORT 01 · JUNE 2026 · 10 SEATS</span>
+        <span class="cb-meta-mobile">COHORT 01 · 10 SEATS</span>
+      </span>
+      <span class="cb-center">
+        <span class="cb-prompt">$</span>
+        <span class="cb-headline">stop prompting; start architecting</span>
+      </span>
+      <span class="cb-cta">
+        Join the waitlist <span class="cb-arrow">→</span>
+      </span>
+    </div>
+  </a>
+)}
+
+<style>
+.cohort-banner {
+  position: relative;
+  display: block;
+  background: #07070C;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  z-index: 1001;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.cohort-banner:hover {
+  background: #16161F;
+}
+.cb-stripe {
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--blue) 50%, var(--green));
+  background-size: 200% 100%;
+  animation: cbShimmer 8s linear infinite;
+}
+@keyframes cbShimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+.cb-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.55rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+}
+.cb-left {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.cb-dot {
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.25);
+  animation: cbPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes cbPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.04); }
+}
+.cb-meta, .cb-meta-mobile {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gray-light);
+  white-space: nowrap;
+}
+.cb-meta-mobile { display: none; }
+
+.cb-center {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  white-space: nowrap;
+}
+.cb-prompt { color: var(--orange); font-weight: 700; }
+.cb-headline {
+  font-size: 0.82rem;
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+
+.cb-cta {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--orange);
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  justify-self: end;
+}
+.cb-arrow { display: inline-block; transition: transform 0.3s ease; margin-left: 0.2rem; }
+.cohort-banner:hover .cb-cta { color: var(--green-bright); }
+.cohort-banner:hover .cb-arrow { transform: translateX(4px); }
+
+@media (max-width: 1024px) {
+  .cb-center { display: none; }
+  .cb-inner { grid-template-columns: 1fr auto; }
+}
+@media (max-width: 768px) {
+  .cb-inner { padding: 0.5rem 1.25rem; gap: 1rem; }
+  .cb-meta { display: none; }
+  .cb-meta-mobile { display: inline; font-size: 0.65rem; }
+  .cb-cta { font-size: 0.68rem; letter-spacing: 0.14em; }
+}
+@media (max-width: 380px) {
+  .cb-meta-mobile { display: none; }
+  .cb-left::after {
+    content: 'COHORT 01';
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-light);
+  }
+}
+</style>
+
+<script>
+(function() {
+  const banner = document.getElementById('cohortBanner');
+  if (!banner) return;
+  let bannerH = banner.offsetHeight;
+  const root = document.documentElement;
+  const update = () => {
+    const visible = Math.max(0, bannerH - window.scrollY);
+    root.style.setProperty('--banner-h', visible + 'px');
+  };
+  const measure = () => {
+    bannerH = banner.offsetHeight;
+    update();
+  };
+  measure();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', measure, { passive: true });
+})();
+</script>
+
