@@ -38,10 +38,6 @@ import Footer from '../../components/Footer.astro';
             <p class="hero-lead">
               The fix isn't better prompts, but <strong>workflow architecture</strong>: defined stages, explicit handoffs, and bounded responsibility for the AI.
             </p>
-            <p class="hero-lead-sub">
-              I'm running a <strong>5-week cohort</strong> for senior developers who want to design that system from the ground up, applied to your real codebase, not a toy demo.
-            </p>
-
             <!-- Architecture schematic -->
             <div class="schematic" aria-hidden="true">
               <div class="stage stage-orange">
@@ -59,6 +55,10 @@ import Footer from '../../components/Footer.astro';
                 <div class="stage-name">Bounded</div>
               </div>
             </div>
+
+            <p class="hero-lead">
+              I'm running a <strong>5-week cohort</strong> for senior developers who want to design that system from the ground up, applied to your real codebase, not a toy demo.
+            </p>
 
             <div class="form-wrap">
               <div class="form-label">
@@ -423,6 +423,7 @@ import Footer from '../../components/Footer.astro';
         margin-bottom: 1.25rem;
       }
       .hero-lead strong { color: var(--white); }
+      .schematic + .hero-lead { margin-bottom: 2.75rem; }
       .hero-lead-sub {
         font-size: clamp(1rem, 1.2vw, 1.15rem);
         line-height: 1.7;
@@ -437,7 +438,7 @@ import Footer from '../../components/Footer.astro';
         display: flex;
         align-items: stretch;
         gap: 0;
-        margin-bottom: 3rem;
+        margin-bottom: 1.5rem;
         padding: 1.5rem;
         background: rgba(20,20,28,0.6);
         border: 1px solid rgba(255,255,255,0.06);
