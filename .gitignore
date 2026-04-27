@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Playwright MCP debug artifacts
+.playwright-mcp/
