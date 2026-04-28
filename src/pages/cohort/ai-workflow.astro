@@ -917,6 +917,7 @@ import Footer from '../../components/Footer.astro';
       @media (max-width: 768px) {
         .cohort-hero { padding: 7.5rem 1.25rem 6rem; min-height: auto; }
         .cohort-benefits, .cohort-about, .cohort-final { padding: 6rem 1.25rem; }
+        .form-label { margin-bottom: 0.7rem; }
         .schematic { padding: 1rem; gap: 0.4rem; }
         .stage { padding: 0.85rem 1rem; min-width: 90px; }
         .link-arrow { flex: 0 0 20px; }
@@ -924,8 +925,32 @@ import Footer from '../../components/Footer.astro';
       }
       @media (max-width: 480px) {
         .hero-title { font-size: clamp(2.5rem, 11vw, 3.5rem); }
-        .schematic { flex-direction: column; }
-        .link-arrow { flex: 0 0 20px; height: 20px; transform: rotate(90deg); }
+        .schematic {
+          flex-direction: column;
+          align-items: stretch;
+          overflow-x: hidden;
+          gap: 0.5rem;
+        }
+        .stage { min-width: 0; width: 100%; text-align: center; }
+        .link-arrow {
+          flex: 0 0 24px;
+          height: 24px;
+          width: 100%;
+          transform: none;
+        }
+        .link-arrow::before {
+          top: 0; bottom: 0; left: 50%; right: auto;
+          width: 2px; height: 100%;
+          background: repeating-linear-gradient(180deg, var(--gray) 0 6px, transparent 6px 12px);
+          transform: translateX(-50%);
+        }
+        .link-arrow::after {
+          top: auto; bottom: 4px; right: auto; left: 50%;
+          border-right: none; border-top: none;
+          border-bottom: 2px solid var(--gray);
+          border-left: 2px solid var(--gray);
+          transform: translateX(-50%) rotate(-45deg);
+        }
       }
     </style>
   </body>
