@@ -3,6 +3,52 @@ import BaseHead from '../../components/BaseHead.astro';
 import Nav from '../../components/Nav.astro';
 import DiagonalBand from '../../components/DiagonalBand.astro';
 import Footer from '../../components/Footer.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const cohortStartLabel = 'June 2026';
+
+const principles = [
+  { num: '01', name: 'Planning' },
+  { num: '02', name: 'Stages' },
+  { num: '03', name: 'Handoffs' },
+  { num: '04', name: 'Humans' },
+  { num: '05', name: 'Dependencies' },
+  { num: '06', name: 'Bounded Roles' },
+  { num: '07', name: 'Quality Gates' },
+  { num: '08', name: 'Portability' },
+];
+
+const outcomes = [
+  'A working AI workflow architecture document for <em>your</em> codebase. Not a template, yours.',
+  'Defined planning, execution, and review stages with explicit handoffs between each.',
+  'A library of bounded sub-agent roles you’ve designed for your stack.',
+  'Pre- and post-implementation review gates wired into your tooling.',
+  'A portability spec, so your workflow lifts cleanly to the next codebase you touch.',
+  'Five weeks of working through it with Mark + a small cohort, applied to your real code.',
+];
+
+const faqItems = [
+  {
+    q: 'What if I can’t make every live session?',
+    a: 'Sessions are recorded. Office hours offer makeup time. Total synchronous load is around <strong>6.5 hours over 5 weeks</strong>, designed to fit a working developer’s calendar.',
+  },
+  {
+    q: 'What stack does this work with?',
+    a: 'Tool-agnostic. Examples use <strong>Claude Code + HCF + Laravel</strong>, but the architecture transfers cleanly to any language and any AI coding tool. The principles are the durable thing; the tools are interchangeable.',
+  },
+  {
+    q: 'How is this different from a YouTube AI coding tutorial?',
+    a: 'Tutorials show one task. This builds the <em>system</em> around the tasks. You leave with a workflow architecture document for <em>your</em> codebase, not a recipe for one toy demo.',
+  },
+  {
+    q: 'Who is this for?',
+    a: 'Senior developers, tech leads, and solo product builders who already use AI to code daily and feel the chaos. Not for people who haven’t written code professionally. The assessment will tell you fast.',
+  },
+  {
+    q: 'What’s the application process?',
+    a: 'A short form: codebase context, your current AI workflow pain, and what you want to leave the cohort with. On approval, your card is authorized at the founding rate. The application is the filter, designed to keep the room small and serious.',
+  },
+];
 ---
 
 <!DOCTYPE html>
@@ -25,105 +71,137 @@ import Footer from '../../components/Footer.astro';
         <div class="hero-inner">
           <div class="hero-content reveal">
             <div class="hero-meta-row">
-              <span class="hero-mono-label">01 / Cohort #1 · June 2026</span>
+              <span class="hero-mono-label">01 / Cohort #1 · {cohortStartLabel}</span>
               <span class="seat-pill"><span class="seat-dot"></span>10 seats</span>
             </div>
             <h1 class="hero-title">
-              stop prompting.<br>
-              start <span class="ht-grad">architecting</span>.
+              is your AI coding workflow <span class="ht-grad">designed</span>, or improvised?
             </h1>
             <p class="hero-lead">
-              Most AI-assisted coding is still improvisation. Scattered prompts, lost context, code you don't quite trust.
-            </p>
-            <p class="hero-lead">
-              The fix isn't better prompts, but <strong>workflow architecture</strong>: defined stages, explicit handoffs, and bounded responsibility for the AI.
-            </p>
-            <!-- Architecture schematic -->
-            <div class="schematic" aria-hidden="true">
-              <div class="stage stage-orange">
-                <div class="stage-num">01</div>
-                <div class="stage-name">Stages</div>
-              </div>
-              <div class="link-arrow"></div>
-              <div class="stage stage-blue">
-                <div class="stage-num">02</div>
-                <div class="stage-name">Handoffs</div>
-              </div>
-              <div class="link-arrow"></div>
-              <div class="stage stage-green">
-                <div class="stage-num">03</div>
-                <div class="stage-name">Bounded</div>
-              </div>
-            </div>
-
-            <p class="hero-lead">
-              I'm running a <strong>5-week cohort</strong> for senior developers who want to design that system from the ground up, applied to your real codebase, not a toy demo.
+              Most AI-assisted coding is improvisation in disguise. <span class="hero-lead-l2"><strong>15 questions, 5 minutes</strong>, and you'll see exactly where the gaps are.</span>
             </p>
 
-            <div class="form-wrap">
-              <div class="form-label">
-                <span class="prompt">&gt;</span> Reserve your seat
-                <span class="cursor">_</span>
-              </div>
-              <div class="kit-form-container">
-                <script async data-uid="502388255d" src="https://macademy.kit.com/502388255d/index.js" is:inline></script>
-              </div>
-              <p class="form-fineprint">
-                Lock in founding-member pricing.
+            <!-- 8-principle schematic -->
+            <div class="schematic-grid" aria-hidden="true">
+              {principles.map((p, i) => (
+                <div class={`sg-cell sg-c${(i % 3) + 1}`}>
+                  <div class="sg-num">{p.num}</div>
+                  <div class="sg-name">{p.name}</div>
+                </div>
+              ))}
+            </div>
+            <p class="schematic-caption">
+              The 8 architectural principles the assessment scores you against.
+            </p>
+
+            <!-- Primary CTA: take the assessment -->
+            <div class="primary-cta-wrap">
+              <a href="/cohort/ai-workflow/assessment" class="btn-primary">
+                <span class="bp-prompt">&gt;</span>
+                <span class="bp-text">take_the_assessment</span>
+                <span class="bp-cursor">_</span>
+              </a>
+              <p class="primary-cta-fineprint">
+                5 min · 15 questions · free
               </p>
-              <p class="form-fineprint">
-                Free <strong>AI Workflow Architecture Self-Assessment</strong> when you join.
+              <p class="primary-cta-secondary">
+                Score yours and lock in a founding-member offer for Cohort #1 (if you want it).
               </p>
             </div>
-            <p class="form-trust-note">
-              One email when registration opens. No spam.
-            </p>
+
+            <!-- Try one preview question -->
+            <div class="try-one">
+              <div class="try-one-label">
+                <span class="t1l-prompt">&gt;</span> try one
+              </div>
+              <p class="try-one-q">
+                Do you have an explicit planning phase that produces structured output (like a task list, spec, or plan file) <em>before</em> code generation begins?
+              </p>
+              <div class="try-one-choices">
+                <a href="/cohort/ai-workflow/assessment?q1=yes#q01" class="t1-btn t1-yes">
+                  <span class="t1b-key">Y</span>
+                  <span class="t1b-text">YES</span>
+                </a>
+                <a href="/cohort/ai-workflow/assessment?q1=no#q01" class="t1-btn t1-no">
+                  <span class="t1b-key">N</span>
+                  <span class="t1b-text">NO</span>
+                </a>
+              </div>
+              <p class="try-one-hint">
+                Either answer drops you into the full assessment, with question 1 already filled in.
+              </p>
+            </div>
+
+            <!-- Escape hatch: not ready for assessment, just join the waitlist -->
+            <details class="escape-hatch">
+              <summary class="eh-summary">
+                <span class="eh-prompt">·</span>
+                <span class="eh-text">Not ready to take the assessment? Just join the waitlist</span>
+                <span class="eh-arrow">→</span>
+              </summary>
+              <div class="eh-form-wrap">
+                <p class="eh-blurb">
+                  Don't want to take the assessment? No problem. Just drop your email below, and I'll let you know when Cohort #1 registration opens.
+                </p>
+                <div class="kit-form-container kit-form-secondary">
+                  <script async data-uid="4243ab2228" src="https://macademy.kit.com/4243ab2228/index.js" is:inline></script>
+                </div>
+                <p class="eh-fineprint">One email when registration opens. No spam.</p>
+              </div>
+            </details>
           </div>
         </div>
       </section>
 
       <DiagonalBand variant="1" />
 
-      <!-- ============ BENEFITS ============ -->
-      <section class="cohort-benefits" id="benefits">
-        <div class="bg-text bg-text-benefits">WAITLIST</div>
+      <!-- ============ OUTCOMES ============ -->
+      <section class="cohort-outcomes" id="outcomes">
+        <div class="bg-text bg-text-outcomes">SHIP</div>
         <div class="section-inner">
           <div class="reveal">
-            <div class="section-label">02 / What you get</div>
-            <h2 class="section-title">three reasons<br>to join <span class="highlight">today</span>.</h2>
+            <div class="section-label">02 / What you'll leave with</div>
+            <h2 class="section-title">
+              what you'll leave<br>
+              cohort #1 <span class="highlight">with</span>.
+            </h2>
           </div>
 
-          <div class="benefits-grid">
-            <article class="benefit-card bc-orange reveal delay-1">
-              <div class="bc-num">01</div>
-              <h3 class="bc-title">first access</h3>
-              <p class="bc-body">When public registration opens, you're at the front of the line. Cohort #1 is capped at 10 seats, and they'll move fast.</p>
-              <div class="bc-tag">PRIORITY ENROLLMENT</div>
-            </article>
+          <ul class="outcomes-list">
+            {outcomes.map((o, i) => (
+              <li class={`outcome-item reveal delay-${(i % 4) + 1}`}>
+                <span class="oi-check" aria-hidden="true">
+                  <span class="oi-check-mark"></span>
+                </span>
+                <span class="oi-text" set:html={o}></span>
+              </li>
+            ))}
+          </ul>
 
-            <article class="benefit-card bc-blue reveal delay-2">
-              <div class="bc-num">02</div>
-              <h3 class="bc-title">founding pricing</h3>
-              <p class="bc-body">A locked-in lower rate than future cohorts will pay. Founding members ship the playbook with me, and your tuition reflects that.</p>
-              <div class="bc-tag">LIFETIME RATE</div>
-            </article>
-
-            <article class="benefit-card bc-green reveal delay-3">
-              <div class="bc-num">03</div>
-              <h3 class="bc-title">free self-assessment</h3>
-              <p class="bc-body">Get a link when you join to score your current workflow against the 8 architectural principles and see exactly where the gaps are.</p>
-              <div class="principle-grid" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
+          <!-- Pricing anchor -->
+          <div class="pricing-strip reveal">
+            <div class="ps-row">
+              <div class="ps-item ps-primary">
+                <div class="ps-label">Founding rate · Cohort #1</div>
+                <div class="ps-price">
+                  <span class="ps-currency">$</span><span class="ps-num">999</span>
+                </div>
               </div>
-              <div class="bc-tag">8 PRINCIPLES</div>
-            </article>
+              <div class="ps-divider" aria-hidden="true"></div>
+              <div class="ps-item ps-secondary">
+                <div class="ps-label">Cohort #2 onward</div>
+                <div class="ps-price-future">$1,499 – $1,999</div>
+              </div>
+              <div class="ps-divider" aria-hidden="true"></div>
+              <div class="ps-item ps-meta">
+                <div class="ps-label">Seats</div>
+                <div class="ps-meta-val">10 · application required</div>
+              </div>
+            </div>
+            <p class="ps-note">
+              Cohort #1 runs in <strong>{cohortStartLabel}</strong>. Exact dates announced to the waitlist first. Lock the founding rate by completing the assessment.
+            </p>
           </div>
-
-          <p class="benefits-fine reveal delay-4">
-            <span class="bf-icon">⌘</span>
-            Bringing your team? Team rates are available. Reply to your waitlist confirmation for details.
-          </p>
         </div>
       </section>
 
@@ -180,39 +258,34 @@ import Footer from '../../components/Footer.astro';
 
       <DiagonalBand variant="2" />
 
+      <!-- ============ FAQ ============ -->
+      <FAQ items={faqItems} label="04 / FAQ" title="frequently" highlight="asked" />
+
       <!-- ============ FINAL CTA ============ -->
       <section class="cohort-final" id="join-bottom">
-        <div class="bg-text bg-text-final">JOIN</div>
+        <div class="bg-text bg-text-final">START</div>
         <div class="final-inner reveal">
-          <div class="section-label">04 / Take the seat</div>
+          <div class="section-label">05 / Take the seat</div>
           <h2 class="final-title">
-            ten seats.<br>
-            one <span class="ht-grad">cohort</span>.
+            still scrolling?<br>
+            take the <span class="ht-grad">5-minute</span> assessment.
           </h2>
           <p class="final-body">
-            Most cohorts overpromise. This one is small on purpose: 10 seats, 5 weeks, applied to <em>your</em> codebase.
+            It's free, ungated, and takes five minutes. See your score the moment you finish. If your result says you're a fit, you'll get a founding-member offer for Cohort #1.
           </p>
           <p class="final-body">
-            Get on the list, lock in founding pricing, and grab the self‑assessment while you're at it.
+            Ten seats. June 2026.
           </p>
-          <div class="form-wrap">
-            <div class="form-label">
-              <span class="prompt">&gt;</span> Reserve your seat
-              <span class="cursor">_</span>
-            </div>
-            <div class="kit-form-container">
-              <script async data-uid="502388255d" src="https://macademy.kit.com/502388255d/index.js" is:inline></script>
-            </div>
-            <p class="form-fineprint">
-              Lock in founding-member pricing.
-            </p>
-            <p class="form-fineprint">
-              Free <strong>AI Workflow Architecture Self-Assessment</strong> when you join.
+          <div class="final-cta-wrap">
+            <a href="/cohort/ai-workflow/assessment" class="btn-primary btn-primary-final">
+              <span class="bp-prompt">&gt;</span>
+              <span class="bp-text">take_the_assessment</span>
+              <span class="bp-cursor">_</span>
+            </a>
+            <p class="final-fineprint">
+              cohort #1 · founding rate $999 · application after assessment
             </p>
           </div>
-          <p class="form-trust-note">
-            One email when registration opens. No spam.
-          </p>
         </div>
       </section>
 
@@ -408,129 +481,263 @@ import Footer from '../../components/Footer.astro';
       }
       .hero-title {
         font-family: var(--font-heading);
-        font-size: clamp(3rem, 7vw, 6rem);
+        font-size: clamp(2.75rem, 6.5vw, 5.25rem);
         font-weight: 700;
-        line-height: 0.95;
+        line-height: 1;
         letter-spacing: -0.04em;
-        margin-bottom: 1.75rem;
+        margin-bottom: 1.5rem;
         color: var(--white);
+        max-width: 800px;
       }
       .hero-lead {
         font-size: clamp(1.1rem, 1.4vw, 1.3rem);
-        line-height: 1.7;
+        line-height: 1.6;
         color: var(--gray-light);
         max-width: 740px;
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
       }
       .hero-lead strong { color: var(--white); }
-      .schematic + .hero-lead { margin-bottom: 2.75rem; }
-      .hero-lead-sub {
-        font-size: clamp(1rem, 1.2vw, 1.15rem);
-        line-height: 1.7;
-        color: var(--gray);
-        max-width: 740px;
-        margin-bottom: 2.5rem;
+      .hero-lead em { color: var(--orange-bright); font-style: italic; }
+      @media (min-width: 769px) {
+        .hero-lead-l2 { display: block; margin-top: 0.4rem; }
       }
-      .hero-lead-sub strong { color: var(--white); }
 
-      /* Schematic */
-      .schematic {
-        display: flex;
-        align-items: stretch;
-        gap: 0;
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
+      /* 8-principle schematic */
+      .schematic-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.6rem;
+        margin-bottom: 0.65rem;
+        padding: 1.25rem;
         background: rgba(20,20,28,0.6);
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: 14px;
-        overflow-x: auto;
       }
-      .stage {
-        flex: 1;
-        min-width: 110px;
-        padding: 1.1rem 1.25rem;
-        border-radius: 10px;
+      .sg-cell {
+        padding: 0.85rem 0.95rem;
+        border-radius: 8px;
         position: relative;
       }
-      .stage-num {
+      .sg-num {
         font-family: var(--font-mono);
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 0.18em;
         opacity: 0.7;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.25rem;
       }
-      .stage-name {
+      .sg-name {
         font-family: var(--font-heading);
-        font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+        font-size: clamp(0.85rem, 1.1vw, 1rem);
         font-weight: 700;
         letter-spacing: -0.01em;
+        line-height: 1.15;
       }
-      .stage-orange { background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.35); color: var(--orange-bright); }
-      .stage-blue { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.35); color: var(--blue-bright); }
-      .stage-green { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: var(--green-bright); }
-      .link-arrow {
-        flex: 0 0 32px;
-        position: relative;
-      }
-      .link-arrow::before {
-        content: '';
-        position: absolute;
-        top: 50%; left: 0; right: 0;
-        height: 2px;
-        background: repeating-linear-gradient(90deg, var(--gray) 0 6px, transparent 6px 12px);
-        transform: translateY(-50%);
-      }
-      .link-arrow::after {
-        content: '';
-        position: absolute;
-        top: 50%; right: 4px;
-        width: 8px; height: 8px;
-        border-right: 2px solid var(--gray);
-        border-top: 2px solid var(--gray);
-        transform: translateY(-50%) rotate(45deg);
+      .sg-c1 { background: rgba(255,107,53,0.10); border: 1px solid rgba(255,107,53,0.30); color: var(--orange-bright); }
+      .sg-c2 { background: rgba(59,130,246,0.10); border: 1px solid rgba(59,130,246,0.30); color: var(--blue-bright); }
+      .sg-c3 { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.30); color: var(--green-bright); }
+      .schematic-caption {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--gray);
+        opacity: 0.7;
+        margin-bottom: 2.25rem;
+        letter-spacing: 0.04em;
       }
 
-      /* Form */
-      .form-wrap {
-        background: var(--dark-card);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        padding: clamp(1.5rem, 2.5vw, 2.25rem);
-        position: relative;
-        max-width: 540px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: left;
+      /* Primary CTA */
+      .primary-cta-wrap {
+        margin-bottom: 2rem;
+        text-align: center;
       }
-      .form-wrap::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--orange), var(--blue), var(--green));
-        border-radius: 16px 16px 0 0;
-      }
-      .form-label {
-        font-family: var(--font-mono);
-        font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-        color: var(--gray-light);
-        margin-bottom: 1rem;
-        display: flex;
+      .btn-primary {
+        display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.6rem;
+        font-family: var(--font-mono);
+        font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+        font-weight: 700;
+        text-transform: lowercase;
+        letter-spacing: 0.04em;
+        color: #000;
+        background: linear-gradient(90deg, var(--orange), var(--green));
+        padding: 1.05rem 1.75rem;
+        border-radius: 100px;
+        text-decoration: none;
+        position: relative;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        box-shadow: 0 12px 36px rgba(255,107,53,0.28);
       }
-      .form-label .prompt { color: var(--orange); font-weight: 700; }
-      .form-label .cursor {
-        color: var(--orange);
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 48px rgba(255,107,53,0.38);
+      }
+      .bp-prompt { font-weight: 700; }
+      .bp-cursor {
         animation: blink 1.1s step-end infinite;
-        margin-left: 0.15rem;
+        margin-left: 0.1rem;
       }
       @keyframes blink { 50% { opacity: 0; } }
-      .kit-form-container {
+      .primary-cta-fineprint {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--gray);
+        margin-top: 0.85rem;
+        letter-spacing: 0.04em;
+      }
+      .primary-cta-secondary {
+        font-size: 0.95rem;
+        color: var(--gray-light);
+        margin: 0.4rem auto 0;
+        line-height: 1.55;
+        max-width: 660px;
+      }
+
+      /* Try one preview */
+      .try-one {
+        margin: 4.5rem auto 0;
+        background: var(--dark-card);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: clamp(1.2rem, 2vw, 1.6rem);
+        max-width: 760px;
+        position: relative;
+        text-align: left;
+      }
+      .try-one::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(90deg, var(--orange), var(--blue) 50%, var(--green));
+        border-radius: 14px 14px 0 0;
+      }
+      .try-one-label {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gray);
+        margin-bottom: 0.65rem;
+      }
+      .t1l-prompt { color: var(--orange); margin-right: 0.4rem; }
+      .try-one-q {
+        font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+        line-height: 1.55;
+        color: var(--white);
         margin-bottom: 1rem;
       }
-      /* Tame Kit's default form to fit our aesthetic */
+      .try-one-q em { color: var(--orange-bright); font-style: italic; font-weight: 500; }
+      .try-one-choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+      .t1-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: var(--font-heading);
+        font-size: clamp(0.9rem, 1.05vw, 1rem);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.85rem 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.03);
+        color: var(--gray-light);
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      }
+      .t1-btn:hover { transform: translateY(-1px); }
+      .t1b-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        width: 18px; height: 18px;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 4px;
+        opacity: 0.7;
+      }
+      .t1-yes:hover {
+        background: rgba(16,185,129,0.10);
+        border-color: rgba(16,185,129,0.45);
+        color: var(--green-bright);
+      }
+      .t1-no:hover {
+        background: rgba(255,107,53,0.08);
+        border-color: rgba(255,107,53,0.4);
+        color: var(--orange-bright);
+      }
+      .try-one-hint {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--gray);
+        opacity: 0.65;
+        margin-top: 0.85rem;
+        letter-spacing: 0.04em;
+      }
+
+      /* Escape hatch */
+      .escape-hatch {
+        margin: 2rem auto 0;
+        max-width: 620px;
+        text-align: center;
+      }
+      .escape-hatch[open] .eh-form-wrap { text-align: left; }
+      .eh-summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        color: var(--gray);
+        cursor: pointer;
+        list-style: none;
+        padding: 0.55rem 0;
+        transition: color 0.2s ease;
+      }
+      .eh-summary::-webkit-details-marker { display: none; }
+      .eh-summary:hover { color: var(--gray-light); }
+      .eh-prompt { color: var(--orange); margin-right: 0.1rem; }
+      .eh-text {
+        border-bottom: 1px dashed rgba(255,255,255,0.18);
+      }
+      .eh-arrow {
+        transition: transform 0.25s ease;
+      }
+      .escape-hatch[open] .eh-arrow { transform: rotate(90deg); }
+      .eh-form-wrap {
+        margin-top: 0.85rem;
+        padding: 1rem 1.1rem;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+      }
+      .eh-blurb {
+        font-size: 0.92rem;
+        color: var(--gray-light);
+        line-height: 1.55;
+        margin-bottom: 0.85rem;
+      }
+      .eh-fineprint {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--gray);
+        opacity: 0.6;
+        margin-top: 0.5rem;
+        letter-spacing: 0.04em;
+      }
+
+      /* Kit form styling (shared) */
       .kit-form-container :global(form) {
         background: transparent !important;
         padding: 0 !important;
@@ -569,132 +776,150 @@ import Footer from '../../components/Footer.astro';
         border-radius: 100px !important;
         border: 0 !important;
       }
-      .form-fineprint {
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--gray);
-        line-height: 1.6;
-        margin-top: 0.5rem;
-      }
-      .form-fineprint strong { color: var(--green-bright); }
-      .form-trust-note {
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--gray);
-        text-align: center;
-        opacity: 0.55;
-        max-width: 540px;
-        margin: 1.25rem auto 0;
-        line-height: 1.6;
-      }
 
-      /* ============ BENEFITS ============ */
-      .cohort-benefits {
+      /* ============ OUTCOMES ============ */
+      .cohort-outcomes {
         background: var(--dark-card);
         padding: clamp(13rem, 19vw, 18rem) 2.5rem clamp(4rem, 7vw, 6rem);
         position: relative;
         overflow: hidden;
       }
-      .bg-text-benefits { top: 5.5rem; left: -0.5rem; }
-      .benefits-grid {
+      .bg-text-outcomes { top: 5.5rem; left: -0.5rem; }
+      .outcomes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 3rem 0;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 3rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem 2.5rem;
       }
-      .benefit-card {
+      .outcome-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 1rem 1.1rem;
         background: var(--dark);
-        border-radius: 18px;
-        padding: clamp(2rem, 3vw, 2.5rem);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        transition: border-color 0.3s ease, transform 0.3s ease;
+      }
+      .outcome-item:hover {
+        border-color: rgba(16,185,129,0.35);
+        transform: translateY(-2px);
+      }
+      .oi-check {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(16,185,129,0.14);
+        border: 1px solid rgba(16,185,129,0.4);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.15rem;
+      }
+      .oi-check-mark {
+        width: 10px;
+        height: 6px;
+        border-left: 2px solid var(--green-bright);
+        border-bottom: 2px solid var(--green-bright);
+        transform: rotate(-45deg) translate(1px, -1px);
+      }
+      .oi-text {
+        font-size: clamp(0.95rem, 1.1vw, 1.02rem);
+        line-height: 1.55;
+        color: var(--gray-light);
+      }
+      .oi-text em {
+        color: var(--white);
+        font-style: italic;
+        font-weight: 500;
+      }
+
+      /* Pricing strip */
+      .pricing-strip {
+        background: var(--dark);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: clamp(1.5rem, 2.5vw, 2rem);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.06);
-        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.4s ease;
       }
-      .benefit-card:hover { transform: translateY(-6px); }
-      .benefit-card::before {
+      .pricing-strip::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
         height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--blue), var(--green));
+        border-radius: 16px 16px 0 0;
       }
-      .bc-orange::before { background: var(--orange); }
-      .bc-orange:hover { border-color: rgba(255,107,53,0.5); box-shadow: 0 20px 60px rgba(255,107,53,0.18); }
-      .bc-blue::before { background: var(--blue); }
-      .bc-blue:hover { border-color: rgba(59,130,246,0.5); box-shadow: 0 20px 60px rgba(59,130,246,0.18); }
-      .bc-green::before { background: var(--green); }
-      .bc-green:hover { border-color: rgba(16,185,129,0.5); box-shadow: 0 20px 60px rgba(16,185,129,0.18); }
-
-      .bc-num {
+      .ps-row {
+        display: grid;
+        grid-template-columns: auto 1px 1fr 1px 1fr;
+        gap: 1.5rem;
+        align-items: center;
+      }
+      .ps-divider {
+        width: 1px;
+        height: 56px;
+        background: rgba(255,255,255,0.08);
+      }
+      .ps-item {
+        text-align: left;
+      }
+      .ps-label {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--gray);
+        margin-bottom: 0.4rem;
+      }
+      .ps-price {
         font-family: var(--font-heading);
-        font-size: clamp(2.25rem, 3.4vw, 3rem);
         font-weight: 700;
         line-height: 1;
-        margin-bottom: 0.75rem;
-        opacity: 0.25;
-      }
-      .bc-orange .bc-num { color: var(--orange); }
-      .bc-blue .bc-num { color: var(--blue); }
-      .bc-green .bc-num { color: var(--green); }
-      .bc-title {
-        font-family: var(--font-heading);
-        font-size: clamp(1.4rem, 2vw, 1.7rem);
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        margin-bottom: 0.85rem;
         color: var(--white);
+        display: inline-flex;
+        align-items: baseline;
       }
-      .bc-body {
-        font-size: clamp(0.95rem, 1.1vw, 1.02rem);
-        line-height: 1.65;
-        color: var(--gray-light);
-        margin-bottom: 1.5rem;
+      .ps-currency {
+        font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+        color: var(--orange-bright);
+        margin-right: 0.15rem;
       }
-      .bc-tag {
-        display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 0.68rem;
+      .ps-num {
+        font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+        background: linear-gradient(90deg, var(--orange), var(--green));
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.04em;
+      }
+      .ps-price-future {
+        font-family: var(--font-heading);
+        font-size: clamp(1.05rem, 1.4vw, 1.25rem);
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        padding: 0.35rem 0.7rem;
-        border-radius: 4px;
+        color: var(--gray-light);
+        opacity: 0.85;
       }
-      .bc-orange .bc-tag { background: rgba(255,107,53,0.12); color: var(--orange-bright); }
-      .bc-blue .bc-tag { background: rgba(59,130,246,0.12); color: var(--blue-bright); }
-      .bc-green .bc-tag { background: rgba(16,185,129,0.12); color: var(--green-bright); }
-
-      .principle-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 12px);
-        gap: 4px;
-        margin-bottom: 1rem;
-      }
-      .principle-grid span {
-        width: 12px; height: 12px;
-        background: rgba(16,185,129,0.35);
-        border-radius: 2px;
-      }
-      .principle-grid span:nth-child(odd) { background: rgba(16,185,129,0.6); }
-
-      .benefits-fine {
+      .ps-meta-val {
         font-family: var(--font-mono);
         font-size: 0.85rem;
-        color: var(--gray);
-        text-align: center;
-        padding: 1rem 1.5rem;
-        background: rgba(255,255,255,0.02);
-        border: 1px dashed rgba(255,255,255,0.08);
-        border-radius: 10px;
-        max-width: 28rem;
-        margin: 0 auto;
-        line-height: 1.6;
+        color: var(--white);
+        letter-spacing: 0.02em;
       }
-      .bf-icon {
-        color: var(--orange);
-        margin-right: 0.4rem;
-        font-weight: 700;
+      .ps-note {
+        margin-top: 1.25rem;
+        padding-top: 1.25rem;
+        border-top: 1px dashed rgba(255,255,255,0.08);
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--gray-light);
+        line-height: 1.65;
+        opacity: 0.85;
       }
+      .ps-note strong { color: var(--orange-bright); font-weight: 700; }
 
       /* ============ ABOUT ============ */
       .cohort-about {
@@ -895,9 +1120,9 @@ import Footer from '../../components/Footer.astro';
       }
       .final-title {
         font-family: var(--font-heading);
-        font-size: clamp(3rem, 6vw, 5rem);
+        font-size: clamp(2.75rem, 5.5vw, 4.5rem);
         font-weight: 700;
-        line-height: 0.95;
+        line-height: 0.98;
         letter-spacing: -0.04em;
         margin-bottom: 1.5rem;
         color: var(--white);
@@ -911,50 +1136,67 @@ import Footer from '../../components/Footer.astro';
         text-align: left;
       }
       .final-body + .final-body { margin-bottom: 2.5rem; }
+      .final-cta-wrap { margin-top: 1rem; }
+      .btn-primary-final {
+        font-size: clamp(1rem, 1.2vw, 1.15rem);
+        padding: 1.1rem 1.85rem;
+      }
+      .final-fineprint {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--gray);
+        margin-top: 1rem;
+        letter-spacing: 0.04em;
+        opacity: 0.7;
+      }
+
       /* ============ Responsive ============ */
       @media (max-width: 1024px) {
-        .benefits-grid { grid-template-columns: 1fr; }
+        .schematic-grid { grid-template-columns: repeat(4, 1fr); }
+        .outcomes-list { grid-template-columns: 1fr; }
+        .ps-row { grid-template-columns: 1fr; gap: 1rem; }
+        .ps-divider { display: none; }
         .about-inner { grid-template-columns: 1fr; gap: 5rem; }
         .about-portrait { max-width: 340px; }
         .about-stats { justify-content: flex-start; }
       }
       @media (max-width: 768px) {
-        .cohort-hero { padding: 7.5rem 1.25rem 6rem; min-height: auto; }
-        .cohort-benefits, .cohort-about, .cohort-final { padding: 6rem 1.25rem; }
-        .form-label { margin-bottom: 0.7rem; }
-        .schematic { padding: 1rem; gap: 0.4rem; }
-        .stage { padding: 0.85rem 1rem; min-width: 90px; }
-        .link-arrow { flex: 0 0 20px; }
+        .cohort-hero { padding: 4.5rem 1.25rem 4rem; min-height: auto; }
+        .cohort-outcomes, .cohort-about, .cohort-final { padding: 6rem 1.25rem; }
+        .hero-lead { margin-bottom: 1.25rem; }
+        .schematic-grid {
+          grid-template-columns: repeat(4, 1fr);
+          padding: 0.75rem;
+          gap: 0.4rem;
+          margin-bottom: 0.5rem;
+        }
+        .sg-cell { padding: 0.55rem 0.55rem; }
+        .sg-num { font-size: 0.55rem; margin-bottom: 0.15rem; }
+        .sg-name { font-size: 0.78rem; }
+        .schematic-caption { margin-bottom: 1.5rem; font-size: 0.7rem; }
         .float-tag, .float-code { display: none; }
+        .try-one { padding: 1.1rem; margin-top: 3.25rem; }
+        .escape-hatch { margin-top: 1.5rem; }
       }
       @media (max-width: 480px) {
-        .hero-title { font-size: clamp(2.5rem, 11vw, 3.5rem); }
-        .schematic {
-          flex-direction: column;
-          align-items: stretch;
-          overflow-x: hidden;
-          gap: 0.5rem;
+        .hero-title { font-size: clamp(2rem, 8.5vw, 2.5rem); margin-bottom: 0.85rem; }
+        .hero-meta-row { margin-bottom: 1rem; }
+        .hero-lead { font-size: 0.98rem; margin-bottom: 0.85rem; }
+        .schematic-grid {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0.3rem;
+          padding: 0.55rem;
+          margin-bottom: 0.4rem;
         }
-        .stage { min-width: 0; width: 100%; text-align: center; }
-        .link-arrow {
-          flex: 0 0 24px;
-          height: 24px;
-          width: 100%;
-          transform: none;
-        }
-        .link-arrow::before {
-          top: 0; bottom: 0; left: 50%; right: auto;
-          width: 2px; height: 100%;
-          background: repeating-linear-gradient(180deg, var(--gray) 0 6px, transparent 6px 12px);
-          transform: translateX(-50%);
-        }
-        .link-arrow::after {
-          top: auto; bottom: 4px; right: auto; left: 50%;
-          border-right: none; border-top: none;
-          border-bottom: 2px solid var(--gray);
-          border-left: 2px solid var(--gray);
-          transform: translateX(-50%) rotate(-45deg);
-        }
+        .sg-cell { padding: 0.45rem 0.45rem; }
+        .sg-num { font-size: 0.5rem; margin-bottom: 0.1rem; }
+        .sg-name { font-size: 0.66rem; line-height: 1.1; }
+        .schematic-caption { margin-bottom: 1.1rem; font-size: 0.65rem; }
+        .try-one-choices { gap: 0.5rem; }
+        .ps-num { font-size: clamp(2.25rem, 12vw, 3rem); }
+        .btn-primary { font-size: 0.95rem; padding: 0.9rem 1.35rem; }
+        .primary-cta-fineprint { font-size: 0.72rem; margin-top: 0.7rem; }
+        .primary-cta-secondary { font-size: 0.88rem; }
       }
     </style>
   </body>

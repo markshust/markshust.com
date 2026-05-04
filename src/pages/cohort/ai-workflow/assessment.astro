@@ -159,7 +159,7 @@ const totalQuestions = qCounter;
                 <article class="q-card" id={`q${q.num}`} data-qid={q.id}>
                   <div class="q-meta">
                     <span class="q-num">Q{q.num}</span>
-                    <span class="q-status" data-status>—</span>
+                    <span class="q-status" data-status>-</span>
                   </div>
                   <p class="q-text" set:html={q.text}></p>
                   <div class="q-choices" role="radiogroup" aria-label={`Question ${q.num}`}>
@@ -197,7 +197,7 @@ const totalQuestions = qCounter;
       <section class="aw-result" id="result">
         <div class="bg-text bg-text-result">SCORE</div>
         <div class="result-inner">
-          <!-- Locked state -->
+          <!-- Locked state (incomplete) -->
           <div class="result-locked" id="resultLocked">
             <div class="rl-grid"></div>
             <div class="rl-icon" aria-hidden="true">
@@ -215,15 +215,118 @@ const totalQuestions = qCounter;
             </p>
           </div>
 
+          <!-- Email-gate state (complete + locked) -->
+          <div class="email-gate" id="resultEmailGate" hidden>
+            <div class="eg-stripe"></div>
+            <div class="eg-meta">
+              <span class="eg-mono">&gt; result.locked()</span>
+              <span class="eg-pill">FOUNDING · COHORT #1</span>
+            </div>
+            <h2 class="eg-heading">
+              your assessment is <span class="ht-grad">ready</span>.
+            </h2>
+            <p class="eg-body">
+              Enter your email to see your score and lock in your founding-member spot.
+            </p>
+
+            <div class="eg-teaser" aria-hidden="true">
+              <div class="eg-teaser-row">
+                <span class="eg-teaser-label">your score</span>
+                <span class="eg-teaser-redacted">
+                  <span class="eg-block"></span><span class="eg-block"></span>
+                  <span class="eg-teaser-divider">/</span>
+                  <span class="eg-teaser-total">{totalQuestions}</span>
+                </span>
+              </div>
+              <div class="eg-teaser-row">
+                <span class="eg-teaser-label">your tier</span>
+                <span class="eg-teaser-locked">[ LOCKED ]</span>
+              </div>
+            </div>
+
+            <div class="eg-specs">
+              <div class="eg-spec">
+                <span class="eg-spec-label">Founding rate</span>
+                <span class="eg-spec-val eg-spec-price">$999</span>
+              </div>
+              <div class="eg-spec">
+                <span class="eg-spec-label">Seats</span>
+                <span class="eg-spec-val">10</span>
+              </div>
+              <div class="eg-spec">
+                <span class="eg-spec-label">Application</span>
+                <span class="eg-spec-val">required</span>
+              </div>
+              <div class="eg-spec">
+                <span class="eg-spec-label">Runs</span>
+                <span class="eg-spec-val">June 2026</span>
+              </div>
+            </div>
+
+            <div class="eg-form-label">
+              <span class="eg-form-prompt">&gt;</span>
+              <span>see_my_score</span>
+              <span class="eg-form-cursor">_</span>
+            </div>
+            <div class="kit-form-container" id="emailGateKitForm">
+              <script async data-uid="56242fd89c" src="https://macademy.kit.com/56242fd89c/index.js" is:inline></script>
+            </div>
+            <p class="eg-fineprint">
+              When registration opens, you'll be emailed first with the application link and the founding rate locked in. No spam.
+            </p>
+          </div>
+
           <!-- Revealed state -->
           <div class="result-revealed" id="resultRevealed" hidden>
-            <div class="section-label">04 / Your score</div>
+            <!-- Post-unlock founding-offer info (no form, just confirmation + tier copy) -->
+            <div class="founding-card" id="foundingCard">
+              <div class="fc-stripe"></div>
+              <div class="fc-meta">
+                <span class="fc-mono">&gt; cohort.offer_unlocked()</span>
+                <span class="fc-pill">FOUNDING · COHORT #1</span>
+              </div>
+              <h3 class="fc-heading">
+                your personalized<br>cohort <span class="ht-grad">offer</span>.
+              </h3>
+              <p class="fc-offer-prelude">
+                Based on your score (<span class="fc-tier-inline" id="offerTier">-</span>), here's what Cohort #1 will do for you specifically:
+              </p>
+              <p class="fc-offer-hook" id="offerHookBody">-</p>
+
+              <div class="fc-specs">
+                <div class="fc-spec">
+                  <span class="fc-spec-label">Founding rate</span>
+                  <span class="fc-spec-val fc-spec-price">$999</span>
+                </div>
+                <div class="fc-spec">
+                  <span class="fc-spec-label">Seats</span>
+                  <span class="fc-spec-val">10</span>
+                </div>
+                <div class="fc-spec">
+                  <span class="fc-spec-label">Application</span>
+                  <span class="fc-spec-val">required</span>
+                </div>
+                <div class="fc-spec">
+                  <span class="fc-spec-label">Runs</span>
+                  <span class="fc-spec-val">June 2026</span>
+                </div>
+              </div>
+
+              <div class="fc-confirmed">
+                <span class="fc-confirmed-dot"></span>
+                <span class="fc-confirmed-text">
+                  You're on the founding-member shortlist. When applications open, you'll get the link first, with the $999 founding rate locked in.
+                </span>
+              </div>
+            </div>
+
+            <div class="section-label rr-score-label">05 / Your score</div>
             <div class="result-card">
               <div class="rc-stripe"></div>
               <div class="rc-grid"></div>
               <div class="rc-meta">
                 <span class="rc-mono">&gt; result.compute()</span>
-                <span class="rc-tier-pill" id="tierPill">—</span>
+                <span class="rc-tier-pill" id="tierPill">-</span>
               </div>
               <div class="rc-score">
                 <span class="rc-score-num" id="scoreNum">0</span>
@@ -234,8 +337,8 @@ const totalQuestions = qCounter;
               <div class="rc-bar">
                 <div class="rc-bar-fill" id="scoreBarFill"></div>
               </div>
-              <h2 class="rc-headline" id="resultHeadline">—</h2>
-              <p class="rc-body" id="resultBody">—</p>
+              <h2 class="rc-headline" id="resultHeadline">-</h2>
+              <p class="rc-body" id="resultBody">-</p>
               <div class="rc-meaning">
                 <p class="rc-meaning-label">What this means</p>
                 <p class="rc-meaning-body">
@@ -244,24 +347,11 @@ const totalQuestions = qCounter;
               </div>
 
               <div class="rc-actions">
-                {/* Re-enable once cohort registration is live:
-                <a class="rc-cta-primary" href="/cohort/ai-workflow/#join">
-                  <span class="rcp-text">Reserve your seat</span>
-                  <span class="rcp-arrow">→</span>
-                </a>
-                */}
                 <button type="button" class="rc-cta-ghost" id="resetBtn">
                   <span class="rcg-prompt">&gt;</span>
                   <span class="rcg-text">retake_assessment</span>
                 </button>
               </div>
-            </div>
-
-            <div class="rc-waitlist-note">
-              <span class="rcw-dot"></span>
-              <span class="rcw-text">
-                You're on the waitlist. I'll email you the moment Cohort #1 registration opens, with founding-member pricing locked in.
-              </span>
             </div>
           </div>
         </div>
@@ -273,6 +363,7 @@ const totalQuestions = qCounter;
     <script is:inline define:vars={{ totalQuestions }}>
       (function () {
         const STORAGE_KEY = 'aw-assessment-v1';
+        const UNLOCK_KEY = 'aw-unlocked-v1';
         const total = totalQuestions;
         const answers = new Map();
 
@@ -284,6 +375,7 @@ const totalQuestions = qCounter;
             pill: 'STRONG',
             headline: 'strong workflow architecture.',
             body: 'You’re operating at a high level. The cohort will sharpen the edges and expose blind spots you’ve earned the right to see.',
+            offerHook: 'You’re already operating at a high level. The cohort sharpens edges and exposes blind spots you’ve earned the right to see. Founding rate locks you into the small group of advanced operators in Cohort #1.',
           },
           {
             min: 9,
@@ -292,6 +384,7 @@ const totalQuestions = qCounter;
             pill: 'SOLID',
             headline: 'solid foundation, several gaps.',
             body: 'You have real structure in place, but the seams are showing. The cohort closes the gaps systematically and gives you the pieces you know are missing.',
+            offerHook: 'You’ve got structure, but the seams are showing. Cohort #1 closes those gaps systematically and gives you the missing pieces you already know are missing, applied to your codebase, not a template.',
           },
           {
             min: 5,
@@ -300,6 +393,7 @@ const totalQuestions = qCounter;
             pill: 'IMPROVISING',
             headline: 'mostly improvising.',
             body: 'You feel the chaos because you know what needs to be done, but the system isn’t designed yet. The cohort is built for exactly this: turning ad hoc into a well-defined architecture within five weeks.',
+            offerHook: 'You’re feeling the chaos because you know what good looks like, but the system just isn’t designed yet. Cohort #1 is built for exactly this score. Five weeks, applied to your real codebase, you leave with the architecture installed.',
           },
           {
             min: 0,
@@ -308,6 +402,7 @@ const totalQuestions = qCounter;
             pill: 'EARLY',
             headline: 'you’re early.',
             body: 'And early is the best time to install architecture, before chaos calcifies into bad habits. The cohort gives you the system before bad patterns set, applied to your real code from the start.',
+            offerHook: 'Early is the best time to install architecture, before bad patterns calcify. Cohort #1 gives you the system from day one, applied to your real code, with the founding rate locked in.',
           },
         ];
 
@@ -316,12 +411,16 @@ const totalQuestions = qCounter;
         const countEl = $('#progressCount');
         const lockedCountEl = $('#lockedCount');
         const resultLocked = $('#resultLocked');
+        const resultEmailGate = $('#resultEmailGate');
         const resultRevealed = $('#resultRevealed');
         const scoreNumEl = $('#scoreNum');
         const scoreBarFill = $('#scoreBarFill');
         const tierPill = $('#tierPill');
         const headlineEl = $('#resultHeadline');
         const bodyEl = $('#resultBody');
+        const offerTierEl = $('#offerTier');
+        const offerHookEl = $('#offerHookBody');
+        const foundingCardEl = $('#foundingCard');
         const card = () => document.querySelector('.result-card');
 
         let booted = false;
@@ -329,6 +428,14 @@ const totalQuestions = qCounter;
 
         function tierFor(score) {
           return tiers.find((t) => score >= t.min && score <= t.max) || tiers[3];
+        }
+
+        function isUnlocked() {
+          try { return localStorage.getItem(UNLOCK_KEY) === '1'; } catch (_) { return false; }
+        }
+
+        function setUnlocked() {
+          try { localStorage.setItem(UNLOCK_KEY, '1'); } catch (_) {}
         }
 
         function load() {
@@ -368,7 +475,7 @@ const totalQuestions = qCounter;
           if (status) {
             if (value === 'yes') status.textContent = 'YES';
             else if (value === 'no') status.textContent = 'NO';
-            else status.textContent = '—';
+            else status.textContent = '-';
           }
         }
 
@@ -381,11 +488,22 @@ const totalQuestions = qCounter;
           if (lockedCountEl) lockedCountEl.textContent = String(answered);
 
           const isComplete = answered >= total;
-          if (isComplete) {
-            renderResult(yesCount);
-          } else {
+          const unlocked = isUnlocked();
+
+          if (!isComplete) {
             if (resultLocked) resultLocked.hidden = false;
+            if (resultEmailGate) resultEmailGate.hidden = true;
             if (resultRevealed) resultRevealed.hidden = true;
+          } else if (!unlocked) {
+            if (resultLocked) resultLocked.hidden = true;
+            if (resultEmailGate) resultEmailGate.hidden = false;
+            if (resultRevealed) resultRevealed.hidden = true;
+            populateResult(yesCount);
+          } else {
+            if (resultLocked) resultLocked.hidden = true;
+            if (resultEmailGate) resultEmailGate.hidden = true;
+            if (resultRevealed) resultRevealed.hidden = false;
+            populateResult(yesCount);
           }
 
           // Auto-scroll to the result only on the transition from incomplete → complete,
@@ -400,20 +518,55 @@ const totalQuestions = qCounter;
           lastComplete = isComplete;
         }
 
-        function renderResult(yesCount) {
+        function populateResult(yesCount) {
           const tier = tierFor(yesCount);
-          if (resultLocked) resultLocked.hidden = true;
-          if (resultRevealed) resultRevealed.hidden = false;
           scoreNumEl.textContent = String(yesCount);
           scoreBarFill.style.width = (yesCount / total) * 100 + '%';
           tierPill.textContent = tier.pill;
           tierPill.dataset.tier = tier.key;
           headlineEl.textContent = tier.headline;
           bodyEl.textContent = tier.body;
+          if (offerTierEl) offerTierEl.textContent = tier.pill.toLowerCase();
+          if (offerHookEl) offerHookEl.textContent = tier.offerHook;
+          if (foundingCardEl) foundingCardEl.dataset.tier = tier.key;
           const c = card();
-          if (c) {
-            c.dataset.tier = tier.key;
-          }
+          if (c) c.dataset.tier = tier.key;
+        }
+
+        function watchKitForUnlock() {
+          const container = document.getElementById('emailGateKitForm');
+          if (!container) return;
+          let inputAppeared = false;
+          let triggered = false;
+          const check = () => {
+            if (triggered) return;
+            const input = container.querySelector('.formkit-input');
+            const success = container.querySelector('[data-element="success"], .formkit-success, .formkit-alert-success');
+            if (input) inputAppeared = true;
+            const successVisible = !!success && !success.hidden &&
+              getComputedStyle(success).display !== 'none' &&
+              getComputedStyle(success).visibility !== 'hidden';
+            const inputDisappeared = inputAppeared && !input;
+            if (successVisible || inputDisappeared) {
+              triggered = true;
+              obs.disconnect();
+              onUnlock();
+            }
+          };
+          const obs = new MutationObserver(check);
+          obs.observe(container, { childList: true, subtree: true, attributes: true });
+        }
+
+        function onUnlock() {
+          setUnlocked();
+          // Pause so user reads Kit's thank-you message, then reveal the score.
+          setTimeout(() => {
+            updateProgress();
+            setTimeout(() => {
+              const target = document.querySelector('.rr-score-label') || document.querySelector('.result-card');
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 200);
+          }, 1100);
         }
 
         function setAnswer(id, value) {
@@ -450,7 +603,7 @@ const totalQuestions = qCounter;
                   b.setAttribute('aria-pressed', 'false');
                 });
                 const status = c.querySelector('[data-status]');
-                if (status) status.textContent = '—';
+                if (status) status.textContent = '-';
               });
               updateProgress();
               const firstQ = document.getElementById('q01');
@@ -483,12 +636,29 @@ const totalQuestions = qCounter;
           });
         }
 
+        function applyQueryPreFill() {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const q1 = params.get('q1');
+            if (q1 === 'yes' || q1 === 'no') {
+              answers.set(1, q1);
+              persist();
+            }
+            if (params.has('q1')) {
+              const newUrl = window.location.pathname + window.location.hash;
+              history.replaceState({}, '', newUrl);
+            }
+          } catch (_) {}
+        }
+
         // Init
         load();
+        applyQueryPreFill();
         answers.forEach((v, id) => applyAnswerUI(id, v));
         updateProgress();
         booted = true;
         bind();
+        if (!isUnlocked()) watchKitForUnlock();
 
         // Show progress shell only after slight scroll, like a sticky badge that fades in
         const shell = document.getElementById('progressShell');
@@ -498,6 +668,20 @@ const totalQuestions = qCounter;
         };
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
+
+        // Customize Kit form placeholder once Kit injects the form
+        const setKitPlaceholder = () => {
+          document.querySelectorAll('.kit-form-container .formkit-input').forEach((input) => {
+            if (input.placeholder !== 'Email address') {
+              input.placeholder = 'Email address';
+              input.setAttribute('aria-label', 'Email address');
+            }
+          });
+        };
+        document.querySelectorAll('.kit-form-container').forEach((container) => {
+          new MutationObserver(setKitPlaceholder).observe(container, { childList: true, subtree: true });
+        });
+        setKitPlaceholder();
       })();
     </script>
 
@@ -1199,12 +1383,394 @@ const totalQuestions = qCounter;
       }
       .rcg-prompt { color: var(--orange); font-weight: 700; }
 
+      /* Email gate (complete + locked) */
+      .email-gate {
+        position: relative;
+        background: var(--dark-card);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: clamp(2rem, 4vw, 3rem);
+        overflow: hidden;
+        animation: rcIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .eg-stripe {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--blue) 50%, var(--green));
+        background-size: 200% 100%;
+        animation: progShimmer 8s linear infinite;
+      }
+      .eg-meta {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .eg-mono { color: var(--gray-light); opacity: 0.7; }
+      .eg-pill {
+        font-weight: 700;
+        padding: 0.35rem 0.7rem;
+        border-radius: 100px;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        background: rgba(255,107,53,0.12);
+        border: 1px solid rgba(255,107,53,0.4);
+        color: var(--orange-bright);
+      }
+      .eg-heading {
+        font-family: var(--font-heading);
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        color: var(--white);
+        margin-bottom: 1rem;
+      }
+      .eg-body {
+        font-size: clamp(1rem, 1.2vw, 1.1rem);
+        line-height: 1.65;
+        color: var(--gray-light);
+        margin-bottom: 1.75rem;
+      }
+      .eg-teaser {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .eg-teaser-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .eg-teaser-label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gray);
+        opacity: 0.75;
+      }
+      .eg-teaser-redacted {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: var(--font-mono);
+        font-size: 1.05rem;
+        color: var(--gray-light);
+      }
+      .eg-block {
+        display: inline-block;
+        width: 1.4rem;
+        height: 1.4rem;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(255,107,53,0.45),
+          rgba(255,107,53,0.45) 3px,
+          rgba(255,107,53,0.18) 3px,
+          rgba(255,107,53,0.18) 6px
+        );
+        border-radius: 3px;
+        vertical-align: middle;
+      }
+      .eg-teaser-divider { color: var(--gray); opacity: 0.6; font-size: 1.15rem; }
+      .eg-teaser-total { color: var(--white); opacity: 0.7; font-size: 1.05rem; }
+      .eg-teaser-locked {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--orange);
+        background: rgba(255,107,53,0.1);
+        border: 1px dashed rgba(255,107,53,0.4);
+        padding: 0.35rem 0.65rem;
+        border-radius: 6px;
+      }
+      .eg-specs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+      }
+      .eg-spec {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.85rem 0.95rem;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+      }
+      .eg-spec-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gray);
+        opacity: 0.75;
+      }
+      .eg-spec-val {
+        font-family: var(--font-heading);
+        font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+        font-weight: 700;
+        color: var(--white);
+        letter-spacing: -0.01em;
+      }
+      .eg-spec-price {
+        background: linear-gradient(90deg, var(--orange), var(--green));
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+      }
+      .eg-form-label {
+        font-family: var(--font-mono);
+        font-size: clamp(0.92rem, 1.05vw, 1rem);
+        color: var(--gray-light);
+        margin-bottom: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .eg-form-prompt { color: var(--orange); font-weight: 700; }
+      .eg-form-cursor {
+        color: var(--orange);
+        animation: blink 1.1s step-end infinite;
+        margin-left: 0.15rem;
+      }
+      .eg-fineprint {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--gray);
+        line-height: 1.6;
+        margin-top: 0.85rem;
+        opacity: 0.75;
+      }
+
+      /* Post-unlock confirmation block inside founding-card */
+      .fc-confirmed {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        padding: 0.95rem 1.1rem;
+        background: rgba(16,185,129,0.06);
+        border: 1px solid rgba(16,185,129,0.25);
+        border-radius: 10px;
+      }
+      .fc-confirmed-dot {
+        flex-shrink: 0;
+        width: 8px; height: 8px;
+        margin-top: 0.4rem;
+        background: var(--green);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(16,185,129,0.3);
+        animation: pulseDot 2s ease-in-out infinite;
+      }
+      .fc-confirmed-text {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        line-height: 1.6;
+        color: var(--gray-light);
+        letter-spacing: 0.01em;
+      }
+
+      /* Section label sitting above the score card (post-unlock) */
+      .rr-score-label {
+        margin-top: 2.5rem;
+        margin-bottom: 0.85rem;
+        scroll-margin-top: 100px;
+      }
+
+      /* Founding-member offer card */
+      .founding-card {
+        position: relative;
+        background: var(--dark-card);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: clamp(1.75rem, 3.5vw, 2.5rem);
+        margin-top: 2rem;
+        overflow: hidden;
+        animation: rcIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .fc-stripe {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--blue) 50%, var(--green));
+        background-size: 200% 100%;
+        animation: progShimmer 8s linear infinite;
+      }
+      .fc-meta {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .fc-mono { color: var(--gray-light); opacity: 0.7; }
+      .fc-pill {
+        font-weight: 700;
+        padding: 0.35rem 0.7rem;
+        border-radius: 100px;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        background: rgba(255,107,53,0.12);
+        border: 1px solid rgba(255,107,53,0.4);
+        color: var(--orange-bright);
+      }
+      .fc-heading {
+        font-family: var(--font-heading);
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.025em;
+        color: var(--white);
+        margin-bottom: 1rem;
+      }
+      .fc-offer-prelude {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--gray);
+        margin-bottom: 0.65rem;
+      }
+      .fc-tier-inline {
+        color: var(--orange-bright);
+        font-weight: 700;
+      }
+      .fc-offer-hook {
+        font-size: clamp(1rem, 1.2vw, 1.1rem);
+        line-height: 1.65;
+        color: var(--gray-light);
+        margin-bottom: 1.75rem;
+      }
+      .fc-specs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+      }
+      .fc-spec {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.85rem 0.95rem;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+      }
+      .fc-spec-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gray);
+        opacity: 0.75;
+      }
+      .fc-spec-val {
+        font-family: var(--font-heading);
+        font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+        font-weight: 700;
+        color: var(--white);
+        letter-spacing: -0.01em;
+      }
+      .fc-spec-price {
+        background: linear-gradient(90deg, var(--orange), var(--green));
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+      }
+      .fc-form-label {
+        font-family: var(--font-mono);
+        font-size: clamp(0.92rem, 1.05vw, 1rem);
+        color: var(--gray-light);
+        margin-bottom: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .fc-form-prompt { color: var(--orange); font-weight: 700; }
+      .fc-form-cursor {
+        color: var(--orange);
+        animation: blink 1.1s step-end infinite;
+        margin-left: 0.15rem;
+      }
+      .kit-form-container :global(form) {
+        background: transparent !important;
+        padding: 0 !important;
+        border: 0 !important;
+        max-width: none !important;
+      }
+      .kit-form-container :global(form > div) {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      .kit-form-container :global(.formkit-input) {
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        color: var(--white) !important;
+        font-family: var(--font-mono) !important;
+        border-radius: 8px !important;
+      }
+      .kit-form-container :global(.formkit-input::placeholder) {
+        color: var(--gray) !important;
+        opacity: 0.45 !important;
+        font-family: var(--font-mono) !important;
+      }
+      .kit-form-container :global(.formkit-input::-webkit-input-placeholder) {
+        color: var(--gray) !important;
+        opacity: 0.45 !important;
+      }
+      .kit-form-container :global(.formkit-input::-moz-placeholder) {
+        color: var(--gray) !important;
+        opacity: 0.45 !important;
+      }
+      .kit-form-container :global(button[type="submit"]) {
+        background: linear-gradient(90deg, var(--orange), var(--green)) !important;
+        color: #000 !important;
+        font-family: var(--font-heading) !important;
+        font-weight: 700 !important;
+        border-radius: 100px !important;
+        border: 0 !important;
+      }
+      .fc-fineprint {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--gray);
+        line-height: 1.6;
+        margin-top: 0.85rem;
+        opacity: 0.75;
+      }
+
       .rc-waitlist-note {
         display: flex;
         align-items: flex-start;
         gap: 0.65rem;
         max-width: 560px;
-        margin: 2.75rem auto 0;
+        margin: 1.5rem auto 0;
         padding: 0.85rem 1rem;
         background: rgba(16,185,129,0.05);
         border: 1px solid rgba(16,185,129,0.18);
@@ -1236,12 +1802,21 @@ const totalQuestions = qCounter;
         .qs-head { flex-wrap: wrap; gap: 0.65rem; }
         .qs-rule { display: none; }
       }
+      @media (max-width: 768px) {
+        .fc-specs { grid-template-columns: repeat(2, 1fr); }
+        .eg-specs { grid-template-columns: repeat(2, 1fr); }
+      }
       @media (max-width: 480px) {
         .hero-title { font-size: clamp(2.25rem, 10vw, 3rem); }
         .q-choices { gap: 0.55rem; }
         .qb-key { display: none; }
         .rc-actions { flex-direction: column; align-items: stretch; }
         .rc-cta-primary, .rc-cta-ghost { justify-content: center; }
+        .fc-specs { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .fc-spec { padding: 0.7rem 0.8rem; }
+        .eg-specs { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .eg-spec { padding: 0.7rem 0.8rem; }
+        .eg-teaser-row { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
       }
     </style>
   </body>
