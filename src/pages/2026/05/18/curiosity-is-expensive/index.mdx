@@ -1,0 +1,94 @@
+---
+title: "Curiosity is expensive"
+date: "2026-05-18T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+I spent the entire weekend trying to swap Anthropic’s model out from under Claude Code.
+
+Not leave Claude Code -- I love Claude Code. Just replace the model it talks to with something else, and keep everything else the same.
+
+I'd been seeing all the chatter about local models. Qwen this, GLM that. "Running coding LLMs on your Mac is finally usable in 2026".
+
+And I got curious.
+
+So I cleared my Saturday, fired up Ollama, pulled down a few models that were 20GB+ in size... and started trying to wire it into the Claude Code harness.
+
+The idea was simple: keep my workflow, swap the model underneath.
+
+But it just didn't work.
+
+I won't drag you through the whole thing (well, maybe I will a bit below), but the short version is that downloading models, dealing with env var puzzles, proxy scripts that are hard to follow, and prompt caches that don't actually cache will give you a bit of a headache.
+
+While these are all solvable problems, they stack. And that ate up my whole weekend, and even a chunk of this Monday morning that I’ll never get back. I don’t have much to show for it -- no code shipped, no real work done.
+
+I’m kinda mentally exhausted, but I did learn a few things along the way:
+
+## The subscription is heavily subsidized
+
+While everyone is sourcing cheap or even free models, not many people seem to be talking about how the Claude Max20 plan is likely one of the most under-priced subscriptions in software right now.
+
+If I were paying per token directly via their API, I’d likely blow past $200 in a day or two, or perhaps even a few hours. Anthropic is HEAVILY subsidizing this plan right now because they want you using it, and they want you to be in their ecosystem, using their tools, their harness.
+
+When you try to circumvent that subsidy by self-hosting a model, you don't escape the cost. You just move it. Now you're paying with your hardware, your electricity, and most importantly, your time.
+
+And your time is the expensive part. A weekend jerking around trying to save a few cents has a 100x cost factor than just using the Max20 plan.
+
+I'm not saying I don't want to ever run local models, but running them to save money is a pipe dream.
+
+## The model is not the workflow
+
+There’s something a bit deeper about this too that’s easy to miss.
+
+I've been using Claude Code for over a year. In that time, I’ve continued to refine my workflow until it’s nearly perfected for me. I’ve written so many skills and even extensive plugins like HCF that [orchestrates the entire development lifecycle](https://github.com/markshust/hcf) and writes code autonomously.
+
+I’ve also set up slash commands, keybindings, hooks, model assignments for subagents, …the list never ends. While everyone wants a versatile, portable workflow, you can also make significant progress just accepting the ecosystem you are within.
+
+I’ve trained myself to use a specific harness, and built up muscle memory around all of Claude’s quirks.
+
+If you point Claude Code at something like Qwen, you may think that you’re swapping out an engine but keeping the shell. But that’s not at all what happens.
+
+Every model has its own personality, its own failure modes, and its own way of interpreting what you are asking for. The skills that work for Opus or Sonnet may not behave the same way for GLM. I’ve refined prompts for over a year that have been tuned to a specific model’s habits. That trust I'd built up -- knowing when to read its output carefully and when to skim it -- is model-specific, not harness-specific.
+
+You don't realize how much of your workflow lives within your process. And when things change, you're suddenly slow again. Beginner-slow, because you need to read every line again because you aren’t quite sure what this new model gets right or wrong yet.
+
+## The cost of switching is invisible
+
+When you read that "switching models will cost you a weekend, plus a fuzzy week of re-learning”, as developers, we’ll almost always take that bet.
+
+But it’s a trap, because the real cost of switching shows up in places that you just can’t measure.
+
+There’s a whole bundle of non-trivial costs, including:
+
+- re-learning what to trust
+- re-tuning prompts that used to just work
+- rebuilding the gut feeling of "let this run” vs. "stop it now"
+- losing the muscle memory from a year of mindful iteration
+- every bit of work you don't ship while you're messing around with something new
+
+By the time you've worked through all of that, you've spent more than a year of subscription fees in pure opportunity cost. And the model on the other side, if you even get it working, isn’t nearly as good as the one you left.
+
+## Experiment, but not with things you depend on
+
+I love being curious and experimenting with things. I burn through dumb experiments on the weekend all the time.
+
+But this weekend taught me something I should've already known: don't run the experiment with workflows you depend on.
+
+What I should have done was spin up a separate folder, and play with Qwen or GLM on a toy problem. Something where the failure mode is “hmmm, that’s how it works!" instead of "oh no, my entire weekend of relaxing is gone".
+
+When you turn your daily driver into a science project, you're not learning, but gambling with expensive dice.
+
+Stick with a version of curiosity that’s healthier: small, bounded, and throwaway. There's a version of it that’s a tax on your real work and disguised as exploration. But you don’t want to mistake the latter for the former.
+
+## Stay with what works
+
+I strongly believe that LLM models will be a part of our future. Qwen, DeepSeek, GLM and Kimi are all super impressive, and a year from now, I'll probably forget all about this post and waste another weekend on it. And it’ll likely be smoother.
+
+But for the work I actually do, today, the right move is to stop poking around at the setup that works unbelievably great.
+
+The boring answer is almost always the right one.
+
+Use the thing you already know. Save the curiosity for the nights and weekends you can afford to lose, and do it within an hour here and an hour there. And when something is really working -- the way Claude Code has been working for me -- the highest-leverage move is usually to leave it alone, and go ship something with it.
+
+And that's what I should have done with my weekend.
