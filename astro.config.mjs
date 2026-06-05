@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
@@ -10,7 +11,9 @@ export default defineConfig({
 		sitemap(),
 	],
 	markdown: {
-		smartypants: false,
+		processor: unified({
+			smartypants: false,
+		}),
 		shikiConfig: {
 			theme: 'github-dark',
 			wrap: false,
