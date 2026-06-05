@@ -9,7 +9,7 @@ A client came to me a while back asking for help debugging performance issues in
 
 I almost said yes and started. Instead I asked them a few questions about how the site had been built.
 
-Within an hour it was obvious that the theme was the least of their problems. They had over fifty modules installed; many of them overlapping, several of them touching the same things in incompatible ways. The "theme performance problem" was a symptom of an architecture that had been bolted together by someone who didn't have an architect's instinct for what *belongs* and what doesn't.
+Within an hour it was obvious that the theme was the least of their problems. They had over seventy modules installed; many of them overlapping, several of them touching the same things in incompatible ways. The "theme performance problem" was a symptom of an architecture that had been bolted together by someone who didn't have an architect's instinct for what belongs and what doesn't.
 
 If I'd taken the engagement as stated, I would have spent a few weeks optimizing CSS and frontend components on top of a foundation that was already collapsing. The site would still have been slow, and they would have rightly concluded I was a bad investment.
 
@@ -19,9 +19,9 @@ The lesson I keep coming back to is this: the question someone asks you is almos
 
 ## "How do I" is rarely the real question
 
-When someone -- a client, a PM, a non-technical stakeholder, *another developer* -- walks up and asks "How do I do X?", the default move for most engineers is to answer X. We're wired to solve. Someone hands us a problem, we hand back a solution. It feels productive, and it is, sometimes, productive.
+When someone -- a client, a PM, a non-technical stakeholder, another developer -- walks up and asks "How do I do X?", the default move for most engineers is to answer X. We're wired to solve. Someone hands us a problem, we hand back a solution. It feels productive, and it is, sometimes, productive.
 
-But the way the question gets phrased almost always carries an assumption underneath it about *what kind of solution would work*. And the asker is the person least likely to have noticed that assumption, because they're inside it.
+But the way the question gets phrased almost always carries an assumption underneath it about what kind of solution would work. And the asker is the person least likely to have noticed that assumption, because they're inside it.
 
 "How do I integrate xdebug with Claude Code?" is usually "I'm trying to debug something and the way I currently debug isn't working".
 
@@ -39,7 +39,7 @@ The standard advice attached to this is "always ask for the underlying problem".
 
 Don't.
 
-The cost of asking one clarifying question is tiny. The cost of building the wrong thing for a week is enormous. The cost of building the wrong thing for *months*, which is what the client engagement above could have been, is the kind of thing that loses you the relationship.
+The cost of asking one clarifying question is tiny. The cost of building the wrong thing for a week is enormous. The cost of building the wrong thing for months, which is what the client engagement above could have been, is the kind of thing that loses you the relationship.
 
 ## The toolkit
 
@@ -49,15 +49,15 @@ Three moves I lean on, in order of friction:
 
 **2. Restate the goal back to them.** "So if I'm hearing this right, you're trying to ___, and you're hoping that doing X will get you there". This is the highest-leverage move I know, because it gives them an opening to correct you without anyone losing face. Half the time they'll say "yeah, exactly" and you proceed with X. The other half they'll go "well, kind of... really what I need is..." and the actual problem falls out into the conversation.
 
-**3. "What does success look like here?"** Especially useful when X is a *project* rather than a snippet. This forces them to describe the end state, not the mechanism. Once you know what done looks like, you can evaluate whether X is the right route, or whether there's a better one they hadn't considered.
+**3. "What does success look like here?"** Especially useful when X is a project rather than a snippet. This forces them to describe the end state, not the mechanism. Once you know what done looks like, you can evaluate whether X is the right route, or whether there's a better one they hadn't considered.
 
 The mental model underneath all three is the same: **treat the question as evidence, not as a spec**. Someone asking "how do I X" tells you they have a problem they think X solves. It does *not* tell you that X is the right solution, or even that X is the right framing of the problem.
 
-The question is data about the asker's current mental model. Your job is to take that data and figure out what's actually going on; and *then* decide whether to answer the original question, redirect to a better one, or scope something bigger.
+The question is data about the asker's current mental model. Your job is to take that data and figure out what's actually going on, and then decide whether to answer the original question, redirect to a better one, or scope something bigger.
 
 This is the move that separates a developer-for-hire from a trusted advisor. Anyone can answer the question that was asked. Far fewer people ask whether it was the right question in the first place.
 
-## Closing
+## Recap
 
 I think about that client engagement a lot. The version of me that just dove into the theme fix is a real version that exists in some parallel universe, and that version delivered a slightly less broken site and lost a client. The version of me that spent an extra hour asking questions delivered a site they were proud of, and a years-long relationship.
 

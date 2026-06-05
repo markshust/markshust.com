@@ -6,9 +6,16 @@ Voice, tone, and punctuation conventions for blog posts on markshust.com. Apply 
 
 - First-person, conversational, honest.
 - Anecdote-led: open with a specific concrete moment, not an abstract premise.
-- Section headings (`##`) are *observations or lessons*, not generic topic labels. Prefer "How do I is rarely the real question" over "Asking the right question".
+- Section headings (`##`) are observations or lessons, not generic topic labels. Prefer "How do I is rarely the real question" over "Asking the right question".
+- Do not use "Closing" or "Conclusion" as ending headings. Prefer "Recap" or another specific lesson-style heading that fits the section's content.
 - Short paragraphs, occasional one-line punchlines for emphasis where they're earned.
 - Calibrate paragraph density against recent posts like `src/pages/2026/05/29/the-agent-files-that-ignored-my-local-model/` and `src/pages/2026/05/18/curiosity-is-expensive/` -- typically 2-4 sentences per paragraph, with occasional one-liners. Do not break every sentence onto its own line.
+
+## Italics and bold
+
+- **Italics are for impact, not decoration.** One or two per article, maximum. They should mark the single highest-leverage word or phrase in the piece -- the one the reader's eye needs to land on. If you find yourself italicizing more than two things, you've diluted the emphasis to zero.
+- Bold is for the small toolkit/list items and the named mental model (e.g. `**XY problem**`, `**treat the question as evidence, not as a spec**`). Use sparingly, the same discipline applies.
+- When in doubt about whether to italicize, don't. The prose should carry the emphasis on its own.
 
 ## Punctuation
 
