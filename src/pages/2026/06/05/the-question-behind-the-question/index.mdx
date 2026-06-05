@@ -1,0 +1,66 @@
+---
+title: "The question behind the question"
+date: "2026-06-05T00:00:00.000Z"
+tags: ["building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+A client came to me a while back asking for help debugging performance issues in their custom Magento theme. The site was slow, the theme had been built by a previous agency, and they wanted me to dig in and fix the bottlenecks.
+
+I almost said yes and started. Instead I asked them a few questions about how the site had been built.
+
+Within an hour it was obvious that the theme was the least of their problems. They had over fifty modules installed; many of them overlapping, several of them touching the same things in incompatible ways. The "theme performance problem" was a symptom of an architecture that had been bolted together by someone who didn't have an architect's instinct for what *belongs* and what doesn't.
+
+If I'd taken the engagement as stated, I would have spent a few weeks optimizing CSS and frontend components on top of a foundation that was already collapsing. The site would still have been slow, and they would have rightly concluded I was a bad investment.
+
+What we actually did was scope a full rebuild. Took a few months, cost more than the bug fix would have, and the outcome was a site they were proud of, instead of a slightly-less-broken version of the one they were already embarrassed about.
+
+The lesson I keep coming back to is this: the question someone asks you is almost never the question you should answer.
+
+## "How do I" is rarely the real question
+
+When someone -- a client, a PM, a non-technical stakeholder, *another developer* -- walks up and asks "How do I do X?", the default move for most engineers is to answer X. We're wired to solve. Someone hands us a problem, we hand back a solution. It feels productive, and it is, sometimes, productive.
+
+But the way the question gets phrased almost always carries an assumption underneath it about *what kind of solution would work*. And the asker is the person least likely to have noticed that assumption, because they're inside it.
+
+"How do I integrate xdebug with Claude Code?" is usually "I'm trying to debug something and the way I currently debug isn't working".
+
+"How do we add a column to this table?" is usually "I have a piece of data with nowhere to live and I picked the first place I could think of".
+
+"Can you fix the performance issues in our theme?" is sometimes that. More often, it's "our site is slow and I've decided the theme is the cause".
+
+The question is a flashlight aimed at where the asker *thinks* the problem is. Your job is to figure out whether the flashlight is pointed in the right direction before you start digging there.
+
+## There's a name for it
+
+This pattern is common enough that it has a label... the **XY problem**. Somebody has problem Y. They've decided that X is the way to solve Y. So they ask the internet (or their team, or you) how to do X, and never mention Y at all. When you answer X, you've solved the wrong problem, and they walk away from the conversation no closer to what they actually need.
+
+The standard advice attached to this is "always ask for the underlying problem". That's correct; it's also the kind of advice that sounds obvious and gets ignored. In the moment it feels rude to push back on what someone explicitly asked for. You worry you're being difficult, or that you're making them feel dumb. So you just answer the question.
+
+Don't.
+
+The cost of asking one clarifying question is tiny. The cost of building the wrong thing for a week is enormous. The cost of building the wrong thing for *months*, which is what the client engagement above could have been, is the kind of thing that loses you the relationship.
+
+## The toolkit
+
+Three moves I lean on, in order of friction:
+
+**1. "What are you actually trying to accomplish?"** The bluntest version. Works fine with peers who know you. Tends to put non-technical stakeholders on the defensive, because it sounds like you're questioning whether they've thought about it. Use sparingly outside engineering.
+
+**2. Restate the goal back to them.** "So if I'm hearing this right, you're trying to ___, and you're hoping that doing X will get you there". This is the highest-leverage move I know, because it gives them an opening to correct you without anyone losing face. Half the time they'll say "yeah, exactly" and you proceed with X. The other half they'll go "well, kind of... really what I need is..." and the actual problem falls out into the conversation.
+
+**3. "What does success look like here?"** Especially useful when X is a *project* rather than a snippet. This forces them to describe the end state, not the mechanism. Once you know what done looks like, you can evaluate whether X is the right route, or whether there's a better one they hadn't considered.
+
+The mental model underneath all three is the same: **treat the question as evidence, not as a spec**. Someone asking "how do I X" tells you they have a problem they think X solves. It does *not* tell you that X is the right solution, or even that X is the right framing of the problem.
+
+The question is data about the asker's current mental model. Your job is to take that data and figure out what's actually going on; and *then* decide whether to answer the original question, redirect to a better one, or scope something bigger.
+
+This is the move that separates a developer-for-hire from a trusted advisor. Anyone can answer the question that was asked. Far fewer people ask whether it was the right question in the first place.
+
+## Closing
+
+I think about that client engagement a lot. The version of me that just dove into the theme fix is a real version that exists in some parallel universe, and that version delivered a slightly less broken site and lost a client. The version of me that spent an extra hour asking questions delivered a site they were proud of, and a years-long relationship.
+
+The hour cost almost nothing. The instinct to spend it took years to build.
+
+If you take one habit from this post, make it the second move; restate the goal back to them in your own words, and let them correct you. It costs you fifteen seconds and saves you from solving the wrong problem more often than I can count.

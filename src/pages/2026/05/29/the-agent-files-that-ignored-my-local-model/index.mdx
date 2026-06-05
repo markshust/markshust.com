@@ -1,0 +1,121 @@
+---
+title: "The agent files that ignored my local model"
+date: "2026-05-29T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+A small follow-up to last week's series on [running Qwen locally in Claude Code](/2026/05/19/pointing-claude-code-at-a-local-model/). After [a week of daily use](/2026/05/28/a-week-in-with-local-qwen/), I noticed something weird: some of my subagents were still slow in a way that didn't match the rest of my local setup. Same `claudel` shell function, same env vars, same `--bare` flag — but spawn the wrong agent and suddenly we're back to cloud latency.
+
+Turns out my agents were *politely ignoring* my local model. The fix is three env vars nobody talks about, and once I'd set them the asymmetry disappeared.
+
+## What I was actually seeing
+
+I was running `/devils-advocate` against a plan, the way I do all the time. With local routing turned on I expected my normal ~1-second-per-turn behavior. Instead it took the better part of a minute to come back, and the response had a distinctly Anthropic flavor to it (em-dashes I didn't ask for, a structure I recognized from Sonnet).
+
+My first guess was that the proxy was breaking on the subagent's larger prompt. Wrong. The subagent had never gone to my Ollama at all.
+
+I popped open the agent file:
+
+```yaml
+# ~/.claude/plugins/marketplaces/hcf/agents/devils-advocate.md
+---
+name: devils-advocate
+description: "Devil's advocate architectural reviewer..."
+model: opus
+tools: Read, Write, Edit, Glob, Grep
+---
+```
+
+There it is. `model: opus` is baked into the frontmatter. When the agent gets spawned, Claude Code asks the runtime for "opus" specifically — and my env vars only told it where the *default* model lives, not what to do with the tier aliases.
+
+## Why skills are fine but agents aren't
+
+This is worth getting straight, because they look identical from the outside.
+
+**Skills** (the things under `~/.claude/skills/`) don't declare a model. Their frontmatter is just `name:` and `description:`. They're prompt bundles that run inside whatever session is already going — so the model is whatever model you're already talking to. If you're on local, your skills are on local. No further config.
+
+**Agents** (the things spawned via the `Agent` tool) declare a model. The schema accepts `opus | sonnet | haiku | inherit` and nothing else. So when an agent says `model: opus`, the harness has to resolve "opus" to an actual model ID before it sends the request. *That resolution step* is where the asymmetry lives.
+
+If you were running on Anthropic, "opus" resolves to `claude-opus-4-7` or similar and everything works. If you've redirected `ANTHROPIC_BASE_URL` to localhost but never told the harness what "opus" means for your local setup, the resolved model name still goes out the wire as `claude-opus-4-7` — to your Ollama server, which has no idea what that is. Some proxies will silently fall through to whatever Ollama has loaded, some will error, some will retry to Anthropic. None of those are what you want.
+
+## Why editing the agent files is the wrong fix
+
+The obvious move is to grep through `~/.claude/plugins/` and change every `model: opus` to `model: inherit`. Don't.
+
+Two reasons. **First**, the plugin cache gets clobbered on update — your edits live until the next time the plugin upgrades and then they're gone. **Second**, the enum is fixed. You can't put `model: qwen3.6:35b-a3b-coding-nvfp4` in the frontmatter; the validator rejects it. So the only edit the schema even *allows* is flipping each agent to `inherit`, and that gets you exactly the same outcome as the env-var approach — except brittle.
+
+The right layer to fix this is the model-tier alias layer, not the per-agent layer.
+
+## The three env vars
+
+Claude Code reads three environment variables to resolve tier aliases to concrete model IDs:
+
+- `ANTHROPIC_DEFAULT_OPUS_MODEL`
+- `ANTHROPIC_DEFAULT_SONNET_MODEL`
+- `ANTHROPIC_DEFAULT_HAIKU_MODEL`
+
+Set those, and every agent file that says `model: opus` quietly routes wherever you point it. No file edits. No plugin-update brittleness. The exact same `/devils-advocate` invocation that was hitting Anthropic now hits Ollama.
+
+## Wiring it into the `claudel` function
+
+If you've been following the series, you already have a `claudel` shell function from [post 3](/2026/05/19/pointing-claude-code-at-a-local-model/). Same advice as before: **don't dump these in `~/.zshrc` globally.** The reason is identical to last time — if you set these in your shell rc, *every* `claude` invocation aliases all three tiers to your local model, including the ones you intended to run on Anthropic. Your nightly cron job that calls `claude -p` for a judgment task is now running on local quietly. That's the same footgun as before, just one level deeper.
+
+Extend the function instead:
+
+```bash
+claudel() {
+  ANTHROPIC_BASE_URL=http://localhost:11434 \
+  ANTHROPIC_AUTH_TOKEN=ollama \
+  ANTHROPIC_API_KEY= \
+  ANTHROPIC_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+  ANTHROPIC_DEFAULT_OPUS_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+  ANTHROPIC_DEFAULT_SONNET_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+  command claude "$@"
+}
+```
+
+Yes, all four "model" vars point at the same Qwen model. That's intentional for the simplest case — every agent, every subagent, every skill that triggers an agent invocation under the hood goes to the same backend. No surprises.
+
+## Mapping tiers to different local models
+
+The reason to *not* collapse them all to one model is when you want the tier semantics to actually mean something locally. Some agents (`tdd-worker`, `codex-rescue`) declare `model: sonnet` because they're meant for grinding implementation work. Others (`devils-advocate`) declare `model: opus` because they need deeper reasoning. A few utility-level agents declare `model: haiku` because they're cheap judgment calls where you don't need a 35B model spinning up.
+
+If you have a smaller quant loaded alongside your main model, you can mirror the same tiering locally:
+
+```bash
+ANTHROPIC_DEFAULT_OPUS_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+ANTHROPIC_DEFAULT_SONNET_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+ANTHROPIC_DEFAULT_HAIKU_MODEL=qwen3.6:7b-fast \
+```
+
+Now "opus" and "sonnet" both hit your main coding model and "haiku" hits something snappier. The agent author's *intent* — "this is a cheap call, give it a small model" — gets preserved across the local routing, instead of every tier collapsing into the same default. Costs nothing extra to set up, since Ollama loads models lazily.
+
+The honest caveat: with `OLLAMA_MAX_LOADED_MODELS=1` (which I run, and which post 2 recommended), every switch between tiers causes a model reload. That's fine if you stick to one tier per session — bad if your workflow rapidly alternates between agents at different tiers. Bump that env var to 2 if you actually want the tier split to be free.
+
+## How to confirm it's working
+
+Quickest check is to spawn a tier-tagged agent and watch your Ollama logs:
+
+```bash
+# in one terminal
+ollama serve
+
+# in another, with claudel active
+claudel -p "use the devils-advocate agent to review this plan: ..."
+```
+
+If Ollama logs a request for your Qwen model when the subagent fires, the alias resolved correctly. If your shell goes quiet and you get a response in 6 seconds with em-dashes, the request went to Anthropic and you missed an env var.
+
+The cleaner check, if you have the proxy script from [post 4](/2026/05/20/the-80-second-prompt-and-how-to-fix-it/), is to log the resolved `model` field in the incoming request body. You'll see `claude-opus-4-7` come through if the aliasing isn't working, and your actual Qwen model ID if it is.
+
+## The pattern this fits into
+
+The whole series has been about asymmetries the harness introduces between cloud and local that aren't obvious until you trip over them. Post 4 was about prompt caching being invisible on cloud and *broken* locally. This post is about model-tier aliasing being invisible on cloud and *missing* locally.
+
+I suspect there are more of these. Skills, agents, plugins — they're all written by people who quietly assume the model field resolves to whatever Anthropic's serving today. When you point Claude Code at a non-Anthropic backend, every one of those assumptions becomes a config decision you have to make explicitly.
+
+The good news is the decisions tend to be small once you find them. Three env vars closed the gap here. The cost of finding them was higher than the cost of setting them, which is sort of the recurring theme of this whole local-LLM journey.
+
+If you've made it this far in the series and you're using subagents at all, set the three vars. You'll save yourself a confusing afternoon of "wait, why is *this* one slow."

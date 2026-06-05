@@ -1,0 +1,125 @@
+---
+title: "Installing Ollama and picking the right Qwen model"
+date: "2026-05-18T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+In [yesterday's post](/2026/05/17/running-a-real-coding-llm-on-my-laptop/) I explained why running a local coding LLM on a Mac is finally practical in 2026, and walked through the memory math you need to do up front. Today we get hands-on. Install Ollama, pick the right Qwen variant for a 64GB Mac, and prove it's working.
+
+I'll also walk through the embarrassing mistake I made on my first pick -- because the lesson there matters more than the install steps.
+
+## Installing Ollama
+
+Ollama is the easiest path to running an LLM locally. It handles model downloads, exposes an HTTP API on `localhost:11434`, and on Apple Silicon it uses MLX under the hood (Apple's Metal-optimized ML framework). The whole install is one line.
+
+```bash
+brew install ollama
+brew services start ollama
+ollama --version
+```
+
+That's it. You now have a service running on port 11434 that can serve any model you pull. If you've ever set up a Docker daemon, this is similar -- a background service that exposes an API.
+
+If `brew services start ollama` doesn't stick on your system, the workaround is to run it directly in the background:
+
+```bash
+OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve > /tmp/ollama.log 2>&1 &
+```
+
+The two environment variables matter -- `FLASH_ATTENTION=1` and `KV_CACHE_TYPE=q8_0` together cut your KV cache memory by roughly half. On a 64GB Mac, that's the difference between "comfortable" and "tight."
+
+## Picking the right Qwen model -- the mistake first
+
+When I started, the most-cited recommendation in benchmark posts was **Qwen3-Coder-Next** -- the 80B parameter MoE model with only 3B active per token. The Alibaba team specifically markets it as the "agentic coding" model designed for consumer hardware. Multiple sources I read claimed it "runs on 64GB MacBook." So I pulled it.
+
+```bash
+ollama pull qwen3-coder-next:q4_K_M
+```
+
+51GB download. Once it landed, I ran a single short prompt to test it. The model loaded into memory and Ollama reported it at **58 GB resident with 262K context loaded**. My laptop has 64GB total, with ~48GB actually usable for user processes after macOS takes its share.
+
+The first response took 87 seconds. Subsequent ones took 25-40 seconds. And then my entire system froze -- spinning beachball, fans at full tilt, the works -- because macOS had started paging memory to swap aggressively to keep up.
+
+This is exactly the SSD-as-RAM trap I described in the [previous post](/2026/05/17/running-a-real-coding-llm-on-my-laptop/). The model file itself wasn't the only problem -- Ollama defaults to loading the full 262K context window into the KV cache, and that pushed me past my actual memory ceiling.
+
+I killed the process, deleted the model (`ollama rm qwen3-coder-next:q4_K_M`), and went back to the spec sheet with more skepticism.
+
+## The lesson: model size + context = your real memory footprint
+
+When someone says "Model X runs on 64GB unified memory," they usually mean "the weights fit." They often don't mean "the weights fit plus a generous context window plus headroom for your editor and browser."
+
+The math you actually need to do:
+
+```
+Real memory footprint =
+    quantized weights file size
+  + KV cache (depends on context length, kept tensor type, batch)
+  + Ollama runtime overhead (~1-2 GB)
+  + your normal system usage (~15 GB)
+```
+
+For a 64GB Mac, I shoot for keeping that total under 50GB. Which rules out the 80B-parameter MoE entirely at default settings, even though it would "technically work" with the context window squeezed down.
+
+## The right pick: Qwen3.6-35B-A3B
+
+The 35B-A3B model is the sweet spot for this hardware. Released in April 2026, it's Qwen's mid-tier MoE model -- 35B total parameters with 3B active per token, specifically tuned for agentic coding and tool use. It scores 73.4% on SWE-bench Verified, putting it right behind Sonnet 4.6's 77.2%. Close enough that you genuinely won't notice the difference on most tasks.
+
+For Ollama on Apple Silicon, the quantization options are different from what you may have seen for other models. The available tags are:
+
+- `qwen3.6:35b-a3b-coding-mxfp8` -- ~35 GB
+- `qwen3.6:35b-a3b-coding-nvfp4` -- ~20 GB
+- `qwen3.6:35b-a3b-coding-bf16` -- ~70 GB (won't fit on 64GB)
+- `qwen3.6:35b-a3b-mlx-bf16` -- same, MLX-specific
+
+`nvfp4` is a 4-bit floating point format. `mxfp8` is 8-bit. For a 64GB Mac, **nvfp4 is the right pick** -- ~20GB resident leaves you tons of headroom even with a big context window. mxfp8 is technically possible but uncomfortably tight; I'd only use it on a 96GB+ machine.
+
+```bash
+ollama pull qwen3.6:35b-a3b-coding-nvfp4
+```
+
+This download is ~21GB -- much friendlier than the failed 80B pull.
+
+One more environment tweak worth setting: by default, Ollama evicts models from memory after 5 minutes of idle. Every cold reload costs you 80+ seconds the next time you call it. Add this to your shell rc:
+
+```bash
+export OLLAMA_KEEP_ALIVE=24h
+```
+
+This keeps the model resident for a full day. RAM that would otherwise sit unused is now keeping the model warm for instant response.
+
+## Verifying it works
+
+```bash
+ollama run qwen3.6:35b-a3b-coding-nvfp4 --verbose "What is 7x8?"
+```
+
+The first line of the response should appear within a second or two if the model was already loaded, or 3-5 seconds on cold load. The `--verbose` flag gives you a performance summary at the end:
+
+```
+load duration:        30 ms
+prompt eval rate:     95 tokens/s
+eval rate:            53 tokens/s
+```
+
+That `eval rate` of 53 tokens per second is what matters. For comparison, the Anthropic API streams Claude Sonnet at around 60-100 tokens per second. You're in the same league for actual output generation -- locally, on a 5-year-old laptop.
+
+If your number is dramatically lower (like 10 tokens/s), one of three things is happening: you pulled too big a model, your context window is set absurdly high, or Ollama isn't using the GPU. Run `ollama ps` to check:
+
+```bash
+$ ollama ps
+NAME                              SIZE     PROCESSOR    CONTEXT
+qwen3.6:35b-a3b-coding-nvfp4     22 GB    100% GPU     32768
+```
+
+`100% GPU` is what you want. The `32768` context is the practical default for short interactive use -- you can bump it later if you need longer conversations, but a smaller context = smaller KV cache = more headroom.
+
+## What you have now
+
+You've got a locally-running LLM that genuinely competes with frontier models on coding tasks, generating tokens at speeds that feel responsive. Total cost: 21GB of disk, ~22GB of RAM while running, ~$0/month. It speaks an HTTP API on `localhost:11434`. It works offline -- you could run this on a plane.
+
+But it's still not connected to your actual workflow. You're not going to drop the `ollama run` interface for serious coding work. What you really want is Claude Code -- with its tool calling, session management, and project context awareness -- pointed at this local model instead of Anthropic's servers.
+
+That's [tomorrow's post](/2026/05/19/pointing-claude-code-at-a-local-model/). It turns out to be one environment variable. And then it turns out to be much more than that, because the first naïve setup is unusably slow -- but the diagnosis and fix are genuinely interesting.
+
+The model isn't the problem. The harness around it is.

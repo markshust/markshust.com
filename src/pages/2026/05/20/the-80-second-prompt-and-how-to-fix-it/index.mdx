@@ -1,0 +1,268 @@
+---
+title: "The 80-second prompt and how to fix it"
+date: "2026-05-20T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+[Yesterday](/2026/05/19/pointing-claude-code-at-a-local-model/) I left you with the depressing measurement: Claude Code pointed at a local model took 86 seconds to respond to "Say hi in 3 words," while Anthropic's API took 6.2 seconds. The model itself wasn't slow -- raw Ollama hits 53 tokens/sec. So something in the harness was eating 80 seconds per call.
+
+Today we find out what, and we fix it. The fix has two pieces. The first is one flag. The second required some genuine HTTP detective work and a tiny custom proxy. By the end, the same prompt that took 86 seconds takes 1.1 seconds -- and the conversation cache works across `--resume` turns the way it does on Anthropic's servers.
+
+This is the most technically interesting post in the series. If you've ever wondered how prompt caching actually works under the hood, this is that explanation.
+
+## Step one: where are the 80 seconds going?
+
+The first thing I did was look at Ollama's server logs. Buried in there I found this:
+
+```
+Prompt processing progress: processed=38034 total=38038
+took=1m21.340874334s
+```
+
+**Claude Code was sending a prompt 38,038 tokens long. For "Say hi in 3 words."**
+
+The M1 Max processes prompts at roughly 470 tokens per second. 38,000 tokens at 470 tok/s is about 80 seconds. There's the missing time.
+
+But where do 38,000 tokens come from when the user prompt is 5 words? It turns out Claude Code attaches a *lot* of context to every call by default. Tool definitions (Bash, Read, Edit, Grep, and a dozen more, each with detailed schema). Your project's `CLAUDE.md` file. All registered skills. Hook output. Auto-memory updates. MCP server tool definitions. The list goes on. All of it gets stuffed into the system prompt on every single call.
+
+Anthropic doesn't care because they cache this content server-side. The static portions only cost you the discounted cache-read rate (about 90% off). You pay full price only for genuinely new content. To you, it feels instant.
+
+Ollama doesn't have that optimization. It re-tokenizes and re-processes the entire prompt from scratch every call.
+
+## Step two: the `--bare` flag
+
+After some digging through Claude Code's CLI help, I found this:
+
+```
+--bare    Minimal mode: skip hooks, LSP, plugin sync, attribution,
+          auto-memory, background prefetches, keychain reads, and
+          CLAUDE.md auto-discovery. Sets CLAUDE_CODE_SIMPLE=1.
+```
+
+This flag exists specifically for scripted and SDK calls -- and according to the docs will eventually become the default for `-p` mode. It strips all the auto-discovery work that's bloating the prompt.
+
+Running the same test with `--bare`:
+
+```bash
+$ time claudel -p --bare "Say hi in 3 words"
+Hi there! How are you?
+real    0m4.0s
+```
+
+**From 86 seconds to 4 seconds. A 20× speedup from one flag.**
+
+The Ollama log confirms what happened:
+
+```
+Standard claudel -p:     processed=38038 total=38038
+claudel -p --bare:        processed=1286  total=1286
+```
+
+The prompt shrank from 38K tokens to 1.3K. That's 30× smaller, and almost all of the savings come straight off your wall-clock time.
+
+The tradeoff: `--bare` mode disables your `CLAUDE.md`, your hooks, your skills, and your MCP servers. For unattended scripted calls (which is what `-p` is mostly used for), that's exactly what you want -- predictable, reproducible behavior with no hidden state. For interactive work where you actively want all that context, you wouldn't use `--bare`. But for routing to a local model? It's the only practical mode.
+
+I updated my `claudel` function to always include `--bare`:
+
+```bash
+claudel() {
+  ANTHROPIC_BASE_URL=http://localhost:11434 \
+  ANTHROPIC_AUTH_TOKEN=ollama \
+  ANTHROPIC_API_KEY= \
+  ANTHROPIC_MODEL=qwen3.6:35b-a3b-coding-nvfp4 \
+  command claude --bare "$@"
+}
+```
+
+I thought we were done. We weren't.
+
+## Step three: the cache that didn't grow
+
+Here's where it gets weird. Now that single calls were fast, I wanted to test the conversation pattern -- start a session, ask follow-ups, watch the cache extend across turns. This is how Anthropic's prompt cache works: subsequent calls in the same conversation reuse the prefix from prior turns and only process the new content.
+
+```bash
+SID=$(uuidgen)
+claudel -p --session-id "$SID" "Say READY"
+claudel -p --resume "$SID" "Say STEP2"
+claudel -p --resume "$SID" "Say STEP3"
+claudel -p --resume "$SID" "Say STEP4"
+```
+
+The responses worked. But the timing didn't get better across turns the way it should have. And Ollama's cache log showed something strange:
+
+```
+Turn 1: total=1281  matched=934   left=347
+Turn 2: total=1296  matched=933   left=363
+Turn 3: total=1312  matched=935   left=377
+Turn 4: total=1328  matched=933   left=395
+```
+
+`matched` is how many tokens hit the cache. It should be *growing* each turn as the conversation history accumulates. Instead it was sitting at the same 933 tokens every call -- the base bare-mode prompt, and nothing else. Ollama was getting cache hits on the boring header, but the actual conversation content -- the thing that should make resume calls cheap -- wasn't caching at all.
+
+Something was different between consecutive requests.
+
+## Step four: actually look at the requests
+
+When you can't figure out what's wrong by reading docs, you look at the wire. I wrote a tiny Bun script -- about 30 lines -- that sits on `localhost:11435`, forwards everything to Ollama on `:11434`, and logs the actual request body to a file:
+
+```typescript
+Bun.serve({
+  port: 11435,
+  async fetch(req) {
+    const body = req.body ? await req.text() : '';
+    // Log just the system prompt's first 200 characters
+    if (req.url.includes('messages')) {
+      const parsed = JSON.parse(body);
+      console.log(JSON.stringify(parsed.system).slice(0, 200));
+    }
+    const resp = await fetch('http://localhost:11434' + new URL(req.url).pathname, {
+      method: req.method,
+      headers: req.headers,
+      body: body || undefined,
+    });
+    return new Response(resp.body, { status: resp.status });
+  },
+});
+```
+
+Point Claude Code at port 11435 instead of 11434, run three calls, look at what the system prompts had in common.
+
+What I found at the very beginning of every system prompt:
+
+```
+Call 1: "x-anthropic-billing-header: cc_version=2.1.139.915; cc_entrypoint=sdk-cli; cch=74e44;"
+Call 2: "x-anthropic-billing-header: cc_version=2.1.139.915; cc_entrypoint=sdk-cli; cch=d1ab3;"
+Call 3: "x-anthropic-billing-header: cc_version=2.1.139.915; cc_entrypoint=sdk-cli; cch=b91c2;"
+```
+
+**There it is.** `cch=` followed by a different random hex string on every call. It looks like a Claude Code cache header -- presumably used for some Anthropic-side billing or routing. Harmless on Anthropic's infrastructure.
+
+Catastrophic on Ollama.
+
+Ollama's prompt cache is prefix-based: it matches the longest identical prefix between the current request and what it has cached. The cache key starts at byte zero. So if byte zero through byte one hundred differ between two calls, *the entire rest of the prompt is invalidated*. It doesn't matter that the next 30,000 tokens are identical to the previous call. The random `cch=74e44` at the start has poisoned everything downstream.
+
+This is a complete cache miss disguised as a cache hit. Ollama would tell you it cached 934 tokens (the small prefix before the random part started varying), and then process the rest from scratch.
+
+## Step five: the cache-stable proxy
+
+Knowing what the problem is makes the fix obvious. Rewrite the request before forwarding it to Ollama. Replace `cch=<random>;` with `cch=stable;`. Now the prefix is identical across calls, and Ollama's cache can do its job.
+
+The final proxy is about 40 lines:
+
+```typescript
+import { appendFileSync } from 'fs';
+
+const PORT = Number(process.env.PORT ?? 11435);
+const TARGET = process.env.TARGET ?? 'http://localhost:11434';
+
+function stabilizePrompt(body: string): string {
+  try {
+    const obj = JSON.parse(body);
+    const stabilize = (text: string) =>
+      text.replace(/cch=[a-z0-9]+;\s*/gi, 'cch=stable;');
+    if (Array.isArray(obj.system)) {
+      obj.system = obj.system.map((block) => {
+        if (block?.text) block.text = stabilize(block.text);
+        return block;
+      });
+    } else if (typeof obj.system === 'string') {
+      obj.system = stabilize(obj.system);
+    }
+    return JSON.stringify(obj);
+  } catch {
+    return body;
+  }
+}
+
+Bun.serve({
+  port: PORT,
+  idleTimeout: 0,
+  async fetch(req) {
+    const url = new URL(req.url);
+    let body = req.body ? await req.text() : '';
+    if (req.method === 'POST' && url.pathname.includes('messages')) {
+      body = stabilizePrompt(body);
+    }
+    const resp = await fetch(TARGET + url.pathname + url.search, {
+      method: req.method,
+      headers: req.headers,
+      body: body || undefined,
+    });
+    return new Response(resp.body, { status: resp.status, headers: resp.headers });
+  },
+});
+
+console.log(`llm-cache-proxy listening on :${PORT} -> ${TARGET}`);
+```
+
+Save this as `~/Sites/llm-cache-proxy/proxy.ts`. Run with `bun run proxy.ts`. Update your `claudel` function to point at port 11435 instead of 11434:
+
+```bash
+claudel() {
+  ANTHROPIC_BASE_URL=http://localhost:11435 \
+  ...
+}
+```
+
+## The reward
+
+Same conversation test, with the proxy in front of Ollama:
+
+| Turn | Total prompt | Cache matched | Left to process | Time |
+|---|---:|---:|---:|---:|
+| 1 (cold) | 1,281 | **1,281** | **2** | **2.0s** |
+| 2 (resume) | 1,296 | **1,296** | **2** | **1.1s** |
+| 3 (resume) | 1,312 | **1,312** | **2** | **1.1s** |
+| 4 (resume) | 1,328 | **1,328** | **2** | **1.1s** |
+
+**1.1 seconds per resume call. Faster than Anthropic's 9.5-second baseline.**
+
+The cache is now matching the *entire* prompt each turn -- the conversation history is reused, only 2 new tokens (the boundary marker for the next turn) need processing each time. The model generates a few output tokens, you get your response. Most of the remaining ~1 second is just Claude Code's binary startup.
+
+## Making the proxy permanent
+
+You don't want to remember to start a background process every time you open a terminal. I run the proxy under macOS's launchd, which auto-starts it at login and restarts it on crash.
+
+The launchd plist lives at `~/Library/LaunchAgents/com.markshust.llm-cache-proxy.plist`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.markshust.llm-cache-proxy</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/bun</string>
+    <string>run</string>
+    <string>/Users/markshust/Sites/llm-cache-proxy/proxy.ts</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/llm-cache-proxy.out</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/llm-cache-proxy.err</string>
+</dict>
+</plist>
+```
+
+Load it once: `launchctl load ~/Library/LaunchAgents/com.markshust.llm-cache-proxy.plist`. Verify with `launchctl list | grep llm-cache-proxy`. Done. It will start on every login from now on.
+
+Use Homebrew's `bun` (`/opt/homebrew/bin/bun`) for the launchd reference rather than an nvm-installed one -- launchd doesn't get your shell PATH, so it needs an absolute path that won't move.
+
+## What I learned from this
+
+Three things are worth taking out of this experience.
+
+**The first**: when something is way slower than it physically should be, the bottleneck is almost always not where you think. The model wasn't slow. The flag I needed existed in the help text. The proxy fix was 40 lines of code. But none of it was reachable until I got curious about why a benchmark number from `ollama run` was different from a wall-clock time for the same model under Claude Code.
+
+**The second**: caching is everywhere in modern AI infrastructure, and it's mostly invisible until it breaks. Anthropic's cache is so good that you don't realize how much of the "speed" you're getting is cache hits, not model speed. The first time you switch to a backend without that cache, the cost shows up. Local LLMs aren't slow -- they're just paying the prompt-processing cost that hosted providers eat on your behalf.
+
+**The third**: the gap between "frontier API" and "local laptop" is mostly engineering, not magic. The model itself is competitive. The infrastructure around it is what's been polished for years. With a little patching, a small proxy, and the right flags, you can recover most of that infrastructure advantage locally.
+
+So now we have a local LLM that responds in about a second per turn. Tomorrow I'll [walk through how I wired this into an actual production project](/2026/05/21/local-qwen-for-real-agentic-work/) -- including the part most people skip when they evaluate local models, which is whether tool calling actually works. Spoiler: it does. And much better than I'd been quietly assuming.

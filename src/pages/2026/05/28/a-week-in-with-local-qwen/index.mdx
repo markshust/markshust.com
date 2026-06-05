@@ -1,0 +1,167 @@
+---
+title: "A week in with local Qwen — what changed, what I'd do differently"
+date: "2026-05-28T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+Last week I wrote a five-post series walking through how to run [Qwen 3.6 locally on a 64GB Mac](/2026/05/17/running-a-real-coding-llm-on-my-laptop/), wire it into [Claude Code](/2026/05/19/pointing-claude-code-at-a-local-model/), [fix the prompt-caching issues](/2026/05/20/the-80-second-prompt-and-how-to-fix-it/), and use it for [real agentic work](/2026/05/21/local-qwen-for-real-agentic-work/). Then I went and used it for a week.
+
+This is the follow-up. Four things changed in my setup based on actual daily use, and one thing I tried to change that I reversed within a few days because lived experience told me the benchmarks were misleading.
+
+## The benchmark-vs-vibe lesson I keep relearning
+
+In [post 2](/2026/05/18/installing-ollama-and-picking-the-right-qwen-model/) I picked `qwen3.6:35b-a3b-coding-nvfp4` — the MoE model — as the default. After a few days of use I went back to compare it against the dense 27B variant. The SWE-bench Verified numbers said the dense should be the better pick:
+
+- **Qwen 3.6 27B Dense:** 77.2% (matches Claude Sonnet 4.5)
+- **Qwen 3.6 35B-A3B MoE:** 73.4%
+
+Four percentage points isn't nothing. So I flipped my default to the dense model and ran it as primary for a few days.
+
+It was a mistake, and the reason is the kind of thing benchmarks don't capture.
+
+The dense model is **~3.5× slower per token generation** on my M1 Max — about 15 tok/s versus the MoE's 50+ tok/s. On paper that turns a 1-second response into a 4-second response. In practice it turns *every interaction* into noticeably-pausing-before-it-answers, and that friction compounds across a workday. I started subconsciously batching requests instead of reaching for the model as a fluid tool. The "smarter per token" gain showed up maybe one out of every twenty prompts. The "wait longer for every answer" cost showed up every single time.
+
+Steady-state numbers from my testing:
+
+| Model | Resume turn time | Tokens/sec | SWE-bench |
+|---|---:|---:|---:|
+| 35B-A3B MoE | ~1.1s | 50-54 | 73.4% |
+| 27B Dense | ~3.8s | 15-16 | 77.2% |
+
+After three days I reverted. The MoE is back as my default; the dense is still installed and accessible via `claudel-dense -p "..."` for the rare task where I genuinely need the extra rigor and don't mind waiting.
+
+**The takeaway**: SWE-bench is a single-shot benchmark that doesn't measure tool friction. Four points on a curated test set is real, but if reaching for the tool costs 3.5× more wall time, you reach for it less often, and the cumulative impact on your workflow exceeds the per-call quality win. Vibe matters. Run a real workload for a few days before committing to a default.
+
+This is also why I keep the dense model installed and call it through a separate function rather than ditching it. The 27B is *still* a useful tool — it's just not the one I want every minute of every workday.
+
+## I bumped context to 256K once I understood the cost
+
+The original posts had me at 32K context. That's fine for most prompts — judgment calls send 1-5K tokens, even with `--add-dir` loading a project you rarely break 30K. So 32K felt like the safe default.
+
+Then I hit a case where I wanted to feed Claude Code a large file (~50K tokens) and got truncated, and started looking at what 256K would actually cost.
+
+The fear was that bumping context would balloon memory. Turns out Ollama doesn't pre-allocate the full KV cache — it grows as you fill it. So setting `OLLAMA_CONTEXT_LENGTH=262144` reserves some additional capacity (~5-8GB shows up as macOS-reclaimable inactive memory), but doesn't take that much physical memory unless you actually use it.
+
+The bigger surprise was how concurrency interacts with this. Ollama defaults to `OLLAMA_NUM_PARALLEL=1`, which means one request is processed at a time per model. Fire two `claudel -p` calls in two terminals simultaneously and the second one queues until the first finishes. That's actually a safety feature — it means your maximum memory exposure is bounded by *one* session's KV cache, even at 256K context. With the MoE and one session, worst case is ~40GB resident. Fits.
+
+I'd been worried about a "what if I have multiple chats going" scenario blowing up memory, and Ollama already had that handled.
+
+For my workflow, 256K is mostly aspirational headroom. I rarely fill more than 20-30K. But the option to dump a whole file into a single prompt without thinking about it is worth the small reserved-memory cost.
+
+## I added OpenCode alongside Claude Code
+
+This wasn't in the original series at all because I hadn't tried it yet. **OpenCode** is the most popular open-source agentic CLI of 2026 (150k+ GitHub stars). I'd installed it earlier but hadn't actually wired it up to a local model.
+
+The setup is a single config file:
+
+```jsonc
+// ~/.config/opencode/opencode.jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": { "baseURL": "http://localhost:11434/v1" },
+      "models": {
+        "qwen3.6:35b-a3b-coding-nvfp4": {
+          "name": "Qwen3.6 35B-A3B MoE — fast default",
+          "limit": { "context": 262144, "output": 8192 }
+        },
+        "qwen3.6:27b-coding-nvfp4": {
+          "name": "Qwen3.6 27B Dense — slower backup",
+          "limit": { "context": 262144, "output": 8192 }
+        }
+      }
+    }
+  }
+}
+```
+
+Run `opencode`, type `/models`, pick the model. It remembers across sessions.
+
+Two things I like about this:
+
+**No proxy needed.** The [cache-stable proxy](/2026/05/20/the-80-second-prompt-and-how-to-fix-it/) I built for Claude Code exists to strip a Claude-Code-specific cache-breaker header (`cch=`). OpenCode constructs its requests through `@ai-sdk/openai-compatible` and doesn't inject that header, so going straight to Ollama at port 11434 gives you full prefix caching automatically. Less moving parts.
+
+**Different agent loop, same model.** Same Qwen weights underneath, but OpenCode runs a different orchestration around them. Tool sequencing, prompt construction, when it asks for clarification — all subtly different. For some tasks OpenCode's flow feels better than Claude Code's, and vice versa. Worth having both.
+
+I haven't replaced Claude Code with OpenCode. I run them as parallel tools. OpenCode for quick "use a local model with minimal harness" tasks, Claude Code for everything else.
+
+## launchd ended up being the right answer for everything
+
+In the original series, I set up the cache-stable proxy under launchd because it needed to auto-start and survive reboots. Ollama I left running under `brew services start ollama`, which I assumed was fine.
+
+It wasn't fine. **`brew services` starts Ollama via launchd, and launchd-spawned processes don't inherit your shell environment.** So everything I'd put in `~/.zshrc` — `OLLAMA_KEEP_ALIVE=24h`, the context length, the KV cache type — was being silently ignored. Ollama was running with default values.
+
+I only caught this when I checked the actual env vars on the running process and found that the manual `ollama serve` I'd started during testing was the only one getting the env. After a reboot, brew would have started a bare default daemon and my carefully-tuned settings would have evaporated.
+
+The fix was to write a custom launchd plist for Ollama itself:
+
+```xml
+<key>EnvironmentVariables</key>
+<dict>
+  <key>OLLAMA_KEEP_ALIVE</key>           <string>24h</string>
+  <key>OLLAMA_CONTEXT_LENGTH</key>       <string>262144</string>
+  <key>OLLAMA_FLASH_ATTENTION</key>      <string>1</string>
+  <key>OLLAMA_KV_CACHE_TYPE</key>        <string>q8_0</string>
+  <key>OLLAMA_MAX_LOADED_MODELS</key>    <string>1</string>
+</dict>
+```
+
+The pattern that emerged: **anything that needs to survive reboots and runs as a daemon belongs in its own launchd plist, not in `brew services` and not in `~/.zshrc`.** Both the cache proxy and Ollama now live there. If I add more daemons later (a local embedding server, maybe), they'll go the same way.
+
+The `export` lines in `~/.zshrc` are still there for the rare case you manually run `ollama serve` in a shell, but I added a clear comment block explaining that the *live* daemon gets its config from the plist, not the shell. Future-me will thank present-me.
+
+## A week of mclaw on local
+
+[mclaw](/2026/05/21/local-qwen-for-real-agentic-work/) is my own internal CLI that shells out to `claude -p` for judgment calls. After adding the `MCLAW_USE_LOCAL=1` toggle in the original series, I left it off as a safety measure. Once I had a week of confidence in the local stack, I flipped it on globally:
+
+```bash
+export MCLAW_USE_LOCAL=1
+```
+
+Now every scheduled mclaw task routes to local Qwen unless I explicitly override it. After a week of running this in production:
+
+**What worked well**
+
+- Quick judgment prompts (1-2 turn, single-shot) — fully on par with Anthropic
+- Bash tool invocations — the MoE emits clean tool calls
+- File reads and edits — no malformed-call retries
+- Latency — actually faster than Anthropic for short prompts after the proxy fixes
+- Cost — zero incremental dollars per call, which adds up across hundreds of scheduled runs
+
+**What I still flip back to Max20 for**
+
+- Anything that triggers >5 tool calls in sequence — local models start to wobble on longer agentic loops
+- Edge-case-heavy production code where a subtle reasoning miss compounds
+- The rare task where I need a skill auto-triggered (mclaw uses `--bare`, which doesn't auto-discover skills)
+
+Roughly 70% of mclaw's daily volume now runs local. The remaining 30% goes to Anthropic when I notice quality matters more than cost.
+
+## What I'd do differently if starting now
+
+If you're at the beginning of this and considering whether to set it up, here's the optimized path based on what I'd repeat:
+
+1. **Don't even try the 27B Dense as default.** Trust the MoE recommendation from the original post. The dense model is a tool for specific cases, not a daily default — its speed cost dominates the per-token quality gain. Install it as a backup if you want, but `claudel` should be the MoE.
+
+2. **Don't use `brew services start ollama`.** Go straight to a custom launchd plist with the env vars baked in. Saves you the "wait why aren't my env vars taking effect" debugging session.
+
+3. **Set context to 65536 or 131072 initially, not 32K.** Lower than 256K so you're not over-reserving, but high enough that you won't get truncated on normal work. Bump to 256K only when you hit a specific need.
+
+4. **Install OpenCode at the same time as you set up Claude Code routing.** They're complementary, not competing, and OpenCode gives you a path that doesn't need the cache-stable proxy.
+
+5. **Don't put MCLAW_USE_LOCAL=1 in your rc until you've tested specific tasks for a few days.** Easy to forget you flipped a default and then wonder why something runs differently.
+
+## The bigger pattern
+
+A week in, the thing I most want to convey is how *unremarkable* local LLMs have become as part of my daily workflow. I don't think about whether a `claudel -p` is going to work. I don't think about whether the model can call Bash properly. I don't think about whether the response will be coherent. It all just works, on a 5-year-old laptop, for $0/month after the initial weekend of setup.
+
+That's the shift that matters. A year ago, local LLM coding was a thing you'd demo to colleagues and they'd nod politely while privately thinking "but you'd never actually use this." Today the demo is the daily workflow. The cost dropped to ~30 minutes of one-time setup. The quality crossed the threshold where casual use is comfortable.
+
+I'm still on Max20. The math doesn't favor switching. But the framing isn't "local instead of frontier API" — it's "local *plus* frontier API," with maybe 60-70% of my volume now eligible to route either direction depending on what each task actually needs.
+
+That's a genuinely different posture than I had when I started writing the [original series](/2026/05/17/running-a-real-coding-llm-on-my-laptop/) eleven days ago. Worth checking in again in another month and seeing what's changed.
+
+And one more lesson worth carrying: **benchmark numbers tell you which model is "better." Daily-use vibe tells you which model is *usable*.** Those aren't always the same answer. The 27B Dense scores higher on SWE-bench, and I tried it, and within three days I'd reverted to the "lower-scoring" MoE because the speed gap mattered more than the quality gap. If you're picking a local model for a coding workflow, run a real workday on it before you commit. The benchmark leaderboards are useful framing — they're not a verdict.
