@@ -5,15 +5,11 @@ tags: ["ai", "building"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
-Two posts ago I made the case that [local LLMs are finally practical on a Mac](/2026/05/17/running-a-real-coding-llm-on-my-laptop/). Yesterday we [installed Ollama and got a model running](/2026/05/18/installing-ollama-and-picking-the-right-qwen-model/). Today we wire that local model into Claude Code, so you can use your normal CLI workflow but route the actual model calls to your laptop instead of Anthropic's servers.
+Claude Code doesn't have to talk to Anthropic's servers. It reads a few environment variables to decide where to send its API requests, and if you point those at a different endpoint -- a local model, a proxy, another provider -- it just works. Here's how to do it, using a local Ollama model as the example.
 
-The connection part is shockingly simple. Then I'll show you the side-by-side speed comparison that made me think the whole thing was a bust -- which sets up tomorrow's post, where we fix it.
+## Claude Code speaks the "Anthropic protocol", and so can other backends
 
-## The trick: Claude Code speaks "Anthropic protocol," and so does Ollama
-
-This is the development I didn't see coming. Since Ollama v0.14 (released January 2026), Ollama's HTTP server natively speaks the Anthropic Messages API. That's the same protocol Claude Code uses to talk to Anthropic's servers.
-
-So Claude Code doesn't actually know whether the other end is `api.anthropic.com` or `localhost:11434`. As long as the responses come back in the format it expects, it just works.
+Since Ollama v0.14 (released January 2026), Ollama's HTTP server natively speaks the Anthropic Messages API -- the same protocol Claude Code uses to talk to Anthropic. So Claude Code doesn't actually know whether the other end is `api.anthropic.com` or `localhost:11434`. As long as responses come back in the format it expects, it works.
 
 Claude Code reads three environment variables to figure out where to send its requests:
 
@@ -21,7 +17,7 @@ Claude Code reads three environment variables to figure out where to send its re
 - `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY` -- credentials
 - `ANTHROPIC_MODEL` -- which model name to request
 
-By default, these are unset and Claude Code uses OAuth to talk to your Anthropic subscription. Set them and it talks to whatever you point it at.
+By default these are unset and Claude Code uses OAuth to talk to your Anthropic subscription. Set them and it talks to whatever you point it at. The same mechanism works for any Anthropic-compatible endpoint, not just Ollama.
 
 ## The minimum viable setup
 
@@ -35,21 +31,24 @@ export ANTHROPIC_MODEL=qwen3.6:35b-a3b-coding-nvfp4
 claude -p "what is dependency injection?"
 ```
 
-That's it. Claude Code now sends its API request to your local Ollama, which runs the prompt through Qwen, and the response streams back through the same channel Anthropic's responses would have used.
+That's it. Claude Code now sends its API request to your local Ollama, which runs the prompt through Qwen and streams the response back through the same channel Anthropic's responses would have used.
 
-`ANTHROPIC_AUTH_TOKEN=ollama` is just a placeholder -- Ollama doesn't actually check it -- but Claude Code requires *some* value. The empty `ANTHROPIC_API_KEY=` is important too: if it's set, Claude Code prefers it over `ANTHROPIC_AUTH_TOKEN` and tries to use it as an Anthropic key, which would fail.
+Two details matter here:
 
-## Don't put this in your shell rc -- not yet
+- `ANTHROPIC_AUTH_TOKEN=ollama` is just a placeholder. Ollama doesn't check it, but Claude Code requires some value.
+- The empty `ANTHROPIC_API_KEY=` is important. If it's set, Claude Code prefers it over `ANTHROPIC_AUTH_TOKEN` and tries to use it as an Anthropic key, which fails.
 
-The obvious move is to add those four `export` lines to `~/.zshrc` and be done. **Don't.** If you do, *every* `claude` invocation will route to your local model, including:
+## Don't put this in your shell rc
+
+The obvious move is to add those four `export` lines to `~/.zshrc` and be done. Don't. If you do, *every* `claude` invocation will route to your alternate backend, including:
 
 - Your normal interactive Claude Code sessions
 - Anything that calls `claude -p` under the hood (CI scripts, git hooks, build pipelines)
 - Other tools on your system that might shell out to `claude`
 
-That's a footgun. A small judgment task you scheduled at 3am will silently run on the local model instead of your usual Claude Opus, and you'll wonder why output quality dropped overnight.
+A small judgment task you scheduled at 3am will silently run on the local model instead of Claude Opus, and you'll wonder why output quality dropped overnight.
 
-The pattern I use instead is a shell function that opts in per-invocation:
+The cleaner pattern is a shell function that opts in per-invocation:
 
 ```bash
 # Per-invocation local-model switcher (doesn't affect default `claude`)
@@ -62,9 +61,9 @@ claudel() {
 }
 ```
 
-Now `claude -p "..."` keeps using your Anthropic subscription. `claudel -p "..."` uses the local model. You opt in explicitly when you want it, and there's no way to surprise yourself later.
+Now `claude -p "..."` keeps using your Anthropic subscription, and `claudel -p "..."` uses the local model. You opt in explicitly when you want it, with no way to surprise yourself later.
 
-Add that function to `~/.zshrc`, source it, and you have a clean toggle:
+Add the function to `~/.zshrc`, source it, and you have a clean toggle:
 
 ```bash
 source ~/.zshrc
@@ -74,50 +73,8 @@ type claudel
 claudel -p "hello, are you running locally?"
 ```
 
-The `command` keyword in front of `claude` skips any aliases you have on `claude` (I have one that auto-loads a plugin directory). That detail will save you head-scratching later.
+One detail worth calling out: the `command` keyword in front of `claude` skips any aliases you have on `claude` (I have one that auto-loads a plugin directory). Without it the function would expand your alias instead of the real binary, and the override wouldn't apply cleanly.
 
-## The first painful comparison
+## Recap
 
-Now the moment you've been working toward. Same prompt, two backends, side by side:
-
-```bash
-$ time claude -p "Say hi in 3 words"
-Hi there, friend!
-real    0m6.2s
-
-$ time claudel -p "Say hi in 3 words"
-Hello! How are you?
-real    1m26.3s
-```
-
-Anthropic: 6.2 seconds. Local: 86.3 seconds. **Local is 14× slower than Anthropic for the same trivial prompt.**
-
-This is the moment that made me think I'd been sold a story. The model itself isn't this slow -- I measured raw Ollama output at 53 tokens/sec in yesterday's post. Generating a 5-word response should take a fraction of a second, plus a few seconds for Claude Code's startup. Where are the 80 missing seconds going?
-
-I ran a few more tests to make sure it wasn't an anomaly:
-
-| Test | Anthropic | Local | Local is... |
-|---|---:|---:|---:|
-| Basic `-p` (cold) | 6.2s | 86.3s | 14× slower |
-| `--session-id` (new session) | 8.4s | 37.4s | 4.5× slower |
-| `--resume` (continue session) | 8.1s | 23.8s | 2.9× slower |
-
-The numbers got a little better with warmer caches but never anything you'd actually live with. 24 seconds for a one-word response is not a tool you reach for during real work. It's a tool you avoid.
-
-I almost gave up here.
-
-## What's actually happening
-
-The hint that something deeper was going on was that the raw Ollama benchmark showed great numbers. So the bottleneck wasn't the model -- it was the work Claude Code was doing *around* the model.
-
-Anthropic has a server-side prompt cache. When Claude Code sends its enormous system prompt on every call (all the tool definitions, your `CLAUDE.md`, your skills, hook output, project context), Anthropic recognizes the cached portion and only charges you for re-processing the new bits. The whole thing happens server-side, in the same datacenter as the model. To the user, it's invisible.
-
-Local Ollama has a cache too, but it works differently. And, as I'd find out the next day, Claude Code does something else entirely that breaks local caching even when it could otherwise work.
-
-The fix turns out to be three pieces that compound: a flag that strips Claude Code's heavy auto-discovery, a tiny proxy script that fixes one specific request-format problem, and an understanding of how prefix caching actually behaves. Once all three are in place, the same `claudel -p` calls that took 86 seconds settle to around **1 second per turn** -- faster than the Anthropic baseline.
-
-That's [tomorrow's post](/2026/05/20/the-80-second-prompt-and-how-to-fix-it/). It's the most technically interesting one of the series, because the diagnosis required actually capturing HTTP traffic between Claude Code and Ollama to see what was different.
-
-If you stopped reading this series here and concluded "local LLMs aren't ready," I'd understand completely. That's exactly how it feels at this point in the journey. But what looks like "the model is slow" turns out to be "the harness has an asymmetry that's invisible until you go looking for it" -- and once you find it, the asymmetry has a clean fix.
-
-The model was never the problem.
+Pointing Claude Code somewhere else is just three environment variables: `ANTHROPIC_BASE_URL`, a credential, and `ANTHROPIC_MODEL`. Set them inline through a small wrapper function rather than globally, so your default `claude` keeps talking to Anthropic and you switch backends only when you mean to.
