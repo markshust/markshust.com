@@ -1,0 +1,73 @@
+---
+title: "The foundations barely move"
+date: "2026-06-29T00:00:00.000Z"
+tags: ["ai", "building"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+If I'm honest with myself, I spent the last few weeks quietly wondering if, now that we have AI, all of my previous dev experience is worthless.
+
+I've spent all these years learning, shipping, and even teaching everything I know about coding. And I've been wondering... is it all done?
+
+There was a story going around about some 23-year-old making $20k/mo from an app they vibe coded in 11 days. Couple that with the constant new stuff dropping every hour, all the acronyms I have to Google, terms like "coding in a loop" that I apparently need to learn so I'm not obsolete by Friday 🫠
+
+The world is just moving... too fast.
+
+But then I sat with a different question. Is all of what's happening right now actually new? Or is it just regurgitated from stuff I already know?
+
+## I thought I was learning something new
+
+These last few weeks, I wanted to improve HCF, a plugin I made for Claude Code that basically takes everything I know about software development and defines it in a set of text files.
+
+It plans the work, gets your feedback, executes it with TDD, reviews what it coded, then ships it. The agent runs that cycle on its own.
+
+That's kinda "coding in a loop", right? It's also what I've been doing, by hand, for the last 20 years.
+
+The change I wanted to make was in how it runs. Instead of a single pipeline file driving the order everything executes in, I moved it to a "hook" system. Now each step links into a pre-defined event in the workflow and runs at a specific moment, which also lets you control the order things happen inside each phase. Drop your logic at the named point, and it runs there. No central file to babysit, no core to touch.
+
+I was halfway through wiring it up when it hit me.
+
+Isn't that just... Drupal hooks? The exact pattern I was writing back in 2007?
+
+Back then you'd build a module that implemented `hook_form_alter` or `hook_node_presave`, and Drupal would call your code at the right moment in its lifecycle. You never patched the core. You just registered at a named event and waited your turn. Fifteen years later I'm building the same mechanism for AI agents and calling it new.
+
+It isn't new. I just gave it a fresh coat of paint.
+
+## The surface churns. The foundations don't.
+
+Maybe you're panicking right now. Too much to learn. Going too fast. I get it.
+
+But under every new model, framework, or acronym that pops up overnight, the foundations barely move. The vocabulary turns over every couple of years. The shapes underneath stay almost exactly where they were.
+
+- **Hooks.** Register behavior at a named point instead of editing the core. Drupal in 2007, AI agents in 2026.
+- **Pipelines.** A series of steps where the output of one feeds the next. Build tools, CI, now agent workflows.
+- **Events.** Something happens, something else reacts. We've called it observers, listeners, webhooks, callbacks.
+- **Separation of concerns.** Keep the thing that does the work apart from the thing that decides when it runs. Still the whole game.
+
+The "agentic loop" everyone's excited about? That's a generate-test-repair cycle. We've been doing that since the first compiler told us we forgot a semicolon.
+
+We've seen most of what's happening in this entire "AI revolution" many years before. It's a bit like the emperor's new clothes. Dazzling, until you notice the shape underneath is one you already know.
+
+## Those vibe coders aren't smarter than you
+
+So take a breath. Slow down.
+
+Those 20-something vibe coders are moving quick, but maybe they just hit a lucky home run. One swing, one app, one good month. That's real, and good for them. But I don't think they're any smarter than those of us with two decades of real dev experience behind us.
+
+But this only works in your favor if you actually learned the foundations the first time. If all you ever picked up was the framework of the month, every cycle really does feel like starting over. The people staying calm right now aren't the ones who chased every new thing. They're the ones who learned the thing underneath the thing.
+
+## Your experience didn't get erased. It compounded.
+
+I don't think we've fallen behind.
+
+Everything we've learned over all these years keeps compounding. I keep finding myself reaching back to patterns I figured out a decade ago and redefining them with AI. It's nearly the same thing, except now there's this superpower at our fingertips, and it hands the old knowledge a massive amount of leverage.
+
+The thing that makes you fast was never the syntax you memorized. It was always the patterns you can see. And you can still see them. AI didn't take that away. It gave it somewhere bigger to go.
+
+## Recap
+
+We just need to go back to our roots. Revisit what we learned all those years ago, and reinvent it inside this new paradigm. That's it. That's all we need to do.
+
+So if you're feeling that quiet worry tonight, take a breath. You haven't been made obsolete. You've been compounding the whole time, and the tool that scared you is the one that finally lets all of it pay off.
+
+Your experience doesn't need to be erased. It just needs to point in the direction things are now going.
