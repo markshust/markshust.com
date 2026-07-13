@@ -1,6 +1,6 @@
 # markshust.com
 
-Personal site and blog, built with Astro v5 + MDX. Static site, no test framework, no JS frameworks, plain CSS with design tokens.
+Personal site and blog, built with Astro v7 + MDX. Static site, no test framework, no JS frameworks, plain CSS with design tokens.
 
 ## Guidelines
 

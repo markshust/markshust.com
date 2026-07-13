@@ -25,7 +25,7 @@ cd /Users/markshust/Sites/markshust.com && npm run dev
 - All pages generate HTML output
 
 ## Notes
-- This is an Astro v5 static site generator project
+- This is an Astro v7 static site generator project
 - No Jest, Vitest, or Playwright test suite
 - Requirements in task files are implementation requirements, verified by successful build + code review
 - TDD workers should implement requirements and verify with `npm run build`

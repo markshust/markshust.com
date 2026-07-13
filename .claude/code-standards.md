@@ -1,9 +1,9 @@
 # Code Standards
 
-## Project: markshust.com (Astro v5 Blog)
+## Project: markshust.com (Astro v7 Blog)
 
 ## Language & Framework
-- Astro v5 with MDX support
+- Astro v7 with MDX support
 - TypeScript (strict mode via astro/base tsconfig)
 - No React, Vue, or Svelte — Astro components only
 - No Tailwind — plain CSS with custom properties
