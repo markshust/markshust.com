@@ -5,6 +5,8 @@ tags: ["math"]
 layout: "../../../../../layouts/BlogPost.astro"
 ---
 
+import { Image } from 'astro:assets';
+
 I played a 16-person tennis tournament this weekend and went 2-2. I wanted to know where that actually placed me overall, but the tournament never posts a straight 1-to-16 ranking. It only shows a tangle of sub-brackets, so working out my real placement meant understanding how the format scores itself. It turns out the standings are just binary counting, and once I saw that, my number fell right out. Here's how it works.
 
 ## The compass draw
@@ -15,11 +17,15 @@ The key property is that in a full compass draw of 16 players, everyone plays ex
 
 Four matches and sixteen players are the whole trick, because 2⁴ is 16: four results per player, sixteen players, sixteen slots to fill. That's not a coincidence, it's the design.
 
+<Image src={import('./_compass-draw.png')} alt="Compass draw routing: a loss in the East main draw moves you to West, North, or South" />
+
 ## Win is a bit
 
 So how do you rank sixteen players when a bunch of them finish with identical records? Counting wins doesn't work, because four different players can all go 2-2 and you're left with no way to order them. You need a rule that hands all sixteen result patterns their own unique spot, and it turns out there's a familiar one sitting right there.
 
 That rule is binary, so it's worth a quick refresher if it's been a while. A binary number is just a row of bits, where each bit is a `0` or a `1`, and each position is worth double the one to its right: 1, 2, 4, 8, and so on. The four-bit number `1010` means 8 + 0 + 2 + 0, which is 10. Four matches give you a four-bit number, and four bits cover 0 through 15, which is sixteen values -- one for every player in the draw.
+
+<Image src={import('./_place-value.png')} alt="Each match is a bit worth 8, 4, 2, or 1 places; L W L W reads as 1010, which is 8 + 2 = 10, or 11th place" />
 
 So we have sixteen players and a numbering scheme that produces exactly sixteen values. All that's left is deciding which result pattern maps to which number.
 
@@ -76,6 +82,8 @@ Match 4 = 1
 ```
 
 Your first match is worth 8 places and your last is worth 1, so each match matters exactly half as much as the one before it. Win early and you bank the expensive bits; win late and you're haggling over the cheap ones. That's why one early win can outrank three late ones: it was worth more than all three of the cheap ones combined.
+
+<Image src={import('./_wins-not-equal.png')} alt="A win is worth the strength of the pool you win it in: the full field is worth 8, and each bracket down the road is worth less" />
 
 There's a reason a late win is worth less, and it falls out of the format itself. Your first match is against the full, unsorted draw, where the opponent across the net could be anyone, including the player who ends up winning the whole thing. Every loss then drops you into a bracket built from other people who just lost too, so a win two brackets down is a win over a field that's already been filtered for losing. It still counts. It's just worth less, because by the time you got there you were beating weaker-on-the-day competition, by construction.
 
