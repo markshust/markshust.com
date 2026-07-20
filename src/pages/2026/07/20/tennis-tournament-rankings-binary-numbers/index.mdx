@@ -1,0 +1,107 @@
+---
+title: "Tennis tournament rankings are just binary numbers"
+date: "2026-07-20T00:00:00.000Z"
+tags: ["math"]
+layout: "../../../../../layouts/BlogPost.astro"
+---
+
+I played a 16-person tennis tournament this weekend and went 2-2. I wanted to know where that actually placed me overall, but the tournament never posts a straight 1-to-16 ranking. It only shows a tangle of sub-brackets, so working out my real placement meant understanding how the format scores itself. It turns out the standings are just binary counting, and once I saw that, my number fell right out. Here's how it works.
+
+## The compass draw
+
+The tournament used a compass draw, a format where nobody goes home after a single loss. You start in the main bracket ("East"), and from there you win and advance, or you lose and drop sideways into a second bracket ("West") instead of being eliminated. Lose in there and you drop again, into a lower bracket, and so on.
+
+The key property is that in a full compass draw of 16 players, everyone plays exactly four matches. There's no "out", only which bracket you end up in and how deep.
+
+Four matches and sixteen players are the whole trick, because 2⁴ is 16: four results per player, sixteen players, sixteen slots to fill. That's not a coincidence, it's the design.
+
+## Win is a bit
+
+So how do you rank sixteen players when a bunch of them finish with identical records? Counting wins doesn't work, because four different players can all go 2-2 and you're left with no way to order them. You need a rule that hands all sixteen result patterns their own unique spot, and it turns out there's a familiar one sitting right there.
+
+That rule is binary, so it's worth a quick refresher if it's been a while. A binary number is just a row of bits, where each bit is a `0` or a `1`, and each position is worth double the one to its right: 1, 2, 4, 8, and so on. The four-bit number `1010` means 8 + 0 + 2 + 0, which is 10. Four matches give you a four-bit number, and four bits cover 0 through 15, which is sixteen values -- one for every player in the draw.
+
+So we have sixteen players and a numbering scheme that produces exactly sixteen values. All that's left is deciding which result pattern maps to which number.
+
+Give every match a bit, where a win is `0` and a loss is `1`, and read your four results left to right with the first match as the most significant bit.
+
+Now list all sixteen sequences as 4-bit numbers, count from `0000` to `1111`, and add one to turn a zero-based value into a place. That ordering is the standings:
+
+```
+Place  Sequence      Binary  Value
+ 1     W W W W        0000      0
+ 2     W W W L        0001      1
+ 3     W W L W        0010      2
+ 4     W W L L        0011      3
+ 5     W L W W        0100      4
+ 6     W L W L        0101      5
+ 7     W L L W        0110      6
+ 8     W L L L        0111      7
+ 9     L W W W        1000      8
+10     L W W L        1001      9
+11     L W L W        1010     10
+12     L W L L        1011     11
+13     L L W W        1100     12
+14     L L W L        1101     13
+15     L L L W        1110     14
+16     L L L L        1111     15
+```
+
+My results, in order, were loss, win, loss, win. That's `1010`, which is 10, which is 11th place. Nobody posts that number. The tournament only ever told me which sub-brackets I landed in, so the binary is what turned four match results into a single placement out of sixteen.
+
+## Place value
+
+Look at place 8 and place 9:
+
+```
+ 8     W L L L        0111      7
+ 9     L W W W        1000      8
+```
+
+The player in 8th won one match, their first, then lost three, while the player in 9th won three matches after losing their first. One win ranks above three wins.
+
+That looks wrong until you remember it's just place value. `0111` is 7 and `1000` is 8, because the single leftmost bit is worth 8 on its own while the other three bits max out at 7 combined. One high-order digit beats three low-order digits, every time.
+
+The mistake is trying to add up wins. The bracket doesn't add anything; it reads positional value, and that's why when you won matters more than how many times you won (unless you're looking at USTA rankings -- then wins matter. So of course wins matter.).
+
+## Not all wins are equal
+
+This is the part that made it click for me. A win isn't worth a fixed amount. It's worth the place value of the bit it lands on, and those halve every round:
+
+```
+Match 1 = 8
+Match 2 = 4
+Match 3 = 2
+Match 4 = 1
+```
+
+Your first match is worth 8 places and your last is worth 1, so each match matters exactly half as much as the one before it. Win early and you bank the expensive bits; win late and you're haggling over the cheap ones. That's why one early win can outrank three late ones: it was worth more than all three of the cheap ones combined.
+
+There's a reason a late win is worth less, and it falls out of the format itself. Your first match is against the full, unsorted draw, where the opponent across the net could be anyone, including the player who ends up winning the whole thing. Every loss then drops you into a bracket built from other people who just lost too, so a win two brackets down is a win over a field that's already been filtered for losing. It still counts. It's just worth less, because by the time you got there you were beating weaker-on-the-day competition, by construction.
+
+## Why weighting the first match is fair
+
+It sounds unfair to let one match count for 8 and another for 1. But it isn't.
+
+The draw sets the stakes of a match, but it doesn't decide who wins it. In my first match I was in the same bracket as my opponent, on the same court, both starting at 0-0, and that expensive bit was mine to win. I lost it on the day, and that's on me, not the format. Win that same match and my ceiling jumps from 9th to 1st, because the most valuable bit was available to me the entire time -- same as everyone else. Everyone gets a real shot at their most expensive match, so weighting it the heaviest is fair.
+
+So the format isn't asking how many you won; it's asking how long you survived in the top bracket before you got moved down. Weight the early rounds more, because that's where the hardest competition still is, and everyone had the same shot at it. Binary place value encodes all of that, ...for free.
+
+## In code
+
+The nice part is you can compute a placement in one line. Map each result to a bit, read the string as base 2, then add one:
+
+```js
+const place = (results) =>
+  parseInt([...results].map(r => (r === 'W' ? 0 : 1)).join(''), 2) + 1;
+
+place('WWWW'); // 1
+place('LWLW'); // 11
+place('LLLL'); // 16
+```
+
+That's the entire ranking system. A four-bit counter with a `+ 1` on the end.
+
+## Recap
+
+A compass draw looks like a sheet of paper with some names penciled into boxes. Underneath it is binary. Win is `0`, loss is `1`, your first match is the high bit, and your final place is that number plus one. The reason one early win can beat three late wins isn't politics or a quirk in the system; it's the same place value that makes `1000` bigger than `0111`. So the next time a bracket sticks you below someone you know you'd have beaten, you'll know exactly why. It isn't the tournament being unfair. It's just base 2.
