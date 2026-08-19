@@ -12,6 +12,7 @@ const { homepage = false } = Astro.props;
     <li><a href={homepage ? '#building' : '/#building'} class="nav-building">Building</a></li>
     <li><a href={homepage ? '#teaching' : '/#teaching'} class="nav-teaching">Teaching</a></li>
     <li><a href="/blog" class="nav-archive">Archive</a></li>
+    <li><a href="/sponsor" class="nav-sponsor">Sponsor</a></li>
     <li><a href="mailto:mark@shust.com" class="nav-contact">Contact</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -51,18 +52,21 @@ nav.main-nav.scrolled {
 
 .nav-links {
   display: flex;
-  gap: 2.25rem;
+  /* Scales down between ~900px and ~1240px so six items clear the logo
+     without wrapping. Full size returns once there is room for it. */
+  gap: clamp(1.2rem, 1.85vw, 2.25rem);
   list-style: none;
   align-items: center;
 }
 .nav-links a {
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: clamp(0.82rem, 0.85vw, 1.05rem);
   font-weight: 500;
   color: var(--gray-light);
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: clamp(0.05em, 0.09vw, 0.1em);
+  white-space: nowrap;
   transition: color 0.3s ease;
   position: relative;
 }
@@ -82,7 +86,7 @@ nav.main-nav.scrolled {
 .nav-building::after { background: var(--blue); }
 .nav-teaching:hover { color: var(--green) !important; }
 .nav-teaching::after { background: var(--green); }
-.nav-archive::after, .nav-contact::after { background: var(--white); }
+.nav-archive::after, .nav-sponsor::after, .nav-contact::after { background: var(--white); }
 
 .nav-toggle {
   display: none;
@@ -100,7 +104,9 @@ nav.main-nav.scrolled {
   border-radius: 2px;
 }
 
-@media (max-width: 768px) {
+/* Hamburger takes over at 900px, not 768px: six items cannot clear the logo
+   below ~955px, and the overlay is a better experience than a cramped row. */
+@media (max-width: 900px) {
   nav.main-nav { padding: 1rem 1.25rem; }
   nav.main-nav.scrolled { padding: 0.75rem 1.25rem; }
   nav.main-nav.menu-open {
@@ -115,12 +121,16 @@ nav.main-nav.scrolled {
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
+    gap: clamp(1.5rem, 4vh, 2.5rem);
     width: 100%;
-    padding-top: calc(50vh - 10rem);
+    /* Six items overflow a short landscape viewport at a fixed offset, so
+       centre only when there is room and stay scrollable when there is not. */
+    padding: max(calc(50vh - 11rem), 5rem) 0 3rem;
+    max-height: 100vh;
+    overflow-y: auto;
   }
   .nav-links.open { display: flex; }
-  .nav-links a { font-size: 1.3rem; }
+  .nav-links a { font-size: 1.3rem; letter-spacing: 0.1em; }
   .nav-toggle { display: block; position: relative; z-index: 1; }
   .nav-toggle.open { position: absolute; top: 1rem; right: 1.25rem; }
   .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }

@@ -1,0 +1,814 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const inquirySubject = 'Sponsorship inquiry';
+
+const inquiryBody = [
+  'Hey Mark,',
+  '',
+  'Product / company:',
+  'Link:',
+  '',
+  'Placement I want:',
+  '(LinkedIn post / newsletter / YouTube integration / all three)',
+  '',
+  'Target window:',
+  'Budget confirmed:',
+  '',
+  'What a win looks like for us:',
+  '',
+  'Anything else you should know:',
+  '',
+  'Thanks,',
+].join('\n');
+
+const mailto = `mailto:mark@shust.com?subject=${encodeURIComponent(inquirySubject)}&body=${encodeURIComponent(inquiryBody)}`;
+
+const placements = [
+  {
+    accent: 'orange',
+    kicker: 'LinkedIn',
+    name: 'Sponsored post',
+    price: '$1,500',
+    unit: 'per post',
+    reach: '26,000+ followers &middot; LinkedIn Top Voice',
+    lines: [
+      'A full post written by me, in my voice, from your brief',
+      'Disclosed as a paid partnership',
+      'I stay in the comments and answer questions',
+      'You get the analytics screenshot after 7 days',
+    ],
+  },
+  {
+    accent: 'blue',
+    kicker: 'M Bytes newsletter',
+    name: 'Primary slot',
+    price: '$750',
+    unit: 'per send',
+    reach: '10,000+ developers &middot; sent bi-weekly',
+    lines: [
+      'One dedicated block, top of the issue, no competing ads',
+      'Written by me, roughly 80 to 120 words',
+      'One link, tracked however you want to track it',
+      'Open and click numbers sent after the issue',
+    ],
+  },
+  {
+    accent: 'green',
+    kicker: 'YouTube',
+    name: 'Integrated segment',
+    price: '$2,500',
+    unit: 'per video',
+    reach: '6,500+ subscribers &middot; evergreen tutorials',
+    lines: [
+      '60 to 90 seconds, integrated, not a pre-roll bumper',
+      'Pinned comment and a description link',
+      'The catalog is evergreen, so it keeps earning views for years',
+      '420,000+ lifetime views across the channel',
+    ],
+  },
+];
+
+const guardrails = [
+  {
+    n: '01',
+    title: 'I write it',
+    body: 'Send a brief, key messages, whatever you need hit. The words are mine. No agency copy in my mouth, ever. This is the one that is not negotiable, and it is the reason the placement works at all.',
+  },
+  {
+    n: '02',
+    title: 'It gets disclosed',
+    body: 'Every paid placement is marked as paid. My audience respects "this one is an ad" a lot more than they respect a plug they figure out later.',
+  },
+  {
+    n: '03',
+    title: 'I have to actually use it',
+    body: 'Default answer is no. If I have not put my hands on the product and come away impressed, I will pass and tell you why. That is what your money is buying.',
+  },
+];
+
+const notAFit = [
+  'Crypto, trading, and anything with a referral tier',
+  'Products I have not used, or cannot get access to before we book',
+  'Ghostwritten posts, or copy I am asked to run verbatim',
+  'Link-building and SEO guest-post schemes',
+  'Anything aimed at a general business audience instead of developers',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Sponsor — Mark Shust"
+      description="Sponsorship rates and placements for a 42,000+ developer audience across LinkedIn, the M Bytes newsletter, and YouTube."
+      image="/images/mark-shust.png"
+    />
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <Nav />
+
+      <!-- ============ HERO ============ -->
+      <section class="sponsor-hero">
+        <div class="bg-text">SPONSOR</div>
+        <div class="section-inner">
+          <div class="reveal">
+            <div class="section-label">Sponsorship / Rate card</div>
+            <h1 class="section-title">reach.<br>devs.<br>who <span class="highlight">buy</span>.</h1>
+          </div>
+          <p class="hero-desc reveal delay-1">
+            I have spent 25 years writing code and the last ten teaching other people to write it.
+            The developers who follow me are the ones evaluating tools, filing the expense report, and
+            deciding what their team standardizes on. If that is who you are trying to reach, this page
+            has the prices on it so neither of us has to schedule a call.
+          </p>
+
+          <div class="stats-row reveal delay-2">
+            <div class="stat-block">
+              <div class="stat-num"><span class="counter" data-target="26000">0</span>+</div>
+              <div class="stat-label">LinkedIn</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-num"><span class="counter" data-target="10000">0</span>+</div>
+              <div class="stat-label">Newsletter</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-num"><span class="counter" data-target="6500">0</span>+</div>
+              <div class="stat-label">YouTube</div>
+            </div>
+            <div class="stat-block stat-total">
+              <div class="stat-num"><span class="counter" data-target="42000">0</span>+</div>
+              <div class="stat-label">Total developers</div>
+            </div>
+          </div>
+
+          <a class="hero-cta reveal delay-3" href={mailto}>
+            Email me the brief
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============ PLACEMENTS ============ -->
+      <section class="sponsor-placements" id="placements">
+        <div class="section-inner">
+          <div class="reveal">
+            <div class="section-label label-dim">01 / Placements</div>
+            <h2 class="block-title">Pick one, or take the room.</h2>
+          </div>
+
+          <div class="placement-grid">
+            {placements.map((p, i) => (
+              <article class={`placement-card accent-${p.accent} reveal delay-${i + 1}`}>
+                <div class="pc-kicker">{p.kicker}</div>
+                <h3 class="pc-name">{p.name}</h3>
+                <div class="pc-price">
+                  {p.price}<span class="pc-unit">{p.unit}</span>
+                </div>
+                <div class="pc-reach" set:html={p.reach} />
+                <ul class="pc-list">
+                  {p.lines.map(line => (
+                    <li><span class="pc-dot"></span>{line}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <div class="bundle reveal delay-2">
+            <div class="bundle-copy">
+              <div class="bundle-kicker">All three, one campaign</div>
+              <h3 class="bundle-title">The full run</h3>
+              <p>
+                LinkedIn post, newsletter slot, and a YouTube integration inside a single 30-day window,
+                so the same developer sees you three times in three different contexts. That is what
+                actually moves installs. Booked as one invoice.
+              </p>
+            </div>
+            <div class="bundle-price">
+              <div class="bundle-was">$4,750 separately</div>
+              <div class="bundle-num">$4,000</div>
+              <a class="bundle-cta" href={mailto}>
+                Book the run
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ GUARDRAILS ============ -->
+      <section class="sponsor-rules">
+        <div class="bg-text">RULES</div>
+        <div class="section-inner">
+          <div class="reveal">
+            <div class="section-label">02 / How I run it</div>
+            <h2 class="section-title rules-title">three rules.<br>no <span class="highlight">exceptions</span>.</h2>
+          </div>
+          <div class="rules-grid">
+            {guardrails.map((g, i) => (
+              <div class={`rule reveal delay-${i + 1}`}>
+                <div class="rule-n">{g.n}</div>
+                <h3 class="rule-title">{g.title}</h3>
+                <p class="rule-body">{g.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ INQUIRE ============ -->
+      <section class="sponsor-inquire" id="inquire">
+        <div class="section-inner">
+          <div class="inquire-grid">
+            <div class="inquire-intro reveal">
+              <div class="section-label label-dim">03 / Getting started</div>
+              <h2 class="block-title">There is no form. Just email me.</h2>
+              <p class="inquire-desc">
+                One address, one message, and you will hear back within two business days either way.
+                If it is not a fit I will say so and tell you why, which saves us both the follow-up.
+              </p>
+              <a class="inquire-cta" href={mailto}>
+                mark@shust.com
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <div class="inquire-note">
+                That button pre-fills everything below. On a phone, it just opens your mail app.
+              </div>
+            </div>
+
+            <div class="inquire-card reveal delay-1">
+              <div class="ic-head">
+                <span class="ic-dot"></span><span class="ic-dot"></span><span class="ic-dot"></span>
+                <span class="ic-title">Sponsorship inquiry</span>
+              </div>
+              <pre class="ic-body">{inquiryBody}</pre>
+            </div>
+          </div>
+
+          <div class="notfit reveal delay-2">
+            <h3 class="notfit-title">Save yourself the email</h3>
+            <ul class="notfit-list">
+              {notAFit.map(item => (
+                <li><span class="notfit-x">&times;</span>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style>
+  .site-wrapper {
+    max-width: 2560px;
+    margin: 0 auto;
+    background: var(--dark);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .section-inner {
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+  }
+  .section-label.label-dim { color: var(--orange); opacity: 1; }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .block-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .bg-text {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(10rem, 22vw, 24rem);
+    font-weight: 700;
+    line-height: 0.85;
+    pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+
+  /* ============ HERO ============ */
+  .sponsor-hero {
+    background: var(--dark);
+    padding: calc(var(--nav-height) + clamp(4rem, 9vw, 8rem)) 2.5rem clamp(4rem, 8vw, 7rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .sponsor-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 0%, rgba(255, 107, 53, 0.16), transparent 60%);
+    pointer-events: none;
+  }
+  .sponsor-hero .bg-text { color: rgba(255, 255, 255, 0.025); }
+  .sponsor-hero .section-title { color: var(--white); }
+  .sponsor-hero .section-title .highlight { color: var(--orange); }
+
+  .hero-desc {
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+    line-height: 1.75;
+    color: var(--gray-light);
+    max-width: 62ch;
+    margin-bottom: 3rem;
+  }
+
+  /* Grid, not flex: flex items refuse to shrink below their content width,
+     which pushed .section-inner past the viewport and clipped the hero copy. */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 2.75rem;
+    margin-bottom: 2.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .stat-block { min-width: 0; }
+  .stat-num {
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 4vw, 3.25rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-total .stat-num { color: var(--orange); }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    margin-top: 0.4rem;
+  }
+
+  .hero-cta,
+  .bundle-cta,
+  .inquire-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    font-weight: 700;
+    color: #000;
+    background: var(--orange);
+    padding: 0.95rem 2.1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+  .hero-cta:hover,
+  .bundle-cta:hover,
+  .inquire-cta:hover {
+    color: #000;
+    background: var(--orange-bright);
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 107, 53, 0.35);
+  }
+  .hero-cta svg,
+  .bundle-cta svg,
+  .inquire-cta svg {
+    width: 18px;
+    height: 18px;
+    stroke: #000;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ============ PLACEMENTS ============ */
+  .sponsor-placements {
+    background: var(--dark);
+    padding: clamp(4rem, 8vw, 7rem) 2.5rem;
+    position: relative;
+  }
+  .sponsor-placements .block-title { color: var(--white); }
+
+  .placement-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .placement-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: clamp(1.75rem, 2.6vw, 2.4rem);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+  }
+  .placement-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+  .placement-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  }
+
+  .accent-orange::before { background: radial-gradient(circle at 50% 0%, rgba(255, 107, 53, 0.14), transparent 62%); }
+  .accent-blue::before   { background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.14), transparent 62%); }
+  .accent-green::before  { background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.14), transparent 62%); }
+
+  .accent-orange:hover { border-color: rgba(255, 107, 53, 0.4); }
+  .accent-blue:hover   { border-color: rgba(59, 130, 246, 0.4); }
+  .accent-green:hover  { border-color: rgba(16, 185, 129, 0.4); }
+
+  .pc-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+  .accent-orange .pc-kicker { color: var(--orange); }
+  .accent-blue .pc-kicker   { color: var(--blue-bright); }
+  .accent-green .pc-kicker  { color: var(--green-bright); }
+
+  .pc-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 1.9vw, 1.6rem);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  .pc-price {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 4vw, 3.25rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .pc-unit {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+  }
+  .pc-reach {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin: 1rem 0 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    position: relative;
+    z-index: 1;
+  }
+  .pc-list {
+    list-style: none;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+  .pc-list li {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--gray-light);
+    padding: 0.55rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .pc-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.55rem;
+  }
+  .accent-orange .pc-dot { background: var(--orange); }
+  .accent-blue .pc-dot   { background: var(--blue); }
+  .accent-green .pc-dot  { background: var(--green); }
+
+  /* Bundle */
+  .bundle {
+    margin-top: 1.5rem;
+    background: linear-gradient(135deg, var(--dark-subtle), var(--dark-card));
+    border: 1px solid rgba(255, 107, 53, 0.22);
+    border-radius: 24px;
+    padding: clamp(2rem, 3.5vw, 3rem);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+  }
+  .bundle-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--orange);
+    margin-bottom: 0.6rem;
+  }
+  .bundle-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .bundle-copy p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--gray-light);
+    max-width: 58ch;
+  }
+  .bundle-price { text-align: right; }
+  .bundle-was {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--gray);
+    text-decoration: line-through;
+    margin-bottom: 0.35rem;
+  }
+  .bundle-num {
+    font-family: var(--font-heading);
+    font-size: clamp(2.75rem, 5vw, 4rem);
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ============ GUARDRAILS ============ */
+  .sponsor-rules {
+    background: var(--orange);
+    color: #000;
+    padding: clamp(5rem, 10vw, 9rem) 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .sponsor-rules .bg-text { color: rgba(0, 0, 0, 0.05); }
+  .sponsor-rules::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .rules-title { color: #000; }
+  .rules-title .highlight { color: #fff; }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin-top: 3.5rem;
+  }
+  .rule { border-top: 2px solid rgba(0, 0, 0, 0.25); padding-top: 1.5rem; }
+  .rule-n {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: rgba(0, 0, 0, 0.45);
+    margin-bottom: 0.75rem;
+  }
+  .rule-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .rule-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.72);
+  }
+
+  /* ============ INQUIRE ============ */
+  .sponsor-inquire {
+    background: var(--dark);
+    padding: clamp(4.5rem, 9vw, 8rem) 2.5rem;
+    position: relative;
+  }
+  .sponsor-inquire .block-title { color: var(--white); }
+
+  .inquire-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+  .inquire-desc {
+    font-size: clamp(1rem, 1.25vw, 1.15rem);
+    line-height: 1.75;
+    color: var(--gray-light);
+    max-width: 52ch;
+    margin-bottom: 2rem;
+  }
+  .inquire-note {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--gray);
+    margin-top: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .inquire-card {
+    min-width: 0;
+    background: var(--dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+  .ic-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--dark-subtle);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .ic-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    flex-shrink: 0;
+  }
+  .ic-dot:first-child { background: var(--orange); }
+  .ic-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--gray);
+    margin-left: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+  .ic-body {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.85;
+    color: var(--gray-light);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: clamp(1.25rem, 2.2vw, 1.9rem);
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  /* Not a fit */
+  .notfit {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .notfit-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .notfit-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.85rem 2.5rem;
+  }
+  .notfit-list li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gray);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .notfit-x {
+    color: var(--orange-deep);
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1.55;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .placement-grid { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .bundle { grid-template-columns: 1fr; gap: 2rem; }
+    .bundle-price { text-align: left; }
+    .inquire-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .sponsor-hero { padding: calc(var(--nav-height) + 3rem) 1.25rem 4rem; }
+    .sponsor-placements,
+    .sponsor-inquire { padding: 4rem 1.25rem; }
+    .sponsor-rules { padding: 4.5rem 1.25rem; }
+    .stats-row { gap: 1.5rem 2rem; }
+    .ic-body { font-size: 0.78rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .placement-card:hover { transform: none; }
+    .hero-cta:hover,
+    .bundle-cta:hover,
+    .inquire-cta:hover { transform: none; }
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  // Scroll reveal (IntersectionObserver)
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  const cObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseInt(el.dataset.target || '0');
+        const dur = 2200;
+        const start = performance.now();
+        (function tick(now) {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target).toLocaleString();
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+        cObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => cObs.observe(c));
+
+})();
+</script>
